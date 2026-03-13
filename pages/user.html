@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>用户信息 - 电子书城</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" aria-label="侧栏导航">
+        <div class="sidebar__brand">
+          <a class="brand" href="./books.html" aria-label="返回书城首页">
+            <figure class="brand__logo">
+              <img src="../assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
+            </figure>
+            <div>
+              <div class="brand__title">电子书城</div>
+              <div class="u-muted">Book Store</div>
+            </div>
+          </a>
+        </div>
+
+        <nav class="nav" aria-label="页面导航">
+          <a class="nav__item" href="./books.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>书城</span>
+          </a>
+          <a class="nav__item" href="./cart.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>购物车</span>
+          </a>
+          <a class="nav__item" href="./orders.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>订单</span>
+          </a>
+          <a class="nav__item is-active" href="./user.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>用户信息</span>
+          </a>
+          <a class="nav__item" href="./login.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>退出（返回登录）</span>
+          </a>
+        </nav>
+
+      </aside>
+
+      <main class="main">
+        <header class="topbar" aria-label="顶栏">
+          <div class="topbar__left">
+            <form class="search" action="./user.html" method="get" aria-label="搜索">
+              <span class="u-muted-2" aria-hidden="true">⌕</span>
+              <label class="u-sr-only" for="user-q">搜索设置</label>
+              <input id="user-q" name="q" type="search" placeholder="搜索用户相关设置" />
+            </form>
+          </div>
+          <div class="topbar__right">
+            <div class="avatar" aria-label="用户信息">
+              <img class="avatar__img" src="../assets/avatar.svg" alt="用户头像" width="30" height="30" />
+              <div class="avatar__name">同学A</div>
+            </div>
+          </div>
+        </header>
+
+        <section class="page card" aria-label="用户信息页面">
+          <header class="page__header">
+            <div>
+              <h1 class="page__title">个人资料</h1>
+              <p class="page__desc">查看当前登录用户的基本信息。</p>
+            </div>
+            <div class="pill pill--ok">已登录</div>
+          </header>
+
+          <section class="grid" aria-label="用户信息内容">
+            <section class="panel" aria-label="基本信息">
+              <header class="panel__header">
+                <h2 class="panel__title">基本信息</h2>
+                <a class="btn btn-secondary" href="./user.html" aria-label="编辑入口">编辑</a>
+              </header>
+              <div class="panel__body">
+                <table class="table" aria-label="用户信息表格">
+                  <tbody>
+                    <tr class="table__row">
+                      <th scope="row">用户名</th>
+                      <td>同学A</td>
+                    </tr>
+                    <tr class="table__row">
+                      <th scope="row">邮箱</th>
+                      <td>student@example.com</td>
+                    </tr>
+                    <tr class="table__row">
+                      <th scope="row">会员等级</th>
+                      <td><span class="pill">普通用户</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel" aria-label="快捷入口">
+              <header class="panel__header">
+                <h2 class="panel__title">快捷入口</h2>
+                <span class="tag tag--paid">UI 展示</span>
+              </header>
+              <div class="panel__body">
+                <div class="summary__actions">
+                  <a class="btn btn-secondary" href="./cart.html">我的购物车</a>
+                  <a class="btn btn-primary" href="./orders.html">我的订单</a>
+                </div>
+              </div>
+            </section>
+          </section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

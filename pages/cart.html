@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>购物车 - 电子书城</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" aria-label="侧栏导航">
+        <div class="sidebar__brand">
+          <a class="brand" href="./books.html" aria-label="返回书城首页">
+            <figure class="brand__logo">
+              <img src="../assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
+            </figure>
+            <div>
+              <div class="brand__title">电子书城</div>
+              <div class="u-muted">Book Store</div>
+            </div>
+          </a>
+        </div>
+
+        <nav class="nav" aria-label="页面导航">
+          <a class="nav__item" href="./books.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>书城</span>
+          </a>
+          <a class="nav__item is-active" href="./cart.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>购物车</span>
+          </a>
+          <a class="nav__item" href="./orders.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>订单</span>
+          </a>
+          <a class="nav__item" href="./user.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>用户信息</span>
+          </a>
+          <a class="nav__item" href="./login.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>退出（返回登录）</span>
+          </a>
+        </nav>
+
+      </aside>
+
+      <main class="main">
+        <header class="topbar" aria-label="顶栏">
+          <div class="topbar__left">
+            <form class="search" action="./cart.html" method="get" aria-label="搜索">
+              <span class="u-muted-2" aria-hidden="true">⌕</span>
+              <label class="u-sr-only" for="cart-q">搜索书名</label>
+              <input id="cart-q" name="q" type="search" placeholder="搜索购物车中的书籍" />
+            </form>
+          </div>
+          <div class="topbar__right">
+            <div class="avatar" aria-label="用户信息">
+              <img class="avatar__img" src="../assets/avatar.svg" alt="用户头像" width="30" height="30" />
+              <div class="avatar__name">同学A</div>
+            </div>
+          </div>
+        </header>
+
+        <section class="page card" aria-label="购物车页面">
+          <header class="page__header">
+            <div>
+              <h1 class="page__title">我的购物车</h1>
+              <p class="page__desc">显示书籍标题、作者、价格等信息，支持数量选择与结算入口。</p>
+            </div>
+            <div class="pill">共 3 件</div>
+          </header>
+
+          <section class="cart" aria-label="购物车内容区">
+            <section class="panel" aria-label="商品列表">
+              <header class="panel__header">
+                <h2 class="panel__title">商品</h2>
+                <label class="auth__checks" for="selectAll">
+                  <input id="selectAll" type="checkbox" checked />
+                  全选
+                </label>
+              </header>
+              <div class="panel__body">
+                <table class="table" aria-label="购物车表格">
+                  <thead>
+                    <tr>
+                      <th scope="col">选择</th>
+                      <th scope="col">书名</th>
+                      <th scope="col">作者</th>
+                      <th scope="col">单价</th>
+                      <th scope="col">数量</th>
+                      <th scope="col" class="u-right">小计</th>
+                      <th scope="col" class="u-right">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table__row">
+                      <td><input type="checkbox" checked aria-label="选择商品 1" /></td>
+                      <td><a class="link" href="./book-detail.html">Digital Fundamentals</a></td>
+                      <td>Thomas L. Floyd</td>
+                      <td>￥59.00</td>
+                      <td>
+                        <div class="qty" aria-label="数量选择">
+                          <label class="u-sr-only" for="qty1">数量</label>
+                          <select id="qty1" name="qty1">
+                            <option>1</option>
+                            <option selected>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td class="u-right"><strong>￥118.00</strong></td>
+                      <td class="u-right">
+                        <a class="btn btn-danger" href="./cart.html" aria-label="移除商品 1（占位）">移除</a>
+                      </td>
+                    </tr>
+
+                    <tr class="table__row">
+                      <td><input type="checkbox" checked aria-label="选择商品 2" /></td>
+                      <td><a class="link" href="./book-detail-2.html">Fundamentals of Computer Graphics</a></td>
+                      <td>Steve Marschner</td>
+                      <td>￥88.00</td>
+                      <td>
+                        <div class="qty">
+                          <label class="u-sr-only" for="qty2">数量</label>
+                          <select id="qty2" name="qty2">
+                            <option selected>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td class="u-right"><strong>￥88.00</strong></td>
+                      <td class="u-right">
+                        <a class="btn btn-danger" href="./cart.html" aria-label="移除商品 2（占位）">移除</a>
+                      </td>
+                    </tr>
+
+                    <tr class="table__row">
+                      <td><input type="checkbox" checked aria-label="选择商品 3" /></td>
+                      <td><a class="link" href="./book-detail-3.html">Intorduction to Computing Systems</a></td>
+                      <td>N. Patt</td>
+                      <td>￥79.00</td>
+                      <td>
+                        <div class="qty">
+                          <label class="u-sr-only" for="qty3">数量</label>
+                          <select id="qty3" name="qty3">
+                            <option selected>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td class="u-right"><strong>￥79.00</strong></td>
+                      <td class="u-right">
+                        <a class="btn btn-danger" href="./cart.html" aria-label="移除商品 3（占位）">移除</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <aside class="panel" aria-label="结算信息">
+              <header class="panel__header">
+                <h2 class="panel__title">结算</h2>
+                <span class="tag tag--pending">待结算</span>
+              </header>
+              <div class="panel__body">
+                <div class="summary" aria-label="价格汇总">
+                  <div class="summary__row">
+                    <span>商品金额</span>
+                    <strong>￥285.00</strong>
+                  </div>
+                  <div class="summary__row">
+                    <span>优惠</span>
+                    <strong>￥0.00</strong>
+                  </div>
+                  <div class="summary__row summary__total">
+                    <span>合计</span>
+                    <strong>￥285.00</strong>
+                  </div>
+                </div>
+
+                <div class="summary__actions">
+                  <a class="btn btn-secondary" href="./books.html">继续选购</a>
+                  <a class="btn btn-primary" href="./orders.html">结算</a>
+                </div>
+
+              </div>
+            </aside>
+          </section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

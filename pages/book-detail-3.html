@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>书籍详情 - 电子书城</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" aria-label="侧栏导航">
+        <div class="sidebar__brand">
+          <a class="brand" href="./books.html" aria-label="返回书城首页">
+            <figure class="brand__logo">
+              <img src="../assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
+            </figure>
+            <div>
+              <div class="brand__title">电子书城</div>
+              <div class="u-muted">Book Store</div>
+            </div>
+          </a>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a class="nav__item" href="./books.html"><span class="nav__dot" aria-hidden="true"></span><span>书城</span></a>
+          <a class="nav__item" href="./cart.html"><span class="nav__dot" aria-hidden="true"></span><span>购物车</span></a>
+          <a class="nav__item" href="./orders.html"><span class="nav__dot" aria-hidden="true"></span><span>订单</span></a>
+          <a class="nav__item" href="./user.html"><span class="nav__dot" aria-hidden="true"></span><span>用户信息</span></a>
+          <a class="nav__item" href="./login.html"><span class="nav__dot" aria-hidden="true"></span><span>退出（返回登录）</span></a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar" aria-label="顶栏">
+          <div class="topbar__left">
+            <form class="search" action="./books.html" method="get" aria-label="搜索">
+              <span class="u-muted-2" aria-hidden="true">⌕</span>
+              <label class="u-sr-only" for="detail3-q">搜索书名</label>
+              <input id="detail3-q" name="q" type="search" placeholder="搜索书名 / 作者 / 分类" />
+            </form>
+          </div>
+          <div class="topbar__right">
+            <div class="avatar" aria-label="用户信息">
+              <img class="avatar__img" src="../assets/avatar.svg" alt="用户头像" width="30" height="30" />
+              <div class="avatar__name">同学A</div>
+            </div>
+          </div>
+        </header>
+
+        <article class="page card" aria-label="书籍详情内容">
+          <header class="page__header">
+            <div>
+              <h1 class="page__title">Intorduction to Computing Systems</h1>
+              <p class="page__desc">分类：计算机系统 · 作者：N. Patt</p>
+            </div>
+            <div class="pill pill--warn" aria-label="库存状态">库存紧张</div>
+          </header>
+
+          <section class="detail" aria-label="详情布局">
+            <figure class="detail__media" aria-label="书籍封面">
+              <img src="../assets/Intorduction%20to%20Computing%20Systems%28N.Patt%29.png" alt="Intorduction to Computing Systems 封面" />
+            </figure>
+
+            <section class="detail__content" aria-label="书籍信息">
+              <h1 class="u-hidden">Intorduction to Computing Systems</h1>
+              <p class="detail__sub">价格：<span class="price">￥79.00</span></p>
+
+              <section class="kv" aria-label="关键信息">
+                <div class="kv__item"><div class="kv__k">分类</div><div class="kv__v">计算机系统</div></div>
+                <div class="kv__item"><div class="kv__k">状态</div><div class="kv__v">在售 · 可加入购物车</div></div>
+                <div class="kv__item"><div class="kv__k">ISBN</div><div class="kv__v">978-0-00-000000-3</div></div>
+                <div class="kv__item"><div class="kv__k">形式</div><div class="kv__v">电子书</div></div>
+              </section>
+
+              <section class="detail__desc" aria-label="作品简介">
+                <h2>作品简介</h2>
+                <p>从指令集、数据表示到处理器与内存体系，逐步建立对计算机系统工作机制的理解。</p>
+              </section>
+
+              <section class="detail__cta" aria-label="操作入口">
+                <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                <a class="btn btn-secondary" href="./orders.html">立即购买</a>
+                <a class="btn btn-secondary" href="./books.html">返回书城</a>
+              </section>
+            </section>
+          </section>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>
+

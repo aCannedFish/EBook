@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>书城 - 电子书城</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar" aria-label="侧栏导航">
+        <div class="sidebar__brand">
+          <a class="brand" href="./books.html" aria-label="返回书城首页">
+            <figure class="brand__logo">
+              <img src="../assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
+            </figure>
+            <div>
+              <div class="brand__title">电子书城</div>
+              <div class="u-muted">Book Store</div>
+            </div>
+          </a>
+        </div>
+
+        <nav class="nav" aria-label="页面导航">
+          <a class="nav__item is-active" href="./books.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>书城</span>
+          </a>
+          <a class="nav__item" href="./cart.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>购物车</span>
+          </a>
+          <a class="nav__item" href="./orders.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>订单</span>
+          </a>
+          <a class="nav__item" href="./user.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>用户信息</span>
+          </a>
+          <a class="nav__item" href="./login.html">
+            <span class="nav__dot" aria-hidden="true"></span>
+            <span>退出（返回登录）</span>
+          </a>
+        </nav>
+
+      </aside>
+
+      <main class="main">
+        <header class="topbar" aria-label="顶栏">
+          <div class="topbar__left">
+            <form class="search" action="./books.html" method="get" aria-label="搜索">
+              <span class="u-muted-2" aria-hidden="true">⌕</span>
+              <label class="u-sr-only" for="q">搜索书名</label>
+              <input id="q" name="q" type="search" placeholder="搜索书名 / 作者 / 分类" />
+            </form>
+          </div>
+          <div class="topbar__right">
+            <div class="avatar" aria-label="用户信息">
+              <img class="avatar__img" src="../assets/avatar.svg" alt="用户头像" width="30" height="30" />
+              <div class="avatar__name">同学A</div>
+            </div>
+          </div>
+        </header>
+
+        <section class="page card" aria-label="书籍列表页面">
+          <header class="page__header">
+            <div>
+              <h1 class="page__title">书籍列表</h1>
+              <p class="page__desc">展示封面、书名、作者与价格。</p>
+            </div>
+            <div class="pill pill--pay" aria-label="提示">共 8 本</div>
+          </header>
+
+          <section class="grid grid--books" aria-label="书籍卡片列表">
+            <article class="book" aria-label="书籍卡片 1">
+              <figure class="book__cover">
+                <img src="../assets/Digital%20Fundamentals%EF%BC%88Thomas.L.Floyd%EF%BC%89.png" alt="Digital Fundamentals 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">Digital Fundamentals</h2>
+                <p class="book__author">作者：Thomas L. Floyd</p>
+                <div class="book__meta">
+                  <span class="price">￥59.00</span>
+                  <span class="pill pill--ok">有货</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="book" aria-label="书籍卡片 2">
+              <figure class="book__cover">
+                <img src="../assets/Fundamentals%20of%20Computer%20Graphics%28Steve%20Marschner%29.png" alt="Fundamentals of Computer Graphics 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">Fundamentals of Computer Graphics</h2>
+                <p class="book__author">作者：Steve Marschner</p>
+                <div class="book__meta">
+                  <span class="price">￥88.00</span>
+                  <span class="pill pill--ok">有货</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail-2.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="book" aria-label="书籍卡片 3">
+              <figure class="book__cover">
+                <img src="../assets/Intorduction%20to%20Computing%20Systems%28N.Patt%29.png" alt="Intorduction to Computing Systems 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">Intorduction to Computing Systems</h2>
+                <p class="book__author">作者：N. Patt</p>
+                <div class="book__meta">
+                  <span class="price">￥79.00</span>
+                  <span class="pill pill--warn">库存紧张</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail-3.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="book" aria-label="书籍卡片 4">
+              <figure class="book__cover">
+                <img src="../assets/Introduction%20To%20Algorithms%28Thomas.H.Cormen%29.png" alt="Introduction To Algorithms 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">Introduction To Algorithms</h2>
+                <p class="book__author">作者：Thomas H. Cormen</p>
+                <div class="book__meta">
+                  <span class="price">￥99.00</span>
+                  <span class="pill pill--ok">有货</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail-4.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="book" aria-label="书籍卡片 5">
+              <figure class="book__cover">
+                <img src="../assets/Qt%206%20C%2B%2B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%EF%BC%88%E7%8E%8B%E7%BB%B4%E6%B3%A2%EF%BC%89.png" alt="Qt 6 C++开发指南 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">Qt 6 C++开发指南</h2>
+                <p class="book__author">作者：王维波</p>
+                <div class="book__meta">
+                  <span class="price">￥68.00</span>
+                  <span class="pill pill--ok">有货</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail-5.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="book" aria-label="书籍卡片 6">
+              <figure class="book__cover">
+                <img src="../assets/%E5%BA%94%E7%94%A8%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%EF%BC%88%E7%86%8A%E5%BE%B7%E6%96%87%EF%BC%89.png" alt="应用随机过程 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">应用随机过程</h2>
+                <p class="book__author">作者：熊德文</p>
+                <div class="book__meta">
+                  <span class="price">￥56.00</span>
+                  <span class="pill pill--ok">有货</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail-6.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="book" aria-label="书籍卡片 7">
+              <figure class="book__cover">
+                <img src="../assets/%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%88%E5%85%B0%E5%BE%B7%E5%B0%94.E.%E5%B8%83%E8%8E%B1%E6%81%A9%E7%89%B9%EF%BC%8C%E5%A4%A7%E5%8D%AB.R.%E5%A5%A5%E5%93%88%E6%8B%89%E4%BC%A6%EF%BC%89.png" alt="深入了解计算机系统 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">深入了解计算机系统</h2>
+                <p class="book__author">作者：兰德尔·E·布莱恩特 / 大卫·R·奥哈拉伦</p>
+                <div class="book__meta">
+                  <span class="price">￥86.00</span>
+                  <span class="pill pill--warn">库存紧张</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail-7.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="book" aria-label="书籍卡片 8">
+              <figure class="book__cover">
+                <img src="../assets/%E9%87%8F%E5%AD%90%E7%89%A9%E7%90%86%EF%BC%88%E5%90%95%E6%99%BA%E5%9B%BD%EF%BC%89.png" alt="量子物理 封面" />
+              </figure>
+              <div class="book__body">
+                <h2 class="book__title">量子物理</h2>
+                <p class="book__author">作者：吕智国</p>
+                <div class="book__meta">
+                  <span class="price">￥72.00</span>
+                  <span class="pill pill--ok">有货</span>
+                </div>
+                <div class="book__actions">
+                  <a class="btn btn-secondary" href="./book-detail-8.html">查看详情</a>
+                  <a class="btn btn-primary" href="./cart.html">加入购物车</a>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+
+      </main>
+    </div>
+  </body>
+</html>
+
