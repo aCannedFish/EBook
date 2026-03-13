@@ -147,6 +147,7 @@ button, input, select{ font: inherit; }
   gap: 12px;
 }
 .brand__logo{
+  margin: 0;
   width: 42px;
   height: 42px;
   border-radius: 12px;
@@ -156,7 +157,11 @@ button, input, select{ font: inherit; }
   place-items:center;
   overflow: hidden;
 }
-.brand__title{ font-weight: 800; letter-spacing: .2px; }
+.brand__title{
+  font-weight: 800;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
 .brand__subtitle{ margin-top: 6px; color: var(--muted); line-height: 1.55; }
 .auth__hero-points{
   margin-top: 16px;
@@ -186,6 +191,20 @@ button, input, select{ font: inherit; }
   padding: 24px;
   width: min(720px, calc(100% - 48px));
 }
+.auth__panel .brand{
+  justify-content: center;
+  gap: 0;
+}
+.auth__panel .brand__title{
+  font-size: 31.5px;
+;
+  margin-left: 5px;
+}
+.auth__panel .brand__welcome{
+  color: var(--brand);
+  text-decoration: none;
+  cursor: default;
+}
 .auth__panel h1{ margin: 0 0 6px; font-size: 22px; }
 .auth__panel p{ margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
 .auth__actions{ display:flex; align-items:center; justify-content: space-between; gap: 10px; margin-top: 8px; }
@@ -201,7 +220,7 @@ button, input, select{ font: inherit; }
 .app{
   min-height: 100%;
   display: grid;
-  grid-template-columns: 270px 1fr;
+  grid-template-columns: 203px 1fr;
 }
 .sidebar{
   position: sticky;
@@ -211,7 +230,33 @@ button, input, select{ font: inherit; }
   border-right: 1px solid #e2e8f0;
   background: #ffffff;
 }
-.sidebar__brand{ padding: 10px 10px 14px; }
+.sidebar__brand{
+  padding: 10px 0 14px;
+  margin-left: 0;
+  display: flex;
+  justify-content: center;
+}
+.sidebar__brand .brand{
+  width: auto;
+  justify-content: center;
+  gap: 0;
+}
+.sidebar__brand .brand__logo{
+  width: 64px;
+  height: 64px;
+}
+.sidebar__brand .brand__logo img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.sidebar__brand .brand > div{
+  display: none;
+}
+.sidebar__brand .brand__title{
+  font-family: "Comic Sans MS", "Comic Sans", var(--font);
+  font-size: 16px;
+}
 .nav{
   margin-top: 10px;
   display: grid;
@@ -365,17 +410,21 @@ button, input, select{ font: inherit; }
   min-height: 280px;
 }
 .book__cover{
-  aspect-ratio: 4 / 5;
   width: 100%;
+  height: 330px;
+  margin: 0;
   background: #f1f5f9;
   display:grid;
   place-items:center;
+  padding: 0;
+  overflow: hidden;
   border-bottom: 1px solid #e2e8f0;
 }
 .book__cover img{
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display:block;
 }
 .book__body{
@@ -385,7 +434,27 @@ button, input, select{ font: inherit; }
   gap: 10px;
   flex: 1;
 }
-.book__title{ margin: 0; font-size: 14px; line-height: 1.35; }
+.book__title{
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  min-height: calc(1.35em * 2);
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.book__author{
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+  min-height: 1.45em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .book__meta{ display:flex; align-items:center; justify-content: space-between; gap: 10px; }
 .price{ font-weight: 800; letter-spacing: .2px; }
 .book__actions{
