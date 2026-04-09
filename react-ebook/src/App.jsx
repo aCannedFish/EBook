@@ -9,12 +9,14 @@ import CartPage from "./pages/CartPage";
 import OrdersPage from "./pages/OrdersPage";
 import UserPage from "./pages/UserPage";
 
+// 应用根组件：集中维护登录态、购物车、订单与各页面搜索状态。
 function App() {
   const books = useMemo(() => data.books, []);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(data.user);
   const [cartItems, setCartItems] = useState(data.initialCart);
   const [orders, setOrders] = useState(data.initialOrders);
+  // 按页面保存搜索词，切页时可保留当前页面输入。
   const [searchByPage, setSearchByPage] = useState({
     books: "",
     detail: "",
@@ -27,6 +29,7 @@ function App() {
     setSearchByPage((prev) => ({ ...prev, [pageKey]: value }));
   };
 
+  // 登录后更新展示用户名；勾选记住时写入本地存储。
   const handleLogin = (username, remember) => {
     setIsLoggedIn(true);
     setUser((prev) => ({
@@ -43,6 +46,7 @@ function App() {
     setIsLoggedIn(false);
   };
 
+  // 购物车同书籍按 id 合并数量，且最大数量限制为 4。
   const addToCart = (bookId) => {
     setCartItems((prev) => {
       const found = prev.find((item) => item.bookId === bookId);
@@ -87,6 +91,7 @@ function App() {
       return;
     }
 
+    // 生成简易订单号并把已勾选商品从购物车移除。
     const newOrders = selectedRows.map((row, index) => ({
       id: `ORD-${Date.now()}-${String(index + 1).padStart(4, "0")}`,
       status: "pending",
@@ -106,6 +111,7 @@ function App() {
   };
 
   return (
+    // 路由结构与原静态页面对应：登录、书城、详情、购物车、订单、用户中心。
     <Routes>
       <Route
         path="/"

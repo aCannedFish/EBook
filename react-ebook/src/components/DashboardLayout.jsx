@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 
+// 后台主框架：统一侧边导航、顶部搜索和用户区，具体页面内容通过 children 注入。
 function DashboardLayout({
   children,
   username,
@@ -49,6 +50,7 @@ function DashboardLayout({
       <main className="main">
         <header className="topbar" aria-label="顶栏">
           <div className="topbar__left">
+            {/* 顶部搜索用于不同页面的本地筛选，不触发真实表单提交。 */}
             <form className="search" onSubmit={(event) => event.preventDefault()} aria-label="搜索">
               <span className="u-muted-2" aria-hidden="true">⌕</span>
               <label className="u-sr-only" htmlFor="global-q">搜索</label>

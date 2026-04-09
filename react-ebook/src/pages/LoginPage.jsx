@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// 登录页：提供账号登录与游客直达书城两种入口。
 function LoginPage({ onLogin }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
 
+  // 基础校验通过后更新登录态并跳转书城页。
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!username.trim() || !password.trim()) {
@@ -17,6 +19,7 @@ function LoginPage({ onLogin }) {
     navigate("/books");
   };
 
+  // 游客模式沿用输入用户名，否则使用默认昵称。
   const handleGuest = () => {
     const guestName = username.trim() || "同学A";
     onLogin(guestName, false);

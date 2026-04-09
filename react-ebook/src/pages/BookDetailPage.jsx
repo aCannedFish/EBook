@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
+// 书籍详情页：根据 URL 中的 bookId 渲染单本书完整信息。
 function BookDetailPage({
   books,
   username,
@@ -9,6 +10,7 @@ function BookDetailPage({
   onAddToCart,
   onLogout
 }) {
+  // 详情封面加载失败时回退为 logo，保证布局稳定。
   const handleImageError = (event) => {
     const image = event.currentTarget;
     if (image.dataset.fallbackApplied === "true") {
@@ -22,6 +24,7 @@ function BookDetailPage({
   const { bookId } = useParams();
   const book = books.find((item) => item.id === bookId);
 
+  // 路由参数无效时给出友好提示并提供返回入口。
   if (!book) {
     return (
       <DashboardLayout

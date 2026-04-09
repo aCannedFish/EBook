@@ -1,6 +1,7 @@
 import BookCard from "../components/BookCard";
 import DashboardLayout from "../components/DashboardLayout";
 
+// 书城主页：按关键词筛选书籍并以卡片网格展示。
 function BooksPage({
   books,
   username,
@@ -10,6 +11,7 @@ function BooksPage({
   onLogout
 }) {
   const keyword = search.trim().toLowerCase();
+  // 支持书名、作者、分类的本地模糊筛选。
   const filteredBooks = books.filter((book) => {
     if (!keyword) {
       return true;

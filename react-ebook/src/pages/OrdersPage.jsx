@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
+// 订单状态到文案与样式类的映射，避免在 JSX 中散落条件判断。
 const statusMeta = {
   pending: { label: "待付款", className: "tag tag--pending" },
   paid: { label: "已付款", className: "tag tag--paid" },
@@ -18,6 +19,7 @@ function OrdersPage({
   onLogout
 }) {
   const keyword = search.trim().toLowerCase();
+  // 组装渲染行：补齐书籍信息并计算每单总价。
   const rows = orders
     .map((order) => {
       const book = books.find((item) => item.id === order.bookId);

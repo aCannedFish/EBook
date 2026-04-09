@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
+// 购物车页：合并书籍信息与购物车状态，提供勾选、数量和结算交互。
 function CartPage({
   books,
   cartItems,
@@ -15,6 +16,7 @@ function CartPage({
   onLogout
 }) {
   const keyword = search.trim().toLowerCase();
+  // rows 是渲染层数据：把 cart item 与 book 元信息拼成可展示结构。
   const rows = cartItems
     .map((item) => {
       const book = books.find((entry) => entry.id === item.bookId);
@@ -32,6 +34,7 @@ function CartPage({
     .filter((row) => !keyword || row.book.title.toLowerCase().includes(keyword));
 
   const selectedRows = rows.filter((row) => row.selected);
+  // 价格统计只计算已勾选项，与结算行为保持一致。
   const allSelected = rows.length > 0 && selectedRows.length === rows.length;
   const subtotal = selectedRows.reduce((sum, row) => sum + row.subtotal, 0);
 

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
+// 列表页复用卡片：展示封面、价格、库存状态和两种操作入口。
 function BookCard({ book, onAddToCart }) {
+  // 封面加载失败时仅替换一次为站点 logo，避免 onError 循环触发。
   const handleImageError = (event) => {
     const image = event.currentTarget;
     if (image.dataset.fallbackApplied === "true") {
