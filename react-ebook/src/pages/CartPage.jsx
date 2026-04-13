@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
-// 购物车页：合并书籍信息与购物车状态，提供勾选、数量和结算交互。
+// 购物车页：把购物车状态和图书信息合并后，再提供勾选、改数量和结算操作。
 function CartPage({
   books,
   cartItems,
@@ -15,27 +15,34 @@ function CartPage({
   onCheckout,
   onLogout
 }) {
+  // 将搜索词标准化，方便对书名做不区分大小写的过滤。
   const keyword = search.trim().toLowerCase();
-  // rows 是渲染层数据：把 cart item 与 book 元信息拼成可展示结构。
+  // rows 是“视图层数据”：把购物车条目与书籍元信息拼成适合渲染的结构。
   const rows = cartItems
     .map((item) => {
+      // 先根据 bookId 找到完整书籍对象，如果找不到就跳过该条目。
       const book = books.find((entry) => entry.id === item.bookId);
       if (!book) {
         return null;
       }
 
+      // subtotal 是当前行金额 = 单价 × 数量。
       return {
         ...item,
         book,
         subtotal: book.price * item.qty
       };
     })
+    // filter(Boolean) 去掉 map 中返回的 null。
     .filter(Boolean)
+    // 如果有关键词，就只保留书名包含关键词的商品行。
     .filter((row) => !keyword || row.book.title.toLowerCase().includes(keyword));
 
+  // selectedRows 表示当前被勾选、准备结算的商品行。
   const selectedRows = rows.filter((row) => row.selected);
-  // 价格统计只计算已勾选项，与结算行为保持一致。
+  // 是否“全选”：只有当前有行且每一行都被选中时才算全选。
   const allSelected = rows.length > 0 && selectedRows.length === rows.length;
+  // 结算金额只统计已勾选项，确保汇总值和结算动作一致。
   const subtotal = selectedRows.reduce((sum, row) => sum + row.subtotal, 0);
 
   return (

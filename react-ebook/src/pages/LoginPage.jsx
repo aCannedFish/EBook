@@ -1,31 +1,40 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// 登录页：提供账号登录与游客直达书城两种入口。
+// 登录页：提供账号登录、记住用户名和游客直达书城三种交互路径。
 function LoginPage({ onLogin }) {
+  // useNavigate 用于登录成功后跳转到书城页。
   const navigate = useNavigate();
+  // username 保存用户名输入框的实时内容。
   const [username, setUsername] = useState("");
+  // password 保存密码输入框的实时内容，当前示例不做后端校验。
   const [password, setPassword] = useState("");
+  // remember 控制“记住我”复选框状态，决定是否写入本地存储。
   const [remember, setRemember] = useState(false);
 
-  // 基础校验通过后更新登录态并跳转书城页。
+  // 提交表单：先阻止默认刷新，再做最基础的非空校验，最后通知上层更新登录态。
   const handleSubmit = (event) => {
     event.preventDefault();
+    // trim 用来去掉前后空格，避免只输入空白字符被视为有效内容。
     if (!username.trim() || !password.trim()) {
       return;
     }
 
+    // onLogin 由父组件提供，用于写入全局登录状态和用户名。
     onLogin(username.trim(), remember);
+    // 登录成功后跳转到书城首页。
     navigate("/books");
   };
 
-  // 游客模式沿用输入用户名，否则使用默认昵称。
+  // 游客模式：如果用户已经输入名字就沿用，否则给一个默认昵称。
   const handleGuest = () => {
+    // || 是短路或：左侧为空字符串时，才使用默认值。
     const guestName = username.trim() || "同学A";
     onLogin(guestName, false);
     navigate("/books");
   };
 
+  // main 表示当前页面的主内容区域。
   return (
     <main className="auth">
       <section className="auth__panel card" aria-label="登录表单">

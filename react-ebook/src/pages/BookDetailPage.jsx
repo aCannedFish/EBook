@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
-// 书籍详情页：根据 URL 中的 bookId 渲染单本书完整信息。
+// 书籍详情页：通过 URL 参数定位单本书，并展示完整的商品信息与操作入口。
 function BookDetailPage({
   books,
   username,
@@ -10,22 +10,28 @@ function BookDetailPage({
   onAddToCart,
   onLogout
 }) {
-  // 详情封面加载失败时回退为 logo，保证布局稳定。
+  // 封面错误处理：图片加载失败时回退到站点 Logo，避免空白占位破坏布局。
   const handleImageError = (event) => {
+    // currentTarget 是当前这个 img 元素本身。
     const image = event.currentTarget;
+    // 通过 data 标记防止兜底图片再次失败时进入死循环。
     if (image.dataset.fallbackApplied === "true") {
       return;
     }
 
+    // 先设置标记，再替换图片地址。
     image.dataset.fallbackApplied = "true";
     image.src = "/logo.svg";
   };
 
+  // useParams 读取路由中的 :bookId，对应当前详情页要展示哪一本书。
   const { bookId } = useParams();
+  // 在 books 数组里查找与 bookId 匹配的书籍对象。
   const book = books.find((item) => item.id === bookId);
 
-  // 路由参数无效时给出友好提示并提供返回入口。
+  // 如果参数无效或数据缺失，就进入“未找到”分支，给用户明确反馈。
   if (!book) {
+    // 仍然使用同一个 Layout，保持页面壳一致。
     return (
       <DashboardLayout
         username={username}
@@ -53,6 +59,7 @@ function BookDetailPage({
     );
   }
 
+  // 正常详情分支：展示封面、元信息、简介和按钮组。
   return (
     <DashboardLayout
       username={username}

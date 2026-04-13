@@ -1,7 +1,7 @@
 import BookCard from "../components/BookCard";
 import DashboardLayout from "../components/DashboardLayout";
 
-// 书城主页：按关键词筛选书籍并以卡片网格展示。
+// 书城主页：先做本地关键词过滤，再把结果交给卡片网格展示。
 function BooksPage({
   books,
   username,
@@ -10,19 +10,23 @@ function BooksPage({
   onAddToCart,
   onLogout
 }) {
+  // 将搜索词统一转成小写并去掉空格，便于做大小写不敏感的模糊匹配。
   const keyword = search.trim().toLowerCase();
-  // 支持书名、作者、分类的本地模糊筛选。
+  // filter 会遍历全部图书，逐本判断是否命中关键词。
   const filteredBooks = books.filter((book) => {
+    // 空搜索词时直接返回全部数据。
     if (!keyword) {
       return true;
     }
 
+    // 把标题、作者、分类拼成一个字符串，再统一转小写后做 includes 搜索。
     return [book.title, book.author, book.category]
       .join(" ")
       .toLowerCase()
       .includes(keyword);
   });
 
+  // DashboardLayout 负责外壳，当前页面只负责自己的内容区。
   return (
     <DashboardLayout
       username={username}

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
-// 用户中心页：展示基础账户信息并提供常用业务跳转。
+// 用户中心页：展示当前登录账户的基本资料，并提供常用业务跳转入口。
 function UserPage({ user, username, search, onSearchChange, onLogout }) {
+  // 继续复用后台布局，保证用户中心与其他页面拥有统一外壳。
   return (
     <DashboardLayout
       username={username}

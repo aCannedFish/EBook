@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
-// 订单状态到文案与样式类的映射，避免在 JSX 中散落条件判断。
+// 订单状态映射表：把内部状态值和展示文案、样式类集中管理，避免 JSX 中到处写条件分支。
 const statusMeta = {
   pending: { label: "待付款", className: "tag tag--pending" },
   paid: { label: "已付款", className: "tag tag--paid" },
   cancelled: { label: "已取消", className: "tag tag--cancelled" }
 };
 
+// 订单页：基于订单列表和图书列表拼装展示数据，并提供状态操作入口。
 function OrdersPage({
   books,
   orders,
@@ -18,22 +19,27 @@ function OrdersPage({
   onBuyAgain,
   onLogout
 }) {
+  // 统一处理搜索词，便于进行大小写不敏感匹配。
   const keyword = search.trim().toLowerCase();
-  // 组装渲染行：补齐书籍信息并计算每单总价。
+  // rows 是用于渲染的增强版订单数据：补齐书籍对象并计算总价。
   const rows = orders
     .map((order) => {
+      // 先把订单中的 bookId 映射回完整书籍信息。
       const book = books.find((item) => item.id === order.bookId);
       if (!book) {
         return null;
       }
 
+      // total = 数量 × 单价，表示这笔订单的金额。
       return {
         ...order,
         book,
         total: order.qty * order.unitPrice
       };
     })
+    // 去掉找不到书籍的异常订单行。
     .filter(Boolean)
+    // 仅保留订单号或书名命中的行。
     .filter((row) => {
       if (!keyword) {
         return true;
