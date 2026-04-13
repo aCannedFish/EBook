@@ -45,8 +45,6 @@ react-ebook/
       UserPage.jsx
   public/
     assets/
-      logo.svg
-      avatar.svg
 ```
 
 组织原则：
