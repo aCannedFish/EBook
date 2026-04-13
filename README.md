@@ -21,8 +21,8 @@ html-version
 
 react-version
   react-ebook/               React 项目目录
-	src/                     页面、组件、样式、数据
-	public/assets/           静态资源
+    src/                     页面、组件、样式、数据
+    public/assets/           静态资源
   REACT_DESIGN.md            React 设计说明（保持不变）
 ```
 
@@ -56,4 +56,3 @@ git checkout main
 
 - `README.md` 在三个分支中内容保持一致。
 - 业务数据目前为前端演示数据，不包含真实后端接口。
-
