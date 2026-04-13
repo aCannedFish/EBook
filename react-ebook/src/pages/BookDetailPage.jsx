@@ -21,7 +21,7 @@ function BookDetailPage({
 
     // 先设置标记，再替换图片地址。
     image.dataset.fallbackApplied = "true";
-    image.src = "/logo.svg";
+    image.src = "/assets/logo.svg";
   };
 
   // useParams 读取路由中的 :bookId，对应当前详情页要展示哪一本书。

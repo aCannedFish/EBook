@@ -18,7 +18,7 @@ function DashboardLayout({
         <div className="sidebar__brand">
           <NavLink className="brand" to="/books" aria-label="返回书城首页">
             <figure className="brand__logo">
-              <img src="/logo.svg" alt="电子书城 Logo" width="42" height="42" />
+              <img src="/assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
             </figure>
             <div>
               <div className="brand__title">EBook电子书城</div>
@@ -72,7 +72,7 @@ function DashboardLayout({
           <div className="topbar__right">
             {/* 用户区：展示头像与用户名，帮助区分当前登录身份。 */}
             <div className="avatar" aria-label="用户信息">
-              <img className="avatar__img" src="/avatar.svg" alt="用户头像" width="30" height="30" />
+              <img className="avatar__img" src="/assets/avatar.svg" alt="用户头像" width="30" height="30" />
               <div className="avatar__name">{username}</div>
             </div>
           </div>

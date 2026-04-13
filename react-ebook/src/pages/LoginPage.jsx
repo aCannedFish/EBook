@@ -40,7 +40,7 @@ function LoginPage({ onLogin }) {
       <section className="auth__panel card" aria-label="登录表单">
         <header className="brand">
           <figure className="brand__logo" aria-label="网站 Logo">
-            <img src="/logo.svg" alt="电子书城 Logo" width="42" height="42" />
+            <img src="/assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
           </figure>
           <div>
             <div className="brand__title"><span className="brand__welcome">欢迎登录</span> EBook电子书城</div>

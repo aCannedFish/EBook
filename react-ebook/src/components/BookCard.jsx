@@ -13,7 +13,7 @@ function BookCard({ book, onAddToCart }) {
 
     // 先标记再切图，避免 logo 自身再触发错误时进入死循环。
     image.dataset.fallbackApplied = "true";
-    image.src = "/logo.svg";
+    image.src = "/assets/logo.svg";
   };
   return (
     <article className="book" aria-label={`书籍卡片 ${book.title}`}>
