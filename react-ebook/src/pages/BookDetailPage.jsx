@@ -1,9 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
 // 书籍详情页：通过 URL 参数定位单本书，并展示完整的商品信息与操作入口。
 function BookDetailPage({
-  books,
+  detailBook,
   username,
   search,
   onSearchChange,
@@ -26,8 +26,16 @@ function BookDetailPage({
 
   // useParams 读取路由中的 :bookId，对应当前详情页要展示哪一本书。
   const { bookId } = useParams();
-  // 在 books 数组里查找与 bookId 匹配的书籍对象。
-  const book = books.find((item) => item.id === bookId);
+  // useLocation 读取上一页面通过 Link state 传入的数据，保持页面间数据关联。
+  const location = useLocation();
+  // bookFromState：从导航 state 中拿到的“上一页面已选书籍对象”。
+  // 常见来源：书城列表、购物车、订单页点击书名跳转详情。
+  const bookFromState = location.state?.book;
+  // book 解析策略（按优先级）：
+  // 1) state.book 且 id 与 URL 参数一致：优先使用，确保“点哪本看哪本”；
+  // 2) detailBook（来自路由包装层基于 bookId 的预查找结果，覆盖地址栏直达场景）。
+  const book = (bookFromState && bookFromState.id === bookId ? bookFromState : null)
+    || detailBook;
 
   // 如果参数无效或数据缺失，就进入“未找到”分支，给用户明确反馈。
   if (!book) {

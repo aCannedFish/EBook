@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./styles.css";
 
@@ -9,11 +8,7 @@ import "./styles.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   // StrictMode 只在开发环境触发额外检查，用来帮助发现副作用、废弃 API 和潜在问题。
   <React.StrictMode>
-    {/* BrowserRouter 通过浏览器 History API 管理前端路由，使 /books、/cart 等地址可直接访问。 */}
-    <BrowserRouter>
-      {/* App 是整个电子书商城的根组件，内部统一管理登录态、购物车和订单状态。 */}
-      <App />
-    </BrowserRouter>
+    {/* App 内部通过数据路由 RouterProvider 提供整站路由能力。 */}
+    <App />
   </React.StrictMode>
 );
-

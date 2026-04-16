@@ -1,5 +1,10 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+  useParams
+} from "react-router-dom";
 import data from "./data/Data.json";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
@@ -8,6 +13,197 @@ import BookDetailPage from "./pages/BookDetailPage";
 import CartPage from "./pages/CartPage";
 import OrdersPage from "./pages/OrdersPage";
 import UserPage from "./pages/UserPage";
+
+// AppStateContext：集中承载“跨路由共享”的应用级状态与业务动作。
+// 设计目的：
+// 1) 避免把同一批 props 在路由包装组件中层层透传；
+// 2) 让数据式路由的每个 route element 都能直接读取最新状态；
+// 3) 保持状态源头唯一（App 根组件）。
+const AppStateContext = createContext(null);
+
+// useAppState：自定义 Hook，统一封装 context 读取逻辑。
+// 如果组件未被 Provider 包裹，立即抛出错误，避免“默默拿到 null”导致排查困难。
+function useAppState() {
+  const context = useContext(AppStateContext);
+  if (!context) {
+    throw new Error("useAppState must be used within AppStateContext.Provider");
+  }
+  return context;
+}
+
+// RedirectByAuth：统一登录态分流逻辑，供 "/" 与 "*" 复用，避免重复组件。
+// replace=true 的含义：替换历史记录，避免用户点浏览器“后退”又回到中间重定向页。
+function RedirectByAuth() {
+  const { isLoggedIn } = useAppState();
+  return <Navigate to={isLoggedIn ? "/books" : "/login"} replace />;
+}
+
+// LoginRoute：登录路由包装层。
+// 只向登录页注入其真正需要的能力（onLogin），页面本身不感知全局状态细节。
+function LoginRoute() {
+  const { handleLogin } = useAppState();
+  return <LoginPage onLogin={handleLogin} />;
+}
+
+// ProtectedRouteLayout：受保护路由的公共父层。
+// 所有 children 页面都会先经过这里做登录校验。
+function ProtectedRouteLayout() {
+  const { isLoggedIn } = useAppState();
+  return <ProtectedRoute isLoggedIn={isLoggedIn} />;
+}
+
+// BooksRoute：书城页路由包装层。
+// 职责是“状态映射”而不是业务计算：把 App 的共享状态与动作映射为页面 props。
+function BooksRoute() {
+  const { books, user, searchByPage, handlePageSearch, addToCart, handleLogout } = useAppState();
+
+  return (
+    <BooksPage
+      books={books}
+      username={user.username}
+      search={searchByPage.books}
+      onSearchChange={(value) => handlePageSearch("books", value)}
+      onAddToCart={addToCart}
+      onLogout={handleLogout}
+    />
+  );
+}
+
+// BookDetailRoute：详情页路由包装层。
+// 这里先用 URL 参数 bookId 在共享 books 中预取 detailBook，并通过 prop 传入详情页。
+function BookDetailRoute() {
+  const { bookId } = useParams();
+  const { books, user, searchByPage, handlePageSearch, addToCart, handleLogout } = useAppState();
+  const detailBook = books.find((item) => item.id === bookId);
+
+  return (
+    <BookDetailPage
+      detailBook={detailBook}
+      username={user.username}
+      search={searchByPage.detail}
+      onSearchChange={(value) => handlePageSearch("detail", value)}
+      onAddToCart={addToCart}
+      onLogout={handleLogout}
+    />
+  );
+}
+
+// CartRoute：购物车页路由包装层，向页面注入购物车相关所有动作。
+function CartRoute() {
+  const {
+    books,
+    cartItems,
+    user,
+    searchByPage,
+    handlePageSearch,
+    toggleSelectAllCart,
+    toggleCartItem,
+    updateCartQty,
+    removeCartItem,
+    checkoutSelected,
+    handleLogout
+  } = useAppState();
+
+  return (
+    <CartPage
+      books={books}
+      cartItems={cartItems}
+      username={user.username}
+      search={searchByPage.cart}
+      onSearchChange={(value) => handlePageSearch("cart", value)}
+      onToggleSelectAll={toggleSelectAllCart}
+      onToggleItem={toggleCartItem}
+      onUpdateQty={updateCartQty}
+      onRemoveItem={removeCartItem}
+      onCheckout={checkoutSelected}
+      onLogout={handleLogout}
+    />
+  );
+}
+
+// OrdersRoute：订单页路由包装层，注入订单状态更新与“再次购买”动作。
+function OrdersRoute() {
+  const {
+    books,
+    orders,
+    user,
+    searchByPage,
+    handlePageSearch,
+    updateOrderStatus,
+    addToCart,
+    handleLogout
+  } = useAppState();
+
+  return (
+    <OrdersPage
+      books={books}
+      orders={orders}
+      username={user.username}
+      search={searchByPage.orders}
+      onSearchChange={(value) => handlePageSearch("orders", value)}
+      onUpdateOrderStatus={updateOrderStatus}
+      onBuyAgain={addToCart}
+      onLogout={handleLogout}
+    />
+  );
+}
+
+// UserRoute：用户页路由包装层，注入用户信息与局部搜索动作。
+function UserRoute() {
+  const { user, searchByPage, handlePageSearch, handleLogout } = useAppState();
+
+  return (
+    <UserPage
+      user={user}
+      username={user.username}
+      search={searchByPage.user}
+      onSearchChange={(value) => handlePageSearch("user", value)}
+      onLogout={handleLogout}
+    />
+  );
+}
+
+// 数据式路由配置：以“路由对象数组”描述整站页面结构。
+// 与声明式 <Routes><Route> 不同，此处是静态配置+运行时渲染，便于集中管理与扩展。
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RedirectByAuth />
+  },
+  {
+    path: "/login",
+    element: <LoginRoute />
+  },
+  {
+    element: <ProtectedRouteLayout />,
+    children: [
+      {
+        path: "/books",
+        element: <BooksRoute />
+      },
+      {
+        path: "/books/:bookId",
+        element: <BookDetailRoute />
+      },
+      {
+        path: "/cart",
+        element: <CartRoute />
+      },
+      {
+        path: "/orders",
+        element: <OrdersRoute />
+      },
+      {
+        path: "/user",
+        element: <UserRoute />
+      }
+    ]
+  },
+  {
+    path: "*",
+    element: <RedirectByAuth />
+  }
+]);
 
 // 应用根组件：集中管理登录态、用户资料、购物车、订单以及各页面独立搜索词。
 function App() {
@@ -131,102 +327,34 @@ function App() {
     );
   };
 
-  // Routes 负责声明应用内所有页面的地址映射。
+  // appState：统一打包给 Context Provider 的值对象。
+  // 包含“状态快照 + 业务动作”，供所有路由包装组件按需解构使用。
+  const appState = {
+    books,
+    isLoggedIn,
+    user,
+    cartItems,
+    orders,
+    searchByPage,
+    handlePageSearch,
+    handleLogin,
+    handleLogout,
+    addToCart,
+    toggleSelectAllCart,
+    toggleCartItem,
+    updateCartQty,
+    removeCartItem,
+    checkoutSelected,
+    updateOrderStatus
+  };
+
   return (
-    <Routes>
-      {/* 根路径根据登录状态自动跳转到登录页或书城页。 */}
-      <Route
-        path="/"
-        element={<Navigate to={isLoggedIn ? "/books" : "/login"} replace />}
-      />
-      {/* 登录页对未登录用户开放。 */}
-      <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-
-      {/* 受保护路由：下面这些页面都要求先登录。 */}
-      <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
-        {/* 书城首页：展示所有书籍并允许加入购物车。 */}
-        <Route
-          path="/books"
-          element={
-            <BooksPage
-              books={books}
-              username={user.username}
-              search={searchByPage.books}
-              onSearchChange={(value) => handlePageSearch("books", value)}
-              onAddToCart={addToCart}
-              onLogout={handleLogout}
-            />
-          }
-        />
-        {/* 详情页：根据 bookId 展示单本书完整信息。 */}
-        <Route
-          path="/books/:bookId"
-          element={
-            <BookDetailPage
-              books={books}
-              username={user.username}
-              search={searchByPage.detail}
-              onSearchChange={(value) => handlePageSearch("detail", value)}
-              onAddToCart={addToCart}
-              onLogout={handleLogout}
-            />
-          }
-        />
-        {/* 购物车页：支持勾选、改数量和结算。 */}
-        <Route
-          path="/cart"
-          element={
-            <CartPage
-              books={books}
-              cartItems={cartItems}
-              username={user.username}
-              search={searchByPage.cart}
-              onSearchChange={(value) => handlePageSearch("cart", value)}
-              onToggleSelectAll={toggleSelectAllCart}
-              onToggleItem={toggleCartItem}
-              onUpdateQty={updateCartQty}
-              onRemoveItem={removeCartItem}
-              onCheckout={checkoutSelected}
-              onLogout={handleLogout}
-            />
-          }
-        />
-        {/* 订单页：可以查看订单状态并执行付款/取消/再次购买。 */}
-        <Route
-          path="/orders"
-          element={
-            <OrdersPage
-              books={books}
-              orders={orders}
-              username={user.username}
-              search={searchByPage.orders}
-              onSearchChange={(value) => handlePageSearch("orders", value)}
-              onUpdateOrderStatus={updateOrderStatus}
-              onBuyAgain={addToCart}
-              onLogout={handleLogout}
-            />
-          }
-        />
-        {/* 用户中心页：展示账户信息和快捷入口。 */}
-        <Route
-          path="/user"
-          element={
-            <UserPage
-              user={user}
-              username={user.username}
-              search={searchByPage.user}
-              onSearchChange={(value) => handlePageSearch("user", value)}
-              onLogout={handleLogout}
-            />
-          }
-        />
-      </Route>
-
-      {/* 兜底路由：任何未知地址都会被重定向回合适的首页。 */}
-      <Route path="*" element={<Navigate to={isLoggedIn ? "/books" : "/login"} replace />} />
-    </Routes>
+    // Provider 作为全局状态入口，保证 RouterProvider 渲染的任意路由组件都可读取共享状态。
+    <AppStateContext.Provider value={appState}>
+      {/* RouterProvider 负责根据当前 URL 选择并渲染 router 中匹配的 route element。 */}
+      <RouterProvider router={router} />
+    </AppStateContext.Provider>
   );
 }
 
 export default App;
-

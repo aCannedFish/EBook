@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
-// 用户中心页：展示当前登录账户的基本资料，并提供常用业务跳转入口。
+// 用户中心页：展示当前登录账户的基本资料。
 function UserPage({ user, username, search, onSearchChange, onLogout }) {
   // 继续复用后台布局，保证用户中心与其他页面拥有统一外壳。
   return (
@@ -46,19 +45,6 @@ function UserPage({ user, username, search, onSearchChange, onLogout }) {
               </table>
             </div>
           </section>
-
-          <section className="panel" aria-label="快捷入口">
-            <header className="panel__header">
-              <h2 className="panel__title">快捷入口</h2>
-              <span className="tag tag--paid">UI 展示</span>
-            </header>
-            <div className="panel__body">
-              <div className="summary__actions">
-                <Link className="btn btn-secondary" to="/cart">我的购物车</Link>
-                <Link className="btn btn-primary" to="/orders">我的订单</Link>
-              </div>
-            </div>
-          </section>
         </section>
       </section>
     </DashboardLayout>
@@ -66,4 +52,3 @@ function UserPage({ user, username, search, onSearchChange, onLogout }) {
 }
 
 export default UserPage;
-

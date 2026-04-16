@@ -30,7 +30,10 @@ function BookCard({ book, onAddToCart }) {
           </span>
         </div>
         <div className="book__actions">
-          <Link className="btn btn-secondary" to={`/books/${book.id}`}>
+          {/* 详情入口：同时传递路径参数和 state.book。
+              - 路径参数 book.id 用于地址可分享/可直达；
+              - state.book 用于从列表跳详情时直接携带已选中的书籍对象，减少详情页二次查找。 */}
+          <Link className="btn btn-secondary" to={`/books/${book.id}`} state={{ book }}>
             查看详情
           </Link>
           <Link

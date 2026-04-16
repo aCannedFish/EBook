@@ -100,7 +100,11 @@ function CartPage({
                           aria-label={`选择商品 ${row.book.title}`}
                         />
                       </td>
-                      <td><Link className="link" to={`/books/${row.bookId}`}>{row.book.title}</Link></td>
+                      <td>
+                        {/* 从购物车进入详情时，除路径参数外额外传递当前行的完整书籍对象。
+                            这样详情页能优先使用 state.book，减少一次查找并保持页面间数据关联。 */}
+                        <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>{row.book.title}</Link>
+                      </td>
                       <td>{row.book.author}</td>
                       <td>￥{row.book.price.toFixed(2)}</td>
                       <td>
@@ -120,7 +124,7 @@ function CartPage({
                       </td>
                       <td className="u-right"><strong>￥{row.subtotal.toFixed(2)}</strong></td>
                       <td className="u-right">
-                        <button className="btn btn-danger" type="button" onClick={() => onRemoveItem(row.bookId)}>移除</button>
+                        <button className="btn btn-danger cart-remove-btn" type="button" onClick={() => onRemoveItem(row.bookId)}>移除</button>
                       </td>
                     </tr>
                   ))}
@@ -163,4 +167,3 @@ function CartPage({
 }
 
 export default CartPage;
-
