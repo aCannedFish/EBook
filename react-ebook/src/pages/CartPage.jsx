@@ -1,5 +1,73 @@
-import { Link } from "react-router-dom";
+import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
+import {
+  checkoutSelected,
+  removeCartItem,
+  setPageSearch,
+  toggleCartItem,
+  toggleSelectAllCart,
+  updateCartQty
+} from "../data/appStore";
+import { readIntent, requireAuthSnapshot } from "../router/routeUtils";
+
+export async function cartLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    books: snapshot.books,
+    cartItems: snapshot.cartItems,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.cart
+  };
+}
+
+export async function cartAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("cart", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "toggle-select-all") {
+    toggleSelectAllCart(formData.get("checked") === "true");
+    return null;
+  }
+
+  if (intent === "toggle-item") {
+    const bookId = String(formData.get("bookId") || "");
+    const checked = formData.get("checked") === "true";
+    if (bookId) {
+      toggleCartItem(bookId, checked);
+    }
+    return null;
+  }
+
+  if (intent === "update-qty") {
+    const bookId = String(formData.get("bookId") || "");
+    const qty = Number(formData.get("qty"));
+    if (bookId && Number.isInteger(qty) && qty >= 1 && qty <= 4) {
+      updateCartQty(bookId, qty);
+    }
+    return null;
+  }
+
+  if (intent === "remove-item") {
+    const bookId = String(formData.get("bookId") || "");
+    if (bookId) {
+      removeCartItem(bookId);
+    }
+    return null;
+  }
+
+  if (intent === "checkout") {
+    checkoutSelected();
+    throw redirect("/orders");
+  }
+
+  return null;
+}
 
 // 购物车页：把购物车状态和图书信息合并后，再提供勾选、改数量和结算操作。
 function CartPage({
@@ -162,6 +230,33 @@ function CartPage({
         </section>
       </section>
     </DashboardLayout>
+  );
+}
+
+export function CartRoute() {
+  const data = useLoaderData();
+  const submit = useSubmit();
+
+  return (
+    <CartPage
+      books={data.books}
+      cartItems={data.cartItems}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/cart", navigate: false })}
+      onToggleSelectAll={(checked) =>
+        submit({ intent: "toggle-select-all", checked: String(checked) }, { method: "post", action: "/cart", navigate: false })
+      }
+      onToggleItem={(bookId, checked) =>
+        submit({ intent: "toggle-item", bookId, checked: String(checked) }, { method: "post", action: "/cart", navigate: false })
+      }
+      onUpdateQty={(bookId, qty) =>
+        submit({ intent: "update-qty", bookId, qty: String(qty) }, { method: "post", action: "/cart", navigate: false })
+      }
+      onRemoveItem={(bookId) => submit({ intent: "remove-item", bookId }, { method: "post", action: "/cart", navigate: false })}
+      onCheckout={() => submit({ intent: "checkout" }, { method: "post", action: "/cart" })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
+    />
   );
 }
 

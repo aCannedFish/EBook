@@ -1,5 +1,38 @@
 import BookCard from "../components/BookCard";
 import DashboardLayout from "../components/DashboardLayout";
+import { redirect, useLoaderData, useSubmit } from "react-router-dom";
+import { addToCart, setPageSearch } from "../data/appStore";
+import { readIntent, readRedirectPath, requireAuthSnapshot } from "../router/routeUtils";
+
+export async function booksLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    books: snapshot.books,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.books
+  };
+}
+
+export async function booksAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("books", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "add-to-cart") {
+    const bookId = String(formData.get("bookId") || "");
+    if (bookId) {
+      addToCart(bookId);
+    }
+    throw redirect(readRedirectPath(formData, "/cart"));
+  }
+
+  return null;
+}
 
 // 书城主页：先做本地关键词过滤，再把结果交给卡片网格展示。
 function BooksPage({
@@ -52,6 +85,21 @@ function BooksPage({
         </section>
       </section>
     </DashboardLayout>
+  );
+}
+
+export function BooksRoute() {
+  const data = useLoaderData();
+  const submit = useSubmit();
+
+  return (
+    <BooksPage
+      books={data.books}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", navigate: false })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
+    />
   );
 }
 

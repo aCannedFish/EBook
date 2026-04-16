@@ -1,5 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
+import { addToCart, setPageSearch, updateOrderStatus } from "../data/appStore";
+import { readIntent, readRedirectPath, requireAuthSnapshot } from "../router/routeUtils";
+
+export async function ordersLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    books: snapshot.books,
+    orders: snapshot.orders,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.orders
+  };
+}
+
+export async function ordersAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("orders", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "update-status") {
+    const orderId = String(formData.get("orderId") || "");
+    const status = String(formData.get("status") || "");
+    if (orderId && ["pending", "paid", "cancelled"].includes(status)) {
+      updateOrderStatus(orderId, status);
+    }
+    return null;
+  }
+
+  if (intent === "buy-again") {
+    const bookId = String(formData.get("bookId") || "");
+    if (bookId) {
+      addToCart(bookId);
+    }
+    throw redirect(readRedirectPath(formData, "/books"));
+  }
+
+  return null;
+}
 
 // 订单状态映射表：把内部状态值和展示文案、样式类集中管理，避免 JSX 中到处写条件分支。
 const statusMeta = {
@@ -110,6 +152,26 @@ function OrdersPage({
         </section>
       </section>
     </DashboardLayout>
+  );
+}
+
+export function OrdersRoute() {
+  const data = useLoaderData();
+  const submit = useSubmit();
+
+  return (
+    <OrdersPage
+      books={data.books}
+      orders={data.orders}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/orders", navigate: false })}
+      onUpdateOrderStatus={(orderId, status) =>
+        submit({ intent: "update-status", orderId, status }, { method: "post", action: "/orders", navigate: false })
+      }
+      onBuyAgain={(bookId) => submit({ intent: "buy-again", bookId, redirectTo: "/books" }, { method: "post", action: "/orders" })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
+    />
   );
 }
 

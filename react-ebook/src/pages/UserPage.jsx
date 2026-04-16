@@ -1,4 +1,26 @@
 import DashboardLayout from "../components/DashboardLayout";
+import { useLoaderData, useSubmit } from "react-router-dom";
+import { setPageSearch } from "../data/appStore";
+import { readIntent, requireAuthSnapshot } from "../router/routeUtils";
+
+export async function userLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    user: snapshot.user,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.user
+  };
+}
+
+export async function userAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+  if (intent === "set-search") {
+    setPageSearch("user", String(formData.get("value") || ""));
+  }
+  return null;
+}
 
 // 用户中心页：展示当前登录账户的基本资料。
 function UserPage({ user, username, search, onSearchChange, onLogout }) {
@@ -47,6 +69,21 @@ function UserPage({ user, username, search, onSearchChange, onLogout }) {
         </section>
       </section>
     </DashboardLayout>
+  );
+}
+
+export function UserRoute() {
+  const data = useLoaderData();
+  const submit = useSubmit();
+
+  return (
+    <UserPage
+      user={data.user}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/user", navigate: false })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
+    />
   );
 }
 

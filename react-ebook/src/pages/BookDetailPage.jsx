@@ -1,5 +1,37 @@
-import { Form, Link, useLocation, useParams } from "react-router-dom";
+import { Form, Link, redirect, useLoaderData, useLocation, useParams, useSubmit } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
+import { addToCart, getBookById, setPageSearch } from "../data/appStore";
+import { readIntent, readRedirectPath, requireAuthSnapshot } from "../router/routeUtils";
+
+export async function bookDetailLoader({ params }) {
+  const snapshot = requireAuthSnapshot();
+  return {
+    detailBook: getBookById(params.bookId),
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.detail
+  };
+}
+
+export async function bookDetailAction({ request, params }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("detail", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "add-to-cart") {
+    const bookId = String(formData.get("bookId") || params.bookId || "");
+    if (bookId) {
+      addToCart(bookId);
+    }
+    throw redirect(readRedirectPath(formData, "/cart"));
+  }
+
+  return null;
+}
 
 // 书籍详情页：通过 URL 参数定位单本书，并展示完整的商品信息与操作入口。
 function BookDetailPage({
@@ -137,6 +169,21 @@ function BookDetailPage({
         </section>
       </article>
     </DashboardLayout>
+  );
+}
+
+export function BookDetailRoute() {
+  const data = useLoaderData();
+  const submit = useSubmit();
+
+  return (
+    <BookDetailPage
+      detailBook={data.detailBook}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", navigate: false })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
+    />
   );
 }
 

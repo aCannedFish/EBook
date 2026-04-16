@@ -1,5 +1,41 @@
 import { useState } from "react";
-import { Form, Link, useLoaderData, useSubmit } from "react-router-dom";
+import { Form, Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
+import { getRememberedUsername, getSnapshot, login } from "../data/appStore";
+import { readIntent } from "../router/routeUtils";
+
+export async function loginLoader() {
+  const snapshot = getSnapshot();
+  if (snapshot.isLoggedIn) {
+    throw redirect("/books");
+  }
+  return {
+    defaultUsername: getRememberedUsername()
+  };
+}
+
+export async function loginAction({ request }) {
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "login") {
+    const username = String(formData.get("username") || "").trim();
+    const password = String(formData.get("password") || "").trim();
+    const remember = formData.get("remember") === "on";
+    if (!username || !password) {
+      return null;
+    }
+    login(username, remember);
+    throw redirect("/books");
+  }
+
+  if (intent === "guest") {
+    const username = String(formData.get("username") || "").trim() || "同学A";
+    login(username, false);
+    throw redirect("/books");
+  }
+
+  return null;
+}
 
 // 登录页：提供账号登录、记住用户名和游客直达书城三种交互路径。
 function LoginPage() {
