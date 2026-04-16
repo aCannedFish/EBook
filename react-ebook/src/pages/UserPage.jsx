@@ -15,7 +15,6 @@ function UserPage({ user, username, search, onSearchChange, onLogout }) {
         <header className="page__header">
           <div>
             <h1 className="page__title">个人资料</h1>
-            <p className="page__desc">查看当前登录用户的基本信息。</p>
           </div>
           <div className="pill pill--ok">已登录</div>
         </header>

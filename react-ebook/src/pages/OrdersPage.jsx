@@ -60,7 +60,6 @@ function OrdersPage({
         <header className="page__header">
           <div>
             <h1 className="page__title">我的订单</h1>
-            <p className="page__desc">查看订单号、状态、商品与金额等信息。</p>
           </div>
           <div className="pill">共 {rows.length} 单</div>
         </header>

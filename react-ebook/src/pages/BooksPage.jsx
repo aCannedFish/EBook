@@ -38,7 +38,6 @@ function BooksPage({
         <header className="page__header">
           <div>
             <h1 className="page__title">书籍列表</h1>
-            <p className="page__desc">展示封面、书名、作者与价格。</p>
           </div>
           <div className="pill pill--pay" aria-label="提示">共 {filteredBooks.length} 本</div>
         </header>

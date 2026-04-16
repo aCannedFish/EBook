@@ -57,7 +57,6 @@ function CartPage({
         <header className="page__header">
           <div>
             <h1 className="page__title">我的购物车</h1>
-            <p className="page__desc">显示书籍标题、作者、价格等信息，支持数量选择与结算入口。</p>
           </div>
           <div className="pill">共 {rows.length} 件</div>
         </header>
