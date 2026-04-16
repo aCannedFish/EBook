@@ -156,7 +156,7 @@ function CartPage({
 
               <div className="summary__actions">
                 <Link className="btn btn-secondary" to="/books">继续选购</Link>
-                <Link className="btn btn-primary" to="/orders" onClick={() => onCheckout(selectedRows)}>结算</Link>
+                <button className="btn btn-primary" type="button" onClick={onCheckout}>结算</button>
               </div>
             </div>
           </aside>

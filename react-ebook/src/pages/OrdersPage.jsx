@@ -101,7 +101,7 @@ function OrdersPage({
                       <button className="btn btn-secondary" type="button">查看</button>
                     )}
                     {row.status === "cancelled" && (
-                      <Link className="btn btn-secondary" to="/books" onClick={() => onBuyAgain(row.bookId)}>再次购买</Link>
+                      <button className="btn btn-secondary" type="button" onClick={() => onBuyAgain(row.bookId)}>再次购买</button>
                     )}
                   </td>
                 </tr>

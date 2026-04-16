@@ -1,4 +1,4 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Form, Link, useLocation, useParams } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
 // 书籍详情页：通过 URL 参数定位单本书，并展示完整的商品信息与操作入口。
@@ -7,7 +7,6 @@ function BookDetailPage({
   username,
   search,
   onSearchChange,
-  onAddToCart,
   onLogout
 }) {
   // 封面错误处理：图片加载失败时回退到站点 Logo，避免空白占位破坏布局。
@@ -123,7 +122,14 @@ function BookDetailPage({
             </section>
 
             <section className="detail__cta" aria-label="操作入口">
-              <Link className="btn btn-primary" to="/cart" onClick={() => onAddToCart(book.id)}>加入购物车</Link>
+              {/* 与列表页一致：详情页加入购物车也走当前路由 action（bookDetailAction），
+                  确保所有写操作都在数据路由层集中处理。 */}
+              <Form method="post">
+                <input type="hidden" name="intent" value="add-to-cart" />
+                <input type="hidden" name="bookId" value={book.id} />
+                <input type="hidden" name="redirectTo" value="/cart" />
+                <button className="btn btn-primary" type="submit">加入购物车</button>
+              </Form>
               <Link className="btn btn-secondary" to="/orders">立即购买</Link>
               <Link className="btn btn-secondary" to="/books">继续逛书城</Link>
             </section>

@@ -7,7 +7,6 @@ function BooksPage({
   username,
   search,
   onSearchChange,
-  onAddToCart,
   onLogout
 }) {
   // 将搜索词统一转成小写并去掉空格，便于做大小写不敏感的模糊匹配。
@@ -49,7 +48,6 @@ function BooksPage({
             <BookCard
               key={book.id}
               book={book}
-              onAddToCart={onAddToCart}
             />
           ))}
         </section>

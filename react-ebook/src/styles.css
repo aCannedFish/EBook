@@ -515,6 +515,7 @@ button, input, select{ font: inherit; }
   gap: 10px;
   margin-top: auto;
 }
+.book__action-form{ flex: 1; }
 .book__actions .btn{ flex: 1; padding: 9px 10px; border-radius: 12px; }
 
 /* =========================
@@ -561,6 +562,7 @@ button, input, select{ font: inherit; }
 .detail__desc h2{ margin: 0; font-size: 14px; }
 .detail__desc p{ margin: 10px 0 0; color: var(--muted); line-height: 1.75; }
 .detail__cta{ margin-top: 14px; display:flex; gap: 10px; flex-wrap: wrap; }
+.detail__cta form{ display: inline-flex; }
 .detail__cta .btn{ padding: 11px 14px; }
 
 /* =========================

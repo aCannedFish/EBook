@@ -1,360 +1,502 @@
-import { createContext, useContext, useMemo, useState } from "react";
 import {
-  Navigate,
   RouterProvider,
   createBrowserRouter,
-  useParams
+  redirect,
+  useLoaderData,
+  useRouteError,
+  useSubmit,
+  isRouteErrorResponse
 } from "react-router-dom";
-import data from "./data/Data.json";
-import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import BooksPage from "./pages/BooksPage";
 import BookDetailPage from "./pages/BookDetailPage";
 import CartPage from "./pages/CartPage";
 import OrdersPage from "./pages/OrdersPage";
 import UserPage from "./pages/UserPage";
+import {
+  addToCart,
+  checkoutSelected,
+  getBookById,
+  getRememberedUsername,
+  getSnapshot,
+  login,
+  logout,
+  removeCartItem,
+  setPageSearch,
+  toggleCartItem,
+  toggleSelectAllCart,
+  updateCartQty,
+  updateOrderStatus
+} from "./data/appStore";
 
-// AppStateContext：集中承载“跨路由共享”的应用级状态与业务动作。
-// 设计目的：
-// 1) 避免把同一批 props 在路由包装组件中层层透传；
-// 2) 让数据式路由的每个 route element 都能直接读取最新状态；
-// 3) 保持状态源头唯一（App 根组件）。
-const AppStateContext = createContext(null);
+// =========================
+// 数据路由架构说明（核心）
+// =========================
+// 本文件是整站“数据式 Router”入口，负责三件事：
+// 1) 路由定义：通过 createBrowserRouter 声明 URL -> 页面映射；
+// 2) 数据读取：每个页面对应 loader，返回页面渲染所需数据；
+// 3) 业务写入：每个页面对应 action，处理表单/按钮触发的数据变更。
+//
+// 与传统“App useState + props 层层下发”不同：
+// - 页面不直接依赖全局 React State 容器；
+// - 页面通过 useLoaderData 获取数据快照；
+// - 交互通过 submit/Form 触发 action 修改数据并自动驱动路由更新。
 
-// useAppState：自定义 Hook，统一封装 context 读取逻辑。
-// 如果组件未被 Provider 包裹，立即抛出错误，避免“默默拿到 null”导致排查困难。
-function useAppState() {
-  const context = useContext(AppStateContext);
-  if (!context) {
-    throw new Error("useAppState must be used within AppStateContext.Provider");
+// requireAuthSnapshot：统一鉴权入口。
+// 任何业务页 loader/action 都可先调用它，确保未登录用户被路由层重定向到 /login。
+function requireAuthSnapshot() {
+  const snapshot = getSnapshot();
+  if (!snapshot.isLoggedIn) {
+    throw redirect("/login");
   }
-  return context;
+  return snapshot;
 }
 
-// RedirectByAuth：统一登录态分流逻辑，供 "/" 与 "*" 复用，避免重复组件。
-// replace=true 的含义：替换历史记录，避免用户点浏览器“后退”又回到中间重定向页。
-function RedirectByAuth() {
-  const { isLoggedIn } = useAppState();
-  return <Navigate to={isLoggedIn ? "/books" : "/login"} replace />;
+// readIntent：从 formData 中读取业务意图字段 intent。
+// 约定：所有 action 都通过 intent 区分“同一路由下的不同动作分支”。
+function readIntent(formData) {
+  return String(formData.get("intent") || "");
 }
 
-// LoginRoute：登录路由包装层。
-// 只向登录页注入其真正需要的能力（onLogin），页面本身不感知全局状态细节。
-function LoginRoute() {
-  const { handleLogin } = useAppState();
-  return <LoginPage onLogin={handleLogin} />;
+// readRedirectPath：读取表单里可选的 redirectTo，若不存在则使用 fallback。
+// 用于“提交动作后跳转到指定页面”的场景（如加入购物车后跳到 /cart）。
+function readRedirectPath(formData, fallback) {
+  return String(formData.get("redirectTo") || fallback);
 }
 
-// ProtectedRouteLayout：受保护路由的公共父层。
-// 所有 children 页面都会先经过这里做登录校验。
-function ProtectedRouteLayout() {
-  const { isLoggedIn } = useAppState();
-  return <ProtectedRoute isLoggedIn={isLoggedIn} />;
+// "/" 与 "*" 的公共分流逻辑：根据登录态跳去 /books 或 /login。
+async function authRedirectLoader() {
+  const snapshot = getSnapshot();
+  throw redirect(snapshot.isLoggedIn ? "/books" : "/login");
 }
 
-// BooksRoute：书城页路由包装层。
-// 职责是“状态映射”而不是业务计算：把 App 的共享状态与动作映射为页面 props。
+// 登录页 loader：
+// - 已登录用户不应再次进入登录页，直接跳 /books；
+// - 未登录时返回“记住的用户名”用于输入框默认值。
+async function loginLoader() {
+  const snapshot = getSnapshot();
+  if (snapshot.isLoggedIn) {
+    throw redirect("/books");
+  }
+  return {
+    defaultUsername: getRememberedUsername()
+  };
+}
+
+// 登录页 action：
+// - intent=login：账号登录（含 remember）；
+// - intent=guest：游客登录（默认昵称兜底）。
+// 成功后使用 redirect 让路由完成页面跳转与数据刷新。
+async function loginAction({ request }) {
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "login") {
+    const username = String(formData.get("username") || "").trim();
+    const password = String(formData.get("password") || "").trim();
+    const remember = formData.get("remember") === "on";
+    if (!username || !password) {
+      return null;
+    }
+    login(username, remember);
+    throw redirect("/books");
+  }
+
+  if (intent === "guest") {
+    const username = String(formData.get("username") || "").trim() || "同学A";
+    login(username, false);
+    throw redirect("/books");
+  }
+
+  return null;
+}
+
+// 退出 action：清理登录态并回到登录页。
+async function logoutAction() {
+  logout();
+  throw redirect("/login");
+}
+
+// 书城页 loader：提供书籍列表、用户名、该页搜索词。
+async function booksLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    books: snapshot.books,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.books
+  };
+}
+
+// 书城页 action：
+// - set-search：更新该页搜索词（不跳转）；
+// - add-to-cart：加入购物车后按 redirectTo（默认 /cart）跳转。
+async function booksAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("books", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "add-to-cart") {
+    const bookId = String(formData.get("bookId") || "");
+    if (bookId) {
+      addToCart(bookId);
+    }
+    throw redirect(readRedirectPath(formData, "/cart"));
+  }
+
+  return null;
+}
+
+// 详情页 loader：返回当前书籍对象（detailBook）+ 当前用户与搜索词。
+// detailBook 可能为 null（无效 bookId），页面会渲染“未找到”分支。
+async function bookDetailLoader({ params }) {
+  const snapshot = requireAuthSnapshot();
+  return {
+    detailBook: getBookById(params.bookId),
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.detail
+  };
+}
+
+// 详情页 action：
+// - set-search：更新详情页搜索词；
+// - add-to-cart：将当前书籍加入购物车并跳转。
+async function bookDetailAction({ request, params }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("detail", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "add-to-cart") {
+    const bookId = String(formData.get("bookId") || params.bookId || "");
+    if (bookId) {
+      addToCart(bookId);
+    }
+    throw redirect(readRedirectPath(formData, "/cart"));
+  }
+
+  return null;
+}
+
+// 购物车页 loader：返回渲染购物车所需全部数据。
+async function cartLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    books: snapshot.books,
+    cartItems: snapshot.cartItems,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.cart
+  };
+}
+
+// 购物车页 action（多分支）：
+// - set-search：更新购物车搜索词；
+// - toggle-select-all：全选/取消全选；
+// - toggle-item：单行勾选；
+// - update-qty：更新商品数量（带范围校验 1~4）；
+// - remove-item：移除单行；
+// - checkout：把已选行转成订单并跳转 /orders。
+async function cartAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("cart", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "toggle-select-all") {
+    toggleSelectAllCart(formData.get("checked") === "true");
+    return null;
+  }
+
+  if (intent === "toggle-item") {
+    const bookId = String(formData.get("bookId") || "");
+    const checked = formData.get("checked") === "true";
+    if (bookId) {
+      toggleCartItem(bookId, checked);
+    }
+    return null;
+  }
+
+  if (intent === "update-qty") {
+    const bookId = String(formData.get("bookId") || "");
+    const qty = Number(formData.get("qty"));
+    if (bookId && Number.isInteger(qty) && qty >= 1 && qty <= 4) {
+      updateCartQty(bookId, qty);
+    }
+    return null;
+  }
+
+  if (intent === "remove-item") {
+    const bookId = String(formData.get("bookId") || "");
+    if (bookId) {
+      removeCartItem(bookId);
+    }
+    return null;
+  }
+
+  if (intent === "checkout") {
+    checkoutSelected();
+    throw redirect("/orders");
+  }
+
+  return null;
+}
+
+// 订单页 loader：返回订单表格所需数据。
+async function ordersLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    books: snapshot.books,
+    orders: snapshot.orders,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.orders
+  };
+}
+
+// 订单页 action：
+// - set-search：更新订单搜索；
+// - update-status：更新订单状态（限制在允许值集合）；
+// - buy-again：再次购买（实质是 addToCart）后跳转。
+async function ordersAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+
+  if (intent === "set-search") {
+    setPageSearch("orders", String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "update-status") {
+    const orderId = String(formData.get("orderId") || "");
+    const status = String(formData.get("status") || "");
+    if (orderId && ["pending", "paid", "cancelled"].includes(status)) {
+      updateOrderStatus(orderId, status);
+    }
+    return null;
+  }
+
+  if (intent === "buy-again") {
+    const bookId = String(formData.get("bookId") || "");
+    if (bookId) {
+      addToCart(bookId);
+    }
+    throw redirect(readRedirectPath(formData, "/books"));
+  }
+
+  return null;
+}
+
+// 用户页 loader：返回用户信息与该页搜索词。
+async function userLoader() {
+  const snapshot = requireAuthSnapshot();
+  return {
+    user: snapshot.user,
+    username: snapshot.user.username,
+    search: snapshot.searchByPage.user
+  };
+}
+
+// 用户页 action：当前只处理搜索词同步。
+async function userAction({ request }) {
+  requireAuthSnapshot();
+  const formData = await request.formData();
+  const intent = readIntent(formData);
+  if (intent === "set-search") {
+    setPageSearch("user", String(formData.get("value") || ""));
+  }
+  return null;
+}
+
+// ===== 路由组件层（loader 数据 -> 页面 props）=====
+// 这些组件不保存业务状态，只做“桥接”：
+// 1) 用 useLoaderData 读取该路由 loader 返回的数据；
+// 2) 用 useSubmit 把页面事件转换为 action 提交请求。
+
 function BooksRoute() {
-  const { books, user, searchByPage, handlePageSearch, addToCart, handleLogout } = useAppState();
-
+  const data = useLoaderData();
+  const submit = useSubmit();
   return (
     <BooksPage
-      books={books}
-      username={user.username}
-      search={searchByPage.books}
-      onSearchChange={(value) => handlePageSearch("books", value)}
-      onAddToCart={addToCart}
-      onLogout={handleLogout}
+      books={data.books}
+      username={data.username}
+      search={data.search}
+      // navigate:false 表示仅提交 action 并刷新当前数据，不改变地址栏路径。
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/books", navigate: false })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
     />
   );
 }
 
-// BookDetailRoute：详情页路由包装层。
-// 这里先用 URL 参数 bookId 在共享 books 中预取 detailBook，并通过 prop 传入详情页。
 function BookDetailRoute() {
-  const { bookId } = useParams();
-  const { books, user, searchByPage, handlePageSearch, addToCart, handleLogout } = useAppState();
-  const detailBook = books.find((item) => item.id === bookId);
-
+  const data = useLoaderData();
+  const submit = useSubmit();
   return (
     <BookDetailPage
-      detailBook={detailBook}
-      username={user.username}
-      search={searchByPage.detail}
-      onSearchChange={(value) => handlePageSearch("detail", value)}
-      onAddToCart={addToCart}
-      onLogout={handleLogout}
+      detailBook={data.detailBook}
+      username={data.username}
+      search={data.search}
+      // 详情页提交到“当前路由 action”（不显式写 action），由 bookDetailAction 处理。
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", navigate: false })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
     />
   );
 }
 
-// CartRoute：购物车页路由包装层，向页面注入购物车相关所有动作。
 function CartRoute() {
-  const {
-    books,
-    cartItems,
-    user,
-    searchByPage,
-    handlePageSearch,
-    toggleSelectAllCart,
-    toggleCartItem,
-    updateCartQty,
-    removeCartItem,
-    checkoutSelected,
-    handleLogout
-  } = useAppState();
-
+  const data = useLoaderData();
+  const submit = useSubmit();
   return (
     <CartPage
-      books={books}
-      cartItems={cartItems}
-      username={user.username}
-      search={searchByPage.cart}
-      onSearchChange={(value) => handlePageSearch("cart", value)}
-      onToggleSelectAll={toggleSelectAllCart}
-      onToggleItem={toggleCartItem}
-      onUpdateQty={updateCartQty}
-      onRemoveItem={removeCartItem}
-      onCheckout={checkoutSelected}
-      onLogout={handleLogout}
+      books={data.books}
+      cartItems={data.cartItems}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/cart", navigate: false })}
+      onToggleSelectAll={(checked) => submit({ intent: "toggle-select-all", checked: String(checked) }, { method: "post", action: "/cart", navigate: false })}
+      onToggleItem={(bookId, checked) => submit({ intent: "toggle-item", bookId, checked: String(checked) }, { method: "post", action: "/cart", navigate: false })}
+      onUpdateQty={(bookId, qty) => submit({ intent: "update-qty", bookId, qty: String(qty) }, { method: "post", action: "/cart", navigate: false })}
+      onRemoveItem={(bookId) => submit({ intent: "remove-item", bookId }, { method: "post", action: "/cart", navigate: false })}
+      // checkout 需要跳到订单页，因此不使用 navigate:false。
+      onCheckout={() => submit({ intent: "checkout" }, { method: "post", action: "/cart" })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
     />
   );
 }
 
-// OrdersRoute：订单页路由包装层，注入订单状态更新与“再次购买”动作。
 function OrdersRoute() {
-  const {
-    books,
-    orders,
-    user,
-    searchByPage,
-    handlePageSearch,
-    updateOrderStatus,
-    addToCart,
-    handleLogout
-  } = useAppState();
-
+  const data = useLoaderData();
+  const submit = useSubmit();
   return (
     <OrdersPage
-      books={books}
-      orders={orders}
-      username={user.username}
-      search={searchByPage.orders}
-      onSearchChange={(value) => handlePageSearch("orders", value)}
-      onUpdateOrderStatus={updateOrderStatus}
-      onBuyAgain={addToCart}
-      onLogout={handleLogout}
+      books={data.books}
+      orders={data.orders}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/orders", navigate: false })}
+      onUpdateOrderStatus={(orderId, status) => submit({ intent: "update-status", orderId, status }, { method: "post", action: "/orders", navigate: false })}
+      // 再次购买后由 action 控制跳转目标，保持动作逻辑集中在路由层。
+      onBuyAgain={(bookId) => submit({ intent: "buy-again", bookId, redirectTo: "/books" }, { method: "post", action: "/orders" })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
     />
   );
 }
 
-// UserRoute：用户页路由包装层，注入用户信息与局部搜索动作。
 function UserRoute() {
-  const { user, searchByPage, handlePageSearch, handleLogout } = useAppState();
-
+  const data = useLoaderData();
+  const submit = useSubmit();
   return (
     <UserPage
-      user={user}
-      username={user.username}
-      search={searchByPage.user}
-      onSearchChange={(value) => handlePageSearch("user", value)}
-      onLogout={handleLogout}
+      user={data.user}
+      username={data.username}
+      search={data.search}
+      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/user", navigate: false })}
+      onLogout={() => submit(null, { method: "post", action: "/logout" })}
     />
   );
 }
 
-// 数据式路由配置：以“路由对象数组”描述整站页面结构。
-// 与声明式 <Routes><Route> 不同，此处是静态配置+运行时渲染，便于集中管理与扩展。
+// 通用路由错误边界：
+// - 响应型错误（throw redirect/Response）显示状态码信息；
+// - 其他运行时异常显示通用错误文案。
+function RouteErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error)) {
+    return (
+      <main className="auth">
+        <section className="auth__panel card">
+          <h1>页面加载失败</h1>
+          <p>{error.status} {error.statusText}</p>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <main className="auth">
+      <section className="auth__panel card">
+        <h1>页面发生异常</h1>
+        <p>请刷新后重试。</p>
+      </section>
+    </main>
+  );
+}
+
+// 路由表：每个业务页面都具备“loader + action + element + errorElement”四元能力。
+// 这让页面的数据读取、写入与异常处理都在路由层集中表达。
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RedirectByAuth />
+    loader: authRedirectLoader,
+    errorElement: <RouteErrorBoundary />
   },
   {
     path: "/login",
-    element: <LoginRoute />
+    loader: loginLoader,
+    action: loginAction,
+    element: <LoginPage />,
+    errorElement: <RouteErrorBoundary />
   },
   {
-    element: <ProtectedRouteLayout />,
-    children: [
-      {
-        path: "/books",
-        element: <BooksRoute />
-      },
-      {
-        path: "/books/:bookId",
-        element: <BookDetailRoute />
-      },
-      {
-        path: "/cart",
-        element: <CartRoute />
-      },
-      {
-        path: "/orders",
-        element: <OrdersRoute />
-      },
-      {
-        path: "/user",
-        element: <UserRoute />
-      }
-    ]
+    path: "/logout",
+    action: logoutAction
+  },
+  {
+    path: "/books",
+    loader: booksLoader,
+    action: booksAction,
+    element: <BooksRoute />,
+    errorElement: <RouteErrorBoundary />
+  },
+  {
+    path: "/books/:bookId",
+    loader: bookDetailLoader,
+    action: bookDetailAction,
+    element: <BookDetailRoute />,
+    errorElement: <RouteErrorBoundary />
+  },
+  {
+    path: "/cart",
+    loader: cartLoader,
+    action: cartAction,
+    element: <CartRoute />,
+    errorElement: <RouteErrorBoundary />
+  },
+  {
+    path: "/orders",
+    loader: ordersLoader,
+    action: ordersAction,
+    element: <OrdersRoute />,
+    errorElement: <RouteErrorBoundary />
+  },
+  {
+    path: "/user",
+    loader: userLoader,
+    action: userAction,
+    element: <UserRoute />,
+    errorElement: <RouteErrorBoundary />
   },
   {
     path: "*",
-    element: <RedirectByAuth />
+    loader: authRedirectLoader
   }
 ]);
 
-// 应用根组件：集中管理登录态、用户资料、购物车、订单以及各页面独立搜索词。
+// App 变为纯路由壳：不再维护业务 useState，
+// 所有页面数据来自 loader，交互提交到 action。
 function App() {
-  // useMemo 缓存书籍数组引用，避免每次渲染都重新创建同一份数据对象。
-  const books = useMemo(() => data.books, []);
-  // 登录状态决定路由跳转和受保护页面是否可见。
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // user 保存当前展示中的用户资料，如用户名、邮箱和等级。
-  const [user, setUser] = useState(data.user);
-  // cartItems 保存购物车条目，每项包含 bookId、qty 与 selected。
-  const [cartItems, setCartItems] = useState(data.initialCart);
-  // orders 保存订单列表，页面会根据它渲染订单表格。
-  const [orders, setOrders] = useState(data.initialOrders);
-  // 按页面分别保存搜索词，切换路由时不互相覆盖输入内容。
-  const [searchByPage, setSearchByPage] = useState({
-    books: "",
-    detail: "",
-    cart: "",
-    orders: "",
-    user: ""
-  });
-
-  // 根据页面 key 更新对应的搜索词，采用函数式写法避免覆盖其他页面状态。
-  const handlePageSearch = (pageKey, value) => {
-    setSearchByPage((prev) => ({ ...prev, [pageKey]: value }));
-  };
-
-  // 登录成功后：设置登录态、更新用户名；如果勾选记住，则写入 localStorage。
-  const handleLogin = (username, remember) => {
-    setIsLoggedIn(true);
-    setUser((prev) => ({
-      ...prev,
-      username
-    }));
-
-    // localStorage 用于跨刷新记住用户名，这里仅演示持久化存储的写入动作。
-    if (remember) {
-      localStorage.setItem("ebook-remember-username", username);
-    }
-  };
-
-  // 退出登录：这里只修改登录态，页面会自动回到登录路由。
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
-
-  // 加入购物车：若已有相同 bookId，则合并数量；否则新增一条购物车记录。
-  const addToCart = (bookId) => {
-    setCartItems((prev) => {
-      // find 用来判断购物车中是否已经存在该书。
-      const found = prev.find((item) => item.bookId === bookId);
-      if (found) {
-        // map 遍历每一项，只修改命中的那一行。
-        return prev.map((item) =>
-          item.bookId === bookId
-            // Math.min 限制最大数量为 4，同时把该项重新设为选中状态。
-            ? { ...item, qty: Math.min(item.qty + 1, 4), selected: true }
-            : item
-        );
-      }
-
-      // 如果购物车中还没有这本书，就新建一条并默认选中。
-      return [...prev, { bookId, qty: 1, selected: true }];
-    });
-  };
-
-  // 全选/取消全选：批量修改购物车条目的 selected 字段。
-  const toggleSelectAllCart = (checked) => {
-    setCartItems((prev) => prev.map((item) => ({ ...item, selected: checked })));
-  };
-
-  // 单行勾选：只更新指定 bookId 的 selected 状态。
-  const toggleCartItem = (bookId, checked) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.bookId === bookId ? { ...item, selected: checked } : item
-      )
-    );
-  };
-
-  // 修改数量：通过下拉框把用户选中的 qty 写回对应购物车行。
-  const updateCartQty = (bookId, qty) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.bookId === bookId ? { ...item, qty } : item
-      )
-    );
-  };
-
-  // 从购物车中删除一条记录。
-  const removeCartItem = (bookId) => {
-    setCartItems((prev) => prev.filter((item) => item.bookId !== bookId));
-  };
-
-  // 结算选中项：把选择的购物车行转成订单，并从购物车中移除已结算商品。
-  const checkoutSelected = (selectedRows) => {
-    // 没有选择任何商品时直接返回，避免生成空订单。
-    if (!selectedRows.length) {
-      return;
-    }
-
-    // map 把选中行转换成订单对象，订单号用时间戳 + 序号生成。
-    const newOrders = selectedRows.map((row, index) => ({
-      id: `ORD-${Date.now()}-${String(index + 1).padStart(4, "0")}`,
-      status: "pending",
-      bookId: row.bookId,
-      qty: row.qty,
-      unitPrice: row.book.price
-    }));
-
-    // 新订单放到列表前面，让最新订单优先展示。
-    setOrders((prev) => [...newOrders, ...prev]);
-    // filter 删除购物车中已勾选的项目，模拟“已结算移出购物车”的行为。
-    setCartItems((prev) => prev.filter((item) => !item.selected));
-  };
-
-  // 更新订单状态：根据订单 id 替换对应状态字段。
-  const updateOrderStatus = (orderId, status) => {
-    setOrders((prev) =>
-      prev.map((order) => (order.id === orderId ? { ...order, status } : order))
-    );
-  };
-
-  // appState：统一打包给 Context Provider 的值对象。
-  // 包含“状态快照 + 业务动作”，供所有路由包装组件按需解构使用。
-  const appState = {
-    books,
-    isLoggedIn,
-    user,
-    cartItems,
-    orders,
-    searchByPage,
-    handlePageSearch,
-    handleLogin,
-    handleLogout,
-    addToCart,
-    toggleSelectAllCart,
-    toggleCartItem,
-    updateCartQty,
-    removeCartItem,
-    checkoutSelected,
-    updateOrderStatus
-  };
-
-  return (
-    // Provider 作为全局状态入口，保证 RouterProvider 渲染的任意路由组件都可读取共享状态。
-    <AppStateContext.Provider value={appState}>
-      {/* RouterProvider 负责根据当前 URL 选择并渲染 router 中匹配的 route element。 */}
-      <RouterProvider router={router} />
-    </AppStateContext.Provider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

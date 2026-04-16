@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 
 // 列表页复用卡片：把单本书的展示信息和操作按钮封装起来，便于在书城页循环渲染。
-function BookCard({ book, onAddToCart }) {
+function BookCard({ book }) {
   // 图片错误处理：封面加载失败时只替换一次，避免 onError 因替换后再次失败而循环触发。
   const handleImageError = (event) => {
     // currentTarget 指向当前 <img>，而不是触发事件的子元素。
@@ -36,13 +36,17 @@ function BookCard({ book, onAddToCart }) {
           <Link className="btn btn-secondary" to={`/books/${book.id}`} state={{ book }}>
             查看详情
           </Link>
-          <Link
-            className="btn btn-primary"
-            to="/cart"
-            onClick={() => onAddToCart(book.id)}
-          >
-            加入购物车
-          </Link>
+          {/* 该 Form 提交到当前路由 action（/books -> booksAction）。
+              hidden 字段即 action 协议参数：
+              - intent: 动作类型；
+              - bookId: 目标书籍；
+              - redirectTo: 写入成功后跳转目的地。 */}
+          <Form className="book__action-form" method="post">
+            <input type="hidden" name="intent" value="add-to-cart" />
+            <input type="hidden" name="bookId" value={book.id} />
+            <input type="hidden" name="redirectTo" value="/cart" />
+            <button className="btn btn-primary" type="submit">加入购物车</button>
+          </Form>
         </div>
       </div>
     </article>

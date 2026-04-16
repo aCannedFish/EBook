@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Form, Link, useLoaderData, useSubmit } from "react-router-dom";
 
 // 登录页：提供账号登录、记住用户名和游客直达书城三种交互路径。
-function LoginPage({ onLogin }) {
-  // useNavigate 用于登录成功后跳转到书城页。
-  const navigate = useNavigate();
+function LoginPage() {
+  // loaderData 由 /login 的 loader 返回（见 App.jsx -> loginLoader）。
+  const loaderData = useLoaderData();
+  // submit 用于命令式触发当前路由 action（等价于提交 Form）。
+  const submit = useSubmit();
   // username 保存用户名输入框的实时内容。
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(loaderData?.defaultUsername || "");
   // password 保存密码输入框的实时内容，当前示例不做后端校验。
   const [password, setPassword] = useState("");
   // remember 控制“记住我”复选框状态，决定是否写入本地存储。
@@ -20,18 +22,31 @@ function LoginPage({ onLogin }) {
       return;
     }
 
-    // onLogin 由父组件提供，用于写入全局登录状态和用户名。
-    onLogin(username.trim(), remember);
-    // 登录成功后跳转到书城首页。
-    navigate("/books");
+    // 这里不直接调用登录 API，而是提交到当前路由 action。
+    // action 会根据 intent=login 执行登录逻辑并 redirect 到 /books。
+    submit(
+      {
+        intent: "login",
+        username: username.trim(),
+        password: password.trim(),
+        remember: remember ? "on" : ""
+      },
+      { method: "post" }
+    );
   };
 
   // 游客模式：如果用户已经输入名字就沿用，否则给一个默认昵称。
   const handleGuest = () => {
     // || 是短路或：左侧为空字符串时，才使用默认值。
     const guestName = username.trim() || "同学A";
-    onLogin(guestName, false);
-    navigate("/books");
+    // 游客登录同样走路由 action，保持“写操作统一在 action 中处理”的架构约束。
+    submit(
+      {
+        intent: "guest",
+        username: guestName
+      },
+      { method: "post" }
+    );
   };
 
   // main 表示当前页面的主内容区域。
@@ -52,7 +67,8 @@ function LoginPage({ onLogin }) {
             <h1>登录</h1>
           </header>
 
-          <form onSubmit={handleSubmit}>
+          {/* Form 默认提交到当前路由（/login）对应 action。 */}
+          <Form method="post" onSubmit={handleSubmit}>
             <div className="field">
               <label className="field__label" htmlFor="username">用户名</label>
               <input
@@ -98,7 +114,7 @@ function LoginPage({ onLogin }) {
               <button className="btn btn-primary" type="submit">登录</button>
               <button className="btn btn-secondary" type="button" onClick={handleGuest}>直接进入书城</button>
             </div>
-          </form>
+          </Form>
         </section>
       </section>
     </main>
@@ -106,4 +122,3 @@ function LoginPage({ onLogin }) {
 }
 
 export default LoginPage;
-
