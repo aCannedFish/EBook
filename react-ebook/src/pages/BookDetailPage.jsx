@@ -6,7 +6,6 @@ export async function bookDetailLoader({ params }) {
   const snapshot = requireAuthSnapshot();
   return {
     detailBook: getBookById(params.bookId),
-    username: snapshot.user.username,
     search: snapshot.searchByPage.detail
   };
 }

@@ -51,30 +51,45 @@ const router = createBrowserRouter([
             path: "books",
             loader: booksLoader,
             action: booksAction,
+            handle: {
+              searchPlaceholder: "搜索书名 / 作者 / 分类"
+            },
             element: <BooksRoute />
           },
           {
             path: "books/:bookId",
             loader: bookDetailLoader,
             action: bookDetailAction,
+            handle: {
+              searchPlaceholder: "搜索其他书籍"
+            },
             element: <BookDetailRoute />
           },
           {
             path: "cart",
             loader: cartLoader,
             action: cartAction,
+            handle: {
+              searchPlaceholder: "搜索购物车中的书籍"
+            },
             element: <CartRoute />
           },
           {
             path: "orders",
             loader: ordersLoader,
             action: ordersAction,
+            handle: {
+              searchPlaceholder: "搜索订单号或书名"
+            },
             element: <OrdersRoute />
           },
           {
             path: "user",
             loader: userLoader,
             action: userAction,
+            handle: {
+              searchPlaceholder: "搜索用户相关设置"
+            },
             element: <UserRoute />
           }
         ]

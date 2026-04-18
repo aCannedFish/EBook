@@ -7,7 +7,6 @@ export async function ordersLoader() {
   return {
     books: snapshot.books,
     orders: snapshot.orders,
-    username: snapshot.user.username,
     search: snapshot.searchByPage.orders
   };
 }

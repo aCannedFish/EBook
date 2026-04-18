@@ -14,7 +14,6 @@ export async function cartLoader() {
   return {
     books: snapshot.books,
     cartItems: snapshot.cartItems,
-    username: snapshot.user.username,
     search: snapshot.searchByPage.cart
   };
 }

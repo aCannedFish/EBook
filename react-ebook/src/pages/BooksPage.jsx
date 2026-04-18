@@ -7,7 +7,6 @@ export async function booksLoader() {
   const snapshot = requireAuthSnapshot();
   return {
     books: snapshot.books,
-    username: snapshot.user.username,
     search: snapshot.searchByPage.books
   };
 }
