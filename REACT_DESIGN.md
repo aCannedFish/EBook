@@ -109,6 +109,7 @@ react-ebook/
 2. **模块归属清晰**：每个页面把本页面 `loader/action` 放在同文件。
 3. **App 纯装配**：`App.jsx` 不再维护业务 loader/action，只做路由拼装。
 4. **复用路由能力**：鉴权分流、错误边界抽到 `routes/` 目录复用。
+5. **共享布局上移**：`DashboardLayout` 统一放在 `ProtectedRootRoute`，子页面不再重复包壳。
 
 ---
 
@@ -133,6 +134,12 @@ react-ebook/
 - 清理登录态（调用 `appStore.logout()`）；
 - 重定向回登录页。
 
+### 5.4 `ProtectedRootRoute`（共享 Dashboard）
+
+- 在父路由统一渲染 `DashboardLayout + Outlet`；
+- 从当前激活子路由 loader 数据中读取 `username/search`；
+- 统一处理顶部搜索与退出动作（提交到当前子路由 action 或 `/logout`）。
+
 ---
 
 ## 6. 页面模块的统一模式
@@ -141,10 +148,10 @@ react-ebook/
 
 1. `xxxLoader`：读取该页需要的数据
 2. `xxxAction`：处理该页动作分支（通过 `intent`）
-3. `XxxRoute`：桥接组件（`useLoaderData + useSubmit`）
+3. `XxxRoute`：桥接组件（`useLoaderData`，按需再用 `useSubmit`）
 4. `XxxPage`：纯渲染组件
 
-这让“数据来源”和“UI渲染”各司其职。
+另外，通用壳层（侧栏/顶栏/搜索/头像）由 `ProtectedRootRoute` 统一提供，页面仅保留业务内容区。
 
 ---
 
@@ -152,8 +159,8 @@ react-ebook/
 
 ### 7.1 书城搜索（不跳转）
 
-1. 页面输入框变化 -> `submit({ intent: "set-search" }, { navigate: false })`
-2. 进入 `booksAction`
+1. 顶部共享搜索框变化（在 `ProtectedRootRoute` 中）  
+2. 提交 `intent=set-search` 到当前子路由 action（`navigate: false`）
 3. 更新 `appStore.searchByPage.books`
 4. 当前路由数据刷新，地址不变
 
@@ -221,4 +228,3 @@ react-ebook/
 2. 代码职责更清晰（App 装配、模块自治）
 3. 功能与样式保持原有行为不变
 4. 对初学者更友好（读写链路固定、排查路径更明确）
-

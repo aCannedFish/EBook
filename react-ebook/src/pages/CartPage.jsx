@@ -1,5 +1,4 @@
 import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
-import DashboardLayout from "../components/DashboardLayout";
 import {
   checkoutSelected,
   removeCartItem,
@@ -73,15 +72,12 @@ export async function cartAction({ request }) {
 function CartPage({
   books,
   cartItems,
-  username,
   search,
-  onSearchChange,
   onToggleSelectAll,
   onToggleItem,
   onUpdateQty,
   onRemoveItem,
-  onCheckout,
-  onLogout
+  onCheckout
 }) {
   // 将搜索词标准化，方便对书名做不区分大小写的过滤。
   const keyword = search.trim().toLowerCase();
@@ -114,122 +110,114 @@ function CartPage({
   const subtotal = selectedRows.reduce((sum, row) => sum + row.subtotal, 0);
 
   return (
-    <DashboardLayout
-      username={username}
-      onLogout={onLogout}
-      searchPlaceholder="搜索购物车中的书籍"
-      searchValue={search}
-      onSearchChange={onSearchChange}
-    >
-      <section className="page card" aria-label="购物车页面">
-        <header className="page__header">
-          <div>
-            <h1 className="page__title">我的购物车</h1>
-          </div>
-          <div className="pill">共 {rows.length} 件</div>
-        </header>
+    <section className="page card" aria-label="购物车页面">
+      <header className="page__header">
+        <div>
+          <h1 className="page__title">我的购物车</h1>
+        </div>
+        <div className="pill">共 {rows.length} 件</div>
+      </header>
 
-        <section className="cart" aria-label="购物车内容区">
-          <section className="panel" aria-label="商品列表">
-            <header className="panel__header">
-              <h2 className="panel__title">商品</h2>
-              <label className="auth__checks" htmlFor="selectAll">
-                <input
-                  id="selectAll"
-                  type="checkbox"
-                  checked={allSelected}
-                  onChange={(event) => onToggleSelectAll(event.target.checked)}
-                />
-                全选
-              </label>
-            </header>
-            <div className="panel__body">
-              <table className="table" aria-label="购物车表格">
-                <thead>
-                  <tr>
-                    <th scope="col">选择</th>
-                    <th scope="col">书名</th>
-                    <th scope="col">作者</th>
-                    <th scope="col">单价</th>
-                    <th scope="col">数量</th>
-                    <th scope="col" className="u-right">小计</th>
-                    <th scope="col" className="u-right">操作</th>
+      <section className="cart" aria-label="购物车内容区">
+        <section className="panel" aria-label="商品列表">
+          <header className="panel__header">
+            <h2 className="panel__title">商品</h2>
+            <label className="auth__checks" htmlFor="selectAll">
+              <input
+                id="selectAll"
+                type="checkbox"
+                checked={allSelected}
+                onChange={(event) => onToggleSelectAll(event.target.checked)}
+              />
+              全选
+            </label>
+          </header>
+          <div className="panel__body">
+            <table className="table" aria-label="购物车表格">
+              <thead>
+                <tr>
+                  <th scope="col">选择</th>
+                  <th scope="col">书名</th>
+                  <th scope="col">作者</th>
+                  <th scope="col">单价</th>
+                  <th scope="col">数量</th>
+                  <th scope="col" className="u-right">小计</th>
+                  <th scope="col" className="u-right">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr className="table__row" key={row.bookId}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={row.selected}
+                        onChange={(event) => onToggleItem(row.bookId, event.target.checked)}
+                        aria-label={`选择商品 ${row.book.title}`}
+                      />
+                    </td>
+                    <td>
+                      {/* 从购物车进入详情时，除路径参数外额外传递当前行的完整书籍对象。
+                          这样详情页能优先使用 state.book，减少一次查找并保持页面间数据关联。 */}
+                      <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>{row.book.title}</Link>
+                    </td>
+                    <td>{row.book.author}</td>
+                    <td>￥{row.book.price.toFixed(2)}</td>
+                    <td>
+                      <div className="qty" aria-label="数量选择">
+                        <label className="u-sr-only" htmlFor={`qty-${row.bookId}`}>数量</label>
+                        <select
+                          id={`qty-${row.bookId}`}
+                          value={row.qty}
+                          onChange={(event) => onUpdateQty(row.bookId, Number(event.target.value))}
+                        >
+                          <option value={1}>1</option>
+                          <option value={2}>2</option>
+                          <option value={3}>3</option>
+                          <option value={4}>4</option>
+                        </select>
+                      </div>
+                    </td>
+                    <td className="u-right"><strong>￥{row.subtotal.toFixed(2)}</strong></td>
+                    <td className="u-right">
+                      <button className="btn btn-danger cart-remove-btn" type="button" onClick={() => onRemoveItem(row.bookId)}>移除</button>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row) => (
-                    <tr className="table__row" key={row.bookId}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={row.selected}
-                          onChange={(event) => onToggleItem(row.bookId, event.target.checked)}
-                          aria-label={`选择商品 ${row.book.title}`}
-                        />
-                      </td>
-                      <td>
-                        {/* 从购物车进入详情时，除路径参数外额外传递当前行的完整书籍对象。
-                            这样详情页能优先使用 state.book，减少一次查找并保持页面间数据关联。 */}
-                        <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>{row.book.title}</Link>
-                      </td>
-                      <td>{row.book.author}</td>
-                      <td>￥{row.book.price.toFixed(2)}</td>
-                      <td>
-                        <div className="qty" aria-label="数量选择">
-                          <label className="u-sr-only" htmlFor={`qty-${row.bookId}`}>数量</label>
-                          <select
-                            id={`qty-${row.bookId}`}
-                            value={row.qty}
-                            onChange={(event) => onUpdateQty(row.bookId, Number(event.target.value))}
-                          >
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                          </select>
-                        </div>
-                      </td>
-                      <td className="u-right"><strong>￥{row.subtotal.toFixed(2)}</strong></td>
-                      <td className="u-right">
-                        <button className="btn btn-danger cart-remove-btn" type="button" onClick={() => onRemoveItem(row.bookId)}>移除</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <aside className="panel" aria-label="结算信息">
-            <header className="panel__header">
-              <h2 className="panel__title">结算</h2>
-              <span className="tag tag--pending">待结算</span>
-            </header>
-            <div className="panel__body">
-              <div className="summary" aria-label="价格汇总">
-                <div className="summary__row">
-                  <span>商品金额</span>
-                  <strong>￥{subtotal.toFixed(2)}</strong>
-                </div>
-                <div className="summary__row">
-                  <span>优惠</span>
-                  <strong>￥0.00</strong>
-                </div>
-                <div className="summary__row summary__total">
-                  <span>合计</span>
-                  <strong>￥{subtotal.toFixed(2)}</strong>
-                </div>
-              </div>
-
-              <div className="summary__actions">
-                <Link className="btn btn-secondary" to="/books">继续选购</Link>
-                <button className="btn btn-primary" type="button" onClick={onCheckout}>结算</button>
-              </div>
-            </div>
-          </aside>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
+
+        <aside className="panel" aria-label="结算信息">
+          <header className="panel__header">
+            <h2 className="panel__title">结算</h2>
+            <span className="tag tag--pending">待结算</span>
+          </header>
+          <div className="panel__body">
+            <div className="summary" aria-label="价格汇总">
+              <div className="summary__row">
+                <span>商品金额</span>
+                <strong>￥{subtotal.toFixed(2)}</strong>
+              </div>
+              <div className="summary__row">
+                <span>优惠</span>
+                <strong>￥0.00</strong>
+              </div>
+              <div className="summary__row summary__total">
+                <span>合计</span>
+                <strong>￥{subtotal.toFixed(2)}</strong>
+              </div>
+            </div>
+
+            <div className="summary__actions">
+              <Link className="btn btn-secondary" to="/books">继续选购</Link>
+              <button className="btn btn-primary" type="button" onClick={onCheckout}>结算</button>
+            </div>
+          </div>
+        </aside>
       </section>
-    </DashboardLayout>
+    </section>
   );
 }
 
@@ -241,9 +229,7 @@ export function CartRoute() {
     <CartPage
       books={data.books}
       cartItems={data.cartItems}
-      username={data.username}
       search={data.search}
-      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/cart", navigate: false })}
       onToggleSelectAll={(checked) =>
         submit({ intent: "toggle-select-all", checked: String(checked) }, { method: "post", action: "/cart", navigate: false })
       }
@@ -255,7 +241,6 @@ export function CartRoute() {
       }
       onRemoveItem={(bookId) => submit({ intent: "remove-item", bookId }, { method: "post", action: "/cart", navigate: false })}
       onCheckout={() => submit({ intent: "checkout" }, { method: "post", action: "/cart" })}
-      onLogout={() => submit(null, { method: "post", action: "/logout" })}
     />
   );
 }

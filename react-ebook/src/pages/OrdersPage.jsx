@@ -1,5 +1,4 @@
 import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
-import DashboardLayout from "../components/DashboardLayout";
 import { addToCart, setPageSearch, updateOrderStatus } from "../data/appStore";
 import { readIntent, readRedirectPath, requireAuthSnapshot } from "../router/routeUtils";
 
@@ -54,12 +53,9 @@ const statusMeta = {
 function OrdersPage({
   books,
   orders,
-  username,
   search,
-  onSearchChange,
   onUpdateOrderStatus,
-  onBuyAgain,
-  onLogout
+  onBuyAgain
 }) {
   // 统一处理搜索词，便于进行大小写不敏感匹配。
   const keyword = search.trim().toLowerCase();
@@ -91,67 +87,59 @@ function OrdersPage({
     });
 
   return (
-    <DashboardLayout
-      username={username}
-      onLogout={onLogout}
-      searchPlaceholder="搜索订单号或书名"
-      searchValue={search}
-      onSearchChange={onSearchChange}
-    >
-      <section className="page card" aria-label="订单页面">
-        <header className="page__header">
-          <div>
-            <h1 className="page__title">我的订单</h1>
-          </div>
-          <div className="pill">共 {rows.length} 单</div>
-        </header>
+    <section className="page card" aria-label="订单页面">
+      <header className="page__header">
+        <div>
+          <h1 className="page__title">我的订单</h1>
+        </div>
+        <div className="pill">共 {rows.length} 单</div>
+      </header>
 
-        <section className="orders" aria-label="订单列表">
-          <table className="table" aria-label="订单表格">
-            <thead>
-              <tr>
-                <th scope="col">订单号</th>
-                <th scope="col">状态</th>
-                <th scope="col">书名</th>
-                <th scope="col">数量</th>
-                <th scope="col">单价</th>
-                <th scope="col" className="u-right">总价</th>
-                <th scope="col" className="u-right">操作</th>
+      <section className="orders" aria-label="订单列表">
+        <table className="table" aria-label="订单表格">
+          <thead>
+            <tr>
+              <th scope="col">订单号</th>
+              <th scope="col">状态</th>
+              <th scope="col">书名</th>
+              <th scope="col">数量</th>
+              <th scope="col">单价</th>
+              <th scope="col" className="u-right">总价</th>
+              <th scope="col" className="u-right">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr className="table__row" key={row.id}>
+                <td className="order-id">{row.id}</td>
+                <td><span className={statusMeta[row.status].className}>{statusMeta[row.status].label}</span></td>
+                <td>
+                  {/* 从订单页跳详情时传递 row.book，避免详情页仅依赖 URL 再次检索。 */}
+                  <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>{row.book.title}</Link>
+                </td>
+                <td>{row.qty}</td>
+                <td>￥{row.unitPrice.toFixed(2)}</td>
+                <td className="u-right"><strong>￥{row.total.toFixed(2)}</strong></td>
+                <td className="u-right">
+                  {row.status === "pending" && (
+                    <span className="order-actions">
+                      <button className="btn btn-danger" type="button" onClick={() => onUpdateOrderStatus(row.id, "cancelled")}>取消</button>
+                      <button className="btn btn-primary" type="button" onClick={() => onUpdateOrderStatus(row.id, "paid")}>付款</button>
+                    </span>
+                  )}
+                  {row.status === "paid" && (
+                    <button className="btn btn-secondary" type="button">查看</button>
+                  )}
+                  {row.status === "cancelled" && (
+                    <button className="btn btn-secondary" type="button" onClick={() => onBuyAgain(row.bookId)}>再次购买</button>
+                  )}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr className="table__row" key={row.id}>
-                  <td className="order-id">{row.id}</td>
-                  <td><span className={statusMeta[row.status].className}>{statusMeta[row.status].label}</span></td>
-                  <td>
-                    {/* 从订单页跳详情时传递 row.book，避免详情页仅依赖 URL 再次检索。 */}
-                    <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>{row.book.title}</Link>
-                  </td>
-                  <td>{row.qty}</td>
-                  <td>￥{row.unitPrice.toFixed(2)}</td>
-                  <td className="u-right"><strong>￥{row.total.toFixed(2)}</strong></td>
-                  <td className="u-right">
-                    {row.status === "pending" && (
-                      <span className="order-actions">
-                        <button className="btn btn-danger" type="button" onClick={() => onUpdateOrderStatus(row.id, "cancelled")}>取消</button>
-                        <button className="btn btn-primary" type="button" onClick={() => onUpdateOrderStatus(row.id, "paid")}>付款</button>
-                      </span>
-                    )}
-                    {row.status === "paid" && (
-                      <button className="btn btn-secondary" type="button">查看</button>
-                    )}
-                    {row.status === "cancelled" && (
-                      <button className="btn btn-secondary" type="button" onClick={() => onBuyAgain(row.bookId)}>再次购买</button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
+            ))}
+          </tbody>
+        </table>
       </section>
-    </DashboardLayout>
+    </section>
   );
 }
 
@@ -163,14 +151,11 @@ export function OrdersRoute() {
     <OrdersPage
       books={data.books}
       orders={data.orders}
-      username={data.username}
       search={data.search}
-      onSearchChange={(value) => submit({ intent: "set-search", value }, { method: "post", action: "/orders", navigate: false })}
       onUpdateOrderStatus={(orderId, status) =>
         submit({ intent: "update-status", orderId, status }, { method: "post", action: "/orders", navigate: false })
       }
       onBuyAgain={(bookId) => submit({ intent: "buy-again", bookId, redirectTo: "/books" }, { method: "post", action: "/orders" })}
-      onLogout={() => submit(null, { method: "post", action: "/logout" })}
     />
   );
 }

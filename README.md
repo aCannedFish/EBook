@@ -55,6 +55,7 @@ React 版本当前采用：
 - Root + children 嵌套路由
 - Data Router（loader/action/redirect）
 - `App.jsx` 仅做路由装配（业务 loader/action 下沉到模块文件）
+- `DashboardLayout` 在受保护父路由中统一共享（子页面只渲染内容区）
 
 #### 3) 查看文档主分支
 
