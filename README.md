@@ -21,9 +21,13 @@ html-version
 
 react-version
   react-ebook/               React 项目目录
-    src/                     页面、组件、样式、数据
+    src/
+      pages/                 各业务页面（按模块下沉 loader/action）
+      routes/                Root 路由、鉴权处理、错误边界
+      data/                  Data.json 与前端内存仓库 appStore
+      components/            可复用组件
     public/assets/           静态资源
-  REACT_DESIGN.md            React 设计说明（保持不变）
+  REACT_DESIGN.md            React 设计说明（随 react-version 架构同步维护）
 ```
 
 ### 运行方法
@@ -45,6 +49,13 @@ npm run dev
 ```
 
 启动后按终端提示访问本地地址（通常为 `http://localhost:5173`）。
+
+React 版本当前采用：
+
+- Root + children 嵌套路由
+- Data Router（loader/action/redirect）
+- `App.jsx` 仅做路由装配（业务 loader/action 下沉到模块文件）
+- `DashboardLayout` 在受保护父路由中统一共享（子页面只渲染内容区）
 
 #### 3) 查看文档主分支
 

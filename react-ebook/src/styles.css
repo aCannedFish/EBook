@@ -1,0 +1,722 @@
+/* 电子书城 - 外部样式（禁止内联样式） */
+/*
+  文件说明：
+  - 这里统一维护全站公共样式，避免在 HTML 中写内联样式。
+  - 注释按功能分块，方便快速定位某个页面对应的样式区域。
+*/
+
+/* =========================
+   全站主题变量 / 基础重置
+   作用：定义颜色、阴影、圆角、字体等全局变量，并重置所有页面的基础排版
+   使用位置：`index.html` 及 `pages/` 下所有页面
+========================= */
+:root{
+  --bg: #f4f5fb;
+  --panel: #ffffff;
+  --panel-2: #f1f5f9;
+  --text: #0f172a;
+  --muted: #64748b;
+  --muted-2: #94a3b8;
+  --border: #e2e8f0;
+  --shadow: 0 10px 30px rgba(15,23,42,.06);
+  --brand: #2563eb;
+  --brand-2: #22c55e;
+  --danger: #ef4444;
+  --warn: #f59e0b;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --focus: 0 0 0 4px rgba(124,58,237,.35);
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+/* 全局盒模型：影响整站所有页面 */
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
+  margin: 0;
+  font-family: var(--font), sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a{ color: inherit; text-decoration: none; }
+button, input, select{ font: inherit; }
+
+/* =========================
+   工具类（通用辅助样式）
+   作用：用于隐藏、对齐、间距、无障碍文本等复用场景
+   使用位置：登录页、列表页、详情页、购物车、订单页、用户页
+========================= */
+.u-hidden{ display:none !important; }
+.u-muted{ color: var(--muted); }
+.u-muted-2{ color: var(--muted-2); }
+.u-right{ text-align:right; }
+.u-mt-12{ margin-top: 12px; }
+.u-mt-14{ margin-top: 14px; }
+.u-mt-18{ margin-top: 18px; }
+.u-sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
+/* =========================
+   通用容器 / 卡片 / 按钮 / 标签 / 表单控件
+   作用：提供全站复用的面板、按钮、状态标签、输入框和字段布局
+   使用位置：登录页、书籍列表、详情页、购物车、订单页、用户页
+========================= */
+.container{
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.card{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+  user-select: none;
+}
+.btn:active{ transform: translateY(1px); }
+.btn:disabled{ opacity: .55; cursor: not-allowed; }
+
+.btn-primary{
+  background: var(--brand);
+  color: #ffffff;
+}
+.btn-primary:hover{ filter: brightness(1.05); }
+.btn-secondary{
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: var(--text);
+}
+.btn-secondary:hover{ background: #f8fafc; }
+.btn-danger{
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+.btn-danger:hover{ background: #fecaca; }
+
+/* 状态标签：用于信息提示、支付状态、库存/订单状态等 */
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pill--ok{ border-color: #bbf7d0; background: #ecfdf3; color: #166534; }
+.pill--warn{ border-color: #fed7aa; background: #fffbeb; color: #92400e; }
+.pill--pay{ border-color: #bfdbfe; background: #eff6ff; color: #1d4ed8; }
+
+/* 输入框与字段：用于登录、搜索、编辑信息等表单区域 */
+.input{
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--text);
+  outline: none;
+}
+.input::placeholder{ color: #cbd5f5; }
+.input:focus{ box-shadow: var(--focus); border-color: var(--brand); }
+
+.field{ display:flex; flex-direction:column; gap: 8px; }
+.field__label{ font-size: 13px; color: var(--muted); }
+
+/* =========================
+   登录页布局与认证面板
+   作用：控制 `pages/login.html` 的居中布局、欢迎区和登录表单区
+   使用位置：`pages/login.html`
+========================= */
+.auth{
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 48px 0;
+}
+.landing{
+  padding: 22px;
+  width: min(900px, calc(100% - 48px));
+}
+.auth__grid{
+  width: min(980px, calc(100% - 48px));
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+.auth__hero{
+  padding: 26px 26px 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--panel);
+}
+/* 登录页 / 侧栏共用品牌区：Logo、站点名、欢迎文案 */
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+.brand__logo{
+  margin: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #eff6ff;
+  display:grid;
+  place-items:center;
+  overflow: hidden;
+}
+.brand__title{
+  font-weight: 800;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+.brand__subtitle{ margin-top: 6px; color: var(--muted); line-height: 1.55; }
+.auth__hero-points{
+  margin-top: 16px;
+  display:grid;
+  gap: 10px;
+}
+.auth__hero-point{
+  display:flex;
+  align-items:flex-start;
+  gap: 10px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.auth__hero-icon{
+  width: 28px; height: 28px;
+  border-radius: 10px;
+  background: rgba(124,58,237,.18);
+  border: 1px solid rgba(124,58,237,.35);
+  flex: 0 0 auto;
+}
+.auth__hero-point h3{ margin: 0; font-size: 14px; }
+.auth__hero-point p{ margin: 4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+.auth__panel{
+  padding: 24px;
+  width: min(720px, calc(100% - 48px));
+}
+.auth__panel .brand{
+  justify-content: center;
+  gap: 0;
+}
+.auth__panel .brand__title{
+  font-size: 31.5px;
+;
+  margin-left: 5px;
+}
+.auth__panel .brand__welcome{
+  color: var(--brand);
+  text-decoration: none;
+  cursor: default;
+}
+.auth__panel h1{ margin: 0 0 6px; font-size: 22px; }
+.auth__panel p{ margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
+.auth__actions{ display:flex; align-items:center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+.auth__checks{ display:flex; align-items:center; gap: 10px; color: var(--muted); font-size: 13px; }
+.link{
+  color: rgba(199,173,255,.95);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.auth__cta{ display:flex; flex-direction:column; gap: 10px; margin-top: 14px; }
+.auth__footer{ margin-top: 14px; color: var(--muted-2); font-size: 12px; line-height: 1.6; }
+
+/* =========================
+   主站框架：侧栏导航与页面主体
+   作用：除登录页外的所有业务页面统一使用的两栏布局
+   使用位置：`books.html`、`book-detail*.html`、`cart.html`、`orders.html`、`user.html`
+========================= */
+.app{
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: 203px 1fr;
+}
+.sidebar{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 18px 14px;
+  border-right: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+/* 侧栏品牌区：主站左侧导航顶部的 Logo 和站点名 */
+.sidebar__brand{
+  padding: 10px 0 14px;
+  margin-left: 0;
+  display: flex;
+  justify-content: center;
+}
+.sidebar__brand .brand{
+  width: auto;
+  justify-content: center;
+  gap: 0;
+}
+.sidebar__brand .brand__logo{
+  width: 64px;
+  height: 64px;
+}
+.sidebar__brand .brand__logo img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.sidebar__brand .brand > div{
+  display: none;
+}
+.sidebar__brand .brand__title{
+  font-family: "Comic Sans MS", "Comic Sans", var(--font), sans-serif;
+  font-size: 16px;
+}
+/* 侧栏菜单：用于主站页面的栏目切换与当前页高亮 */
+.nav{
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+.nav__item{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  color: var(--text);
+}
+.nav__item:hover{
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+.nav__item.is-active{
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+.nav__dot{
+  width: 10px; height: 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+.nav__item.is-active .nav__dot{ background: var(--brand); }
+.sidebar__meta{
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* =========================
+   顶栏、搜索区与用户信息区
+   作用：页面顶部操作区，承载搜索、用户信息、快捷按钮
+   使用位置：主站各业务页面顶部
+========================= */
+.main{
+  padding: 18px 0 42px;
+}
+.topbar{
+  margin: 0 auto;
+  width: min(1200px, calc(100% - 48px));
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+.topbar__left{ display:flex; align-items:center; gap: 14px; }
+.topbar__right{ display:flex; align-items:center; gap: 10px; }
+.topbar-brand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+}
+.topbar-brand__logo{
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.topbar-brand__title{
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .2px;
+  color: rgba(255,255,255,.92);
+}
+/* 搜索框：用于书籍检索、订单/用户信息筛选等 */
+.search{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  min-width: 320px;
+}
+.search input{
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  width: 100%;
+}
+/* 用户头像与昵称：用于右上角登录用户信息展示 */
+.avatar{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+.avatar__img{
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  object-fit: cover;
+}
+.avatar__name{ font-size: 13px; color: var(--text); }
+
+/* =========================
+   页面标题区
+   作用：展示当前页面标题、副标题和右侧操作区
+   使用位置：`books.html`、`cart.html`、`orders.html`、`user.html`、`book-detail*.html`
+========================= */
+.page{
+  width: min(1200px, calc(100% - 48px));
+  margin: 16px auto 0;
+}
+.page__header{
+  display:flex;
+  align-items:flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 18px 16px;
+}
+.page__title{
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: .2px;
+}
+.page__desc{ margin: 8px 0 0; color: var(--muted); line-height: 1.6; }
+
+/* =========================
+   书籍列表页卡片区域
+   作用：控制书籍封面、标题、作者、价格和操作按钮布局
+   使用位置：`pages/books.html`
+========================= */
+.grid{
+  padding: 0 18px 18px;
+  display:grid;
+  gap: 14px;
+}
+.grid--books{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.book{
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  display:flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+.book__cover{
+  width: 100%;
+  height: 330px;
+  margin: 0;
+  background: #f1f5f9;
+  display:grid;
+  place-items:center;
+  padding: 0;
+  overflow: hidden;
+  border-bottom: 1px solid #e2e8f0;
+}
+.book__cover img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display:block;
+}
+.book__body{
+  padding: 12px 12px 14px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.book__title{
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  min-height: calc(1.35em * 2);
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.book__author{
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+  min-height: 1.45em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.book__meta{ display:flex; align-items:center; justify-content: space-between; gap: 10px; }
+.price{ font-weight: 800; letter-spacing: .2px; }
+.book__actions{
+  display:flex;
+  gap: 10px;
+  margin-top: auto;
+}
+.book__action-form{ flex: 1; }
+.book__actions .btn{ flex: 1; padding: 9px 10px; border-radius: 12px; }
+
+/* =========================
+   详情页内容区
+   作用：控制图书封面、信息项、简介和购买操作区
+   使用位置：`pages/book-detail.html` 及 `book-detail-2.html` ~ `book-detail-8.html`
+========================= */
+.detail{
+  padding: 18px;
+  display:grid;
+  grid-template-columns: 360px 1fr;
+  gap: 18px;
+}
+.detail__media{
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  overflow:hidden;
+  background: #ffffff;
+}
+.detail__media img{ width:100%; height:100%; object-fit: cover; display:block; }
+.detail__content h1{ margin: 0; font-size: 22px; }
+.detail__content .detail__sub{ margin: 8px 0 0; color: var(--muted); line-height: 1.6; }
+.kv{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.kv__item{
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  padding: 10px 12px;
+}
+.kv__k{ font-size: 12px; color: var(--muted-2); }
+.kv__v{ margin-top: 6px; font-weight: 700; }
+.detail__desc{
+  margin-top: 14px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 12px;
+}
+.detail__desc h2{ margin: 0; font-size: 14px; }
+.detail__desc p{ margin: 10px 0 0; color: var(--muted); line-height: 1.75; }
+.detail__cta{ margin-top: 14px; display:flex; gap: 10px; flex-wrap: wrap; }
+.detail__cta form{ display: inline-flex; }
+.detail__cta .btn{ padding: 11px 14px; }
+
+/* =========================
+   表格通用样式
+   作用：表格列、行、悬停效果统一，适合订单/购物车/用户信息表格
+   使用位置：`cart.html`、`orders.html`、`user.html`
+========================= */
+.table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table th, .table td{
+  padding: 12px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+.table th{
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: .2px;
+  color: var(--muted-2);
+  font-weight: 700;
+}
+.table td{ color: var(--text); }
+.table__row:hover td{ background: #f9fafb; }
+
+/* =========================
+   购物车页面专属布局
+   作用：左侧商品清单 + 右侧结算汇总面板
+   使用位置：`pages/cart.html`
+========================= */
+.cart{
+  padding: 0 18px 18px;
+  display:grid;
+  grid-template-columns: 1.6fr .8fr;
+  gap: 14px;
+}
+.panel{
+  border-radius: var(--radius);
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  overflow:hidden;
+}
+.panel__header{
+  padding: 14px 14px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.panel__title{ margin: 0; font-size: 14px; }
+.panel__body{ padding: 12px 14px 14px; }
+
+.qty{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+}
+.qty select{
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 6px 8px;
+  color: var(--text);
+  outline:none;
+}
+.summary{
+  display:grid;
+  gap: 10px;
+}
+.summary__row{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+}
+.summary__row strong{ color: var(--text); }
+.summary__total{
+  padding-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+}
+.summary__actions{ display:flex; gap: 10px; margin-top: 6px; }
+.summary__actions .btn{ flex: 1; }
+.cart-remove-btn{
+  min-width: 56px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+/* =========================
+   订单页与状态标签
+   作用：订单编号、订单状态、支付状态的视觉区分
+   使用位置：`pages/orders.html` 与部分用户中心状态区
+========================= */
+.orders{
+  padding: 0 18px 18px;
+}
+.order-actions{
+  display: inline-flex;
+  gap: 10px;
+}
+.order-id{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+.tag{
+  display:inline-flex;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 12px;
+  color: var(--muted);
+}
+.tag--pending{ border-color: #fed7aa; background: #fffbeb; color: #92400e; }
+.tag--paid{ border-color: #bbf7d0; background: #ecfdf3; color: #166534; }
+.tag--cancelled{ border-color: #fecaca; background: #fee2e2; color: #b91c1c; }
+
+/* 页脚：页面底部的版权/说明文字，适用于全站 */
+.footer{
+  width: min(1200px, calc(100% - 48px));
+  margin: 18px auto 0;
+  color: var(--muted-2);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+@media (max-width: 1040px){
+  /* 响应式：中等屏幕下减少书籍卡片列数，登录页改为单列布局 */
+  .grid--books{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .auth__grid{ grid-template-columns: 1fr; }
+}
+@media (max-width: 820px){
+  /* 响应式：平板/小屏下切换为单栏，适配侧栏折叠与详情/购物车堆叠 */
+  .app{ grid-template-columns: 1fr; }
+  .sidebar{
+    position: relative;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+  .search{ min-width: 0; width: 100%; }
+  .topbar{ flex-wrap: wrap; }
+  .grid--books{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .detail{ grid-template-columns: 1fr; }
+  .cart{ grid-template-columns: 1fr; }
+}
+@media (max-width: 520px){
+  /* 响应式：手机端进一步收紧布局，书籍列表改为单列 */
+  .grid--books{ grid-template-columns: 1fr; }
+  .page__header{ flex-direction: column; align-items: flex-start; }
+}
