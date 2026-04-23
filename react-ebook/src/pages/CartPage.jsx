@@ -7,7 +7,7 @@ import {
   toggleSelectAllCart,
   updateCartQty
 } from "../data/appStore";
-import { readIntent, requireAuthSnapshot } from "../router/routeUtils";
+import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function cartLoader() {
   const snapshot = requireAuthSnapshot();
@@ -21,7 +21,7 @@ export async function cartLoader() {
 export async function cartAction({ request }) {
   requireAuthSnapshot();
   const formData = await request.formData();
-  const intent = readIntent(formData);
+  const intent = String(formData.get("intent") || "");
 
   if (intent === "set-search") {
     setPageSearch("cart", String(formData.get("value") || ""));

@@ -5,7 +5,7 @@ import { BookDetailRoute, bookDetailAction, bookDetailLoader } from "./pages/Boo
 import { CartRoute, cartAction, cartLoader } from "./pages/CartPage";
 import { OrdersRoute, ordersAction, ordersLoader } from "./pages/OrdersPage";
 import { UserRoute, userAction, userLoader } from "./pages/UserPage";
-import { ProtectedRootRoute, RootRoute } from "./routes/Root";
+import { ProtectedRootRoute } from "./routes/Root";
 import { authRedirectLoader, logoutAction, requireAuthLoader } from "./routes/authRouteHandlers";
 import RouteErrorBoundary from "./routes/RouteErrorBoundary";
 
@@ -22,7 +22,6 @@ const router = createBrowserRouter([
   {
     // 顶层 Root：承载全站 children，并统一挂错误边界。
     path: "/",
-    element: <RootRoute />,
     errorElement: <RouteErrorBoundary />,
     children: [
       {

@@ -1,6 +1,6 @@
 import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
 import { addToCart, setPageSearch, updateOrderStatus } from "../data/appStore";
-import { readIntent, readRedirectPath, requireAuthSnapshot } from "../router/routeUtils";
+import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function ordersLoader() {
   const snapshot = requireAuthSnapshot();
@@ -14,7 +14,7 @@ export async function ordersLoader() {
 export async function ordersAction({ request }) {
   requireAuthSnapshot();
   const formData = await request.formData();
-  const intent = readIntent(formData);
+  const intent = String(formData.get("intent") || "");
 
   if (intent === "set-search") {
     setPageSearch("orders", String(formData.get("value") || ""));
@@ -35,7 +35,7 @@ export async function ordersAction({ request }) {
     if (bookId) {
       addToCart(bookId);
     }
-    throw redirect(readRedirectPath(formData, "/books"));
+    throw redirect(String(formData.get("redirectTo") || "/books"));
   }
 
   return null;

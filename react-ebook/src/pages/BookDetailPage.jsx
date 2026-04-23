@@ -1,6 +1,6 @@
 import { Form, Link, redirect, useLoaderData, useLocation, useParams } from "react-router-dom";
 import { addToCart, getBookById, setPageSearch } from "../data/appStore";
-import { readIntent, readRedirectPath, requireAuthSnapshot } from "../router/routeUtils";
+import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function bookDetailLoader({ params }) {
   const snapshot = requireAuthSnapshot();
@@ -13,7 +13,7 @@ export async function bookDetailLoader({ params }) {
 export async function bookDetailAction({ request, params }) {
   requireAuthSnapshot();
   const formData = await request.formData();
-  const intent = readIntent(formData);
+  const intent = String(formData.get("intent") || "");
 
   if (intent === "set-search") {
     setPageSearch("detail", String(formData.get("value") || ""));
@@ -25,7 +25,7 @@ export async function bookDetailAction({ request, params }) {
     if (bookId) {
       addToCart(bookId);
     }
-    throw redirect(readRedirectPath(formData, "/cart"));
+    throw redirect(String(formData.get("redirectTo") || "/cart"));
   }
 
   return null;

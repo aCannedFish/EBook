@@ -1,6 +1,6 @@
 import { Form, useActionData, useLoaderData } from "react-router-dom";
 import { setPageSearch, updateUserProfile } from "../data/appStore";
-import { readIntent, requireAuthSnapshot } from "../router/routeUtils";
+import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function userLoader() {
   const snapshot = requireAuthSnapshot();
@@ -14,7 +14,7 @@ export async function userLoader() {
 export async function userAction({ request }) {
   requireAuthSnapshot();
   const formData = await request.formData();
-  const intent = readIntent(formData);
+  const intent = String(formData.get("intent") || "");
   if (intent === "set-search") {
     setPageSearch("user", String(formData.get("value") || ""));
     return null;

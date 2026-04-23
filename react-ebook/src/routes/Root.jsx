@@ -1,13 +1,6 @@
 import { Outlet, useLoaderData, useMatches, useSubmit } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 
-// RootRoute：全站根布局路由。
-// 当前版本不渲染额外 UI，仅作为 children 的承载容器。
-// 后续若需要全局壳（如主题容器、全局提示等），可优先在这里扩展。
-export function RootRoute() {
-  return <Outlet />;
-}
-
 // 从当前匹配链中获取“可搜索页面”的活跃子路由。
 // 约定：可搜索路由在 route.handle 上声明 searchPlaceholder。
 function getActiveSearchRoute(matches) {

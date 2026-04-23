@@ -1,7 +1,7 @@
 import BookCard from "../components/BookCard";
 import { redirect, useLoaderData } from "react-router-dom";
 import { addToCart, setPageSearch } from "../data/appStore";
-import { readIntent, readRedirectPath, requireAuthSnapshot } from "../router/routeUtils";
+import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function booksLoader() {
   const snapshot = requireAuthSnapshot();
@@ -14,7 +14,7 @@ export async function booksLoader() {
 export async function booksAction({ request }) {
   requireAuthSnapshot();
   const formData = await request.formData();
-  const intent = readIntent(formData);
+  const intent = String(formData.get("intent") || "");
 
   if (intent === "set-search") {
     setPageSearch("books", String(formData.get("value") || ""));
@@ -26,7 +26,7 @@ export async function booksAction({ request }) {
     if (bookId) {
       addToCart(bookId);
     }
-    throw redirect(readRedirectPath(formData, "/cart"));
+    throw redirect(String(formData.get("redirectTo") || "/cart"));
   }
 
   return null;

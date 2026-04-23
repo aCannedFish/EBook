@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Form, Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
 import { getRememberedUsername, getSnapshot, login } from "../data/appStore";
-import { readIntent } from "../router/routeUtils";
 
 export async function loginLoader() {
   const snapshot = getSnapshot();
@@ -15,7 +14,7 @@ export async function loginLoader() {
 
 export async function loginAction({ request }) {
   const formData = await request.formData();
-  const intent = readIntent(formData);
+  const intent = String(formData.get("intent") || "");
 
   if (intent === "login") {
     const username = String(formData.get("username") || "").trim();
