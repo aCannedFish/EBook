@@ -16,6 +16,9 @@ import data from "./Data.json";
 const AUTH_USER_KEY = "ebook-auth-username";
 // REMEMBER_USER_KEY：记住用户名（登录页默认值）存储键。
 const REMEMBER_USER_KEY = "ebook-remember-username";
+// USER_EMAIL_KEY / USER_SIGNATURE_KEY：用户资料字段持久化键。
+const USER_EMAIL_KEY = "ebook-user-email";
+const USER_SIGNATURE_KEY = "ebook-user-signature";
 
 // 运行环境保护：仅在浏览器环境访问 localStorage。
 const canUseStorage = typeof window !== "undefined" && typeof window.localStorage !== "undefined";
@@ -44,6 +47,13 @@ const removeStoredValue = (key) => {
 
 // 启动时读取“当前已登录用户名”，用于恢复会话。
 const authUsername = getStoredValue(AUTH_USER_KEY);
+const storedEmail = getStoredValue(USER_EMAIL_KEY);
+const storedSignature = getStoredValue(USER_SIGNATURE_KEY);
+
+const initialUser = {
+  ...data.user,
+  signature: data.user.signature || ""
+};
 
 // 内部可变状态对象：
 // - books：书籍主数据（只读来源于 Data.json）；
@@ -57,8 +67,10 @@ const authUsername = getStoredValue(AUTH_USER_KEY);
 const state = {
   books: data.books,
   user: {
-    ...data.user,
-    username: authUsername || data.user.username
+    ...initialUser,
+    username: authUsername || initialUser.username,
+    email: storedEmail || initialUser.email,
+    signature: storedSignature || initialUser.signature
   },
   cartItems: data.initialCart.map((item) => ({ ...item })),
   orders: data.initialOrders.map((item) => ({ ...item })),
@@ -111,6 +123,28 @@ export function login(username, remember) {
 export function logout() {
   state.isLoggedIn = false;
   removeStoredValue(AUTH_USER_KEY);
+}
+
+// 更新用户资料（用户名/邮箱/个性签名）。
+// 注意：当用户名被修改时，需要同步更新会话存储里的用户名。
+export function updateUserProfile({ username, email, signature }) {
+  state.user = {
+    ...state.user,
+    username,
+    email,
+    signature
+  };
+
+  setStoredValue(USER_EMAIL_KEY, email);
+  setStoredValue(USER_SIGNATURE_KEY, signature);
+
+  if (state.isLoggedIn) {
+    setStoredValue(AUTH_USER_KEY, username);
+  }
+
+  if (getStoredValue(REMEMBER_USER_KEY)) {
+    setStoredValue(REMEMBER_USER_KEY, username);
+  }
 }
 
 // 更新某个页面的搜索词（其余页面搜索词保持不变）。

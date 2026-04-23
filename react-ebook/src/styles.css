@@ -686,6 +686,22 @@ button, input, select{ font: inherit; }
 .tag--paid{ border-color: #bbf7d0; background: #ecfdf3; color: #166534; }
 .tag--cancelled{ border-color: #fecaca; background: #fee2e2; color: #b91c1c; }
 
+/* 用户资料编辑表单：用于个人信息页的资料提交与提示反馈 */
+.profile-form{
+  display: grid;
+  gap: 12px;
+}
+.profile-form__textarea{
+  min-height: 88px;
+  resize: vertical;
+}
+.profile-form__hint{
+  margin: 0;
+  font-size: 13px;
+}
+.profile-form__hint--ok{ color: #166534; }
+.profile-form__hint--error{ color: #b91c1c; }
+
 /* 页脚：页面底部的版权/说明文字，适用于全站 */
 .footer{
   width: min(1200px, calc(100% - 48px));
