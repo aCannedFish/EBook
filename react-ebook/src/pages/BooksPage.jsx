@@ -1,3 +1,4 @@
+import { Col, Row, Tag, Typography } from "antd";
 import BookCard from "../components/BookCard";
 import { redirect, useLoaderData } from "react-router-dom";
 import { addToCart, setPageSearch } from "../data/appStore";
@@ -59,19 +60,21 @@ function BooksPage({
     <section className="page card" aria-label="书籍列表页面">
       <header className="page__header">
         <div>
-          <h1 className="page__title">书籍列表</h1>
+          {/* 使用 Ant Design Typography 统一标题层级语义。 */}
+          <Typography.Title level={3} className="page__title">书籍列表</Typography.Title>
         </div>
-        <div className="pill pill--pay" aria-label="提示">共 {filteredBooks.length} 本</div>
+        {/* 使用 Ant Design Tag 展示数量摘要，替代手写状态徽标。 */}
+        <Tag color="blue" aria-label="提示">共 {filteredBooks.length} 本</Tag>
       </header>
 
-      <section className="grid grid--books" aria-label="书籍卡片列表">
+      {/* 使用 Ant Design Row/Col 统一响应式栅格，保持原卡片网格布局。 */}
+      <Row gutter={[16, 16]} aria-label="书籍卡片列表" className="book-antd-grid">
         {filteredBooks.map((book) => (
-          <BookCard
-            key={book.id}
-            book={book}
-          />
+          <Col key={book.id} xs={24} sm={12} lg={8} xl={6} className="book-antd-col">
+            <BookCard book={book} />
+          </Col>
         ))}
-      </section>
+      </Row>
     </section>
   );
 }

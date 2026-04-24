@@ -1,4 +1,5 @@
-import { Form, Link, redirect, useLoaderData, useLocation, useParams } from "react-router-dom";
+import { Button, Card, Descriptions, Space, Tag, Typography } from "antd";
+import { Form, redirect, useLoaderData, useLocation, useNavigate, useParams } from "react-router-dom";
 import { addToCart, getBookById, setPageSearch } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
@@ -35,6 +36,7 @@ export async function bookDetailAction({ request, params }) {
 function BookDetailPage({
   detailBook
 }) {
+  const navigate = useNavigate();
   // 封面错误处理：图片加载失败时回退到站点 Logo，避免空白占位破坏布局。
   const handleImageError = (event) => {
     // currentTarget 是当前这个 img 元素本身。
@@ -68,14 +70,14 @@ function BookDetailPage({
       <section className="page card" aria-label="书籍详情内容">
         <header className="page__header">
           <div>
-            <h1 className="page__title">未找到对应书籍</h1>
-            <p className="page__desc">可能是链接无效，或该书籍尚未配置。</p>
+            <Typography.Title level={3} className="page__title">未找到对应书籍</Typography.Title>
+            <Typography.Paragraph className="page__desc">可能是链接无效，或该书籍尚未配置。</Typography.Paragraph>
           </div>
         </header>
         <section className="detail">
           <section className="detail__content">
             <div className="detail__cta">
-              <Link className="btn btn-secondary" to="/books">返回书城</Link>
+              <Button onClick={() => navigate("/books")}>返回书城</Button>
             </div>
           </section>
         </section>
@@ -88,12 +90,13 @@ function BookDetailPage({
     <article className="page card" aria-label="书籍详情内容">
       <header className="page__header">
         <div>
-          <h1 className="page__title">{book.title}</h1>
-          <p className="page__desc">分类：{book.category} · 作者：{book.author}</p>
+          {/* 使用 Ant Design Typography 输出详情页标题和副标题。 */}
+          <Typography.Title level={3} className="page__title">{book.title}</Typography.Title>
+          <Typography.Paragraph className="page__desc">分类：{book.category} · 作者：{book.author}</Typography.Paragraph>
         </div>
-        <div className={`pill ${book.stockType === "warn" ? "pill--warn" : "pill--ok"}`} aria-label="库存状态">
+        <Tag color={book.stockType === "warn" ? "orange" : "green"} aria-label="库存状态">
           {book.stockType === "warn" ? "库存紧张" : "库存充足"}
-        </div>
+        </Tag>
       </header>
 
       <section className="detail" aria-label="详情布局">
@@ -102,33 +105,23 @@ function BookDetailPage({
         </figure>
 
         <section className="detail__content" aria-label="书籍信息">
-          <h1 className="u-hidden">{book.title}</h1>
-          <p className="detail__sub">
+          <Typography.Paragraph className="detail__sub">
             价格：<span className="price">￥{book.price.toFixed(2)}</span>
-          </p>
+          </Typography.Paragraph>
 
-          <section className="kv" aria-label="关键信息">
-            <div className="kv__item">
-              <div className="kv__k">分类</div>
-              <div className="kv__v">{book.category}</div>
-            </div>
-            <div className="kv__item">
-              <div className="kv__k">状态</div>
-              <div className="kv__v">在售 · 可加入购物车</div>
-            </div>
-            <div className="kv__item">
-              <div className="kv__k">ISBN</div>
-              <div className="kv__v">{book.isbn}</div>
-            </div>
-            <div className="kv__item">
-              <div className="kv__k">发货方式</div>
-              <div className="kv__v">{book.format}</div>
-            </div>
-          </section>
+          {/* 使用 Ant Design Descriptions 展示结构化书籍元数据。 */}
+          <Card size="small">
+            <Descriptions column={1} size="small">
+              <Descriptions.Item label="分类">{book.category}</Descriptions.Item>
+              <Descriptions.Item label="状态">在售 · 可加入购物车</Descriptions.Item>
+              <Descriptions.Item label="ISBN">{book.isbn}</Descriptions.Item>
+              <Descriptions.Item label="发货方式">{book.format}</Descriptions.Item>
+            </Descriptions>
+          </Card>
 
           <section className="detail__desc" aria-label="作品简介">
-            <h2>作品简介</h2>
-            <p>{book.description}</p>
+            <Typography.Title level={4}>作品简介</Typography.Title>
+            <Typography.Paragraph>{book.description}</Typography.Paragraph>
           </section>
 
           <section className="detail__cta" aria-label="操作入口">
@@ -138,10 +131,13 @@ function BookDetailPage({
               <input type="hidden" name="intent" value="add-to-cart" />
               <input type="hidden" name="bookId" value={book.id} />
               <input type="hidden" name="redirectTo" value="/cart" />
-              <button className="btn btn-primary" type="submit">加入购物车</button>
+              {/* 使用 Ant Design Button 呈现操作入口，提交仍由 Router Form 处理。 */}
+              <Button type="primary" htmlType="submit">加入购物车</Button>
             </Form>
-            <Link className="btn btn-secondary" to="/orders">立即购买</Link>
-            <Link className="btn btn-secondary" to="/books">继续逛书城</Link>
+            <Space wrap>
+              <Button onClick={() => navigate("/orders")}>立即购买</Button>
+              <Button onClick={() => navigate("/books")}>继续逛书城</Button>
+            </Space>
           </section>
         </section>
       </section>

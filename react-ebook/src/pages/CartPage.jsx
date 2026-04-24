@@ -1,4 +1,6 @@
-import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Button, Card, Checkbox, Select, Space, Table, Tag, Typography } from "antd";
+import { Link, redirect, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
 import {
   checkoutSelected,
   removeCartItem,
@@ -78,6 +80,7 @@ function CartPage({
   onRemoveItem,
   onCheckout
 }) {
+  const navigate = useNavigate();
   // 将搜索词标准化，方便对书名做不区分大小写的过滤。
   const keyword = search.trim().toLowerCase();
   // rows 是“视图层数据”：把购物车条目与书籍元信息拼成适合渲染的结构。
@@ -108,113 +111,113 @@ function CartPage({
   // 结算金额只统计已勾选项，确保汇总值和结算动作一致。
   const subtotal = selectedRows.reduce((sum, row) => sum + row.subtotal, 0);
 
+  // 使用 Ant Design Table 定义购物车列，统一表格渲染与交互控件。
+  const columns = [
+    {
+      title: "书名",
+      dataIndex: "book",
+      render: (_, row) => (
+        <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>
+          {row.book.title}
+        </Link>
+      )
+    },
+    {
+      title: "作者",
+      dataIndex: "author",
+      render: (_, row) => row.book.author
+    },
+    {
+      title: "单价",
+      dataIndex: "unitPrice",
+      render: (_, row) => `￥${row.book.price.toFixed(2)}`
+    },
+    {
+      title: "数量",
+      dataIndex: "qty",
+      render: (_, row) => (
+        <Select
+          size="small"
+          value={row.qty}
+          options={[1, 2, 3, 4].map((value) => ({ value, label: String(value) }))}
+          onChange={(value) => onUpdateQty(row.bookId, Number(value))}
+        />
+      )
+    },
+    {
+      title: "小计",
+      dataIndex: "subtotal",
+      align: "right",
+      render: (_, row) => <strong>￥{row.subtotal.toFixed(2)}</strong>
+    },
+    {
+      title: "操作",
+      dataIndex: "action",
+      align: "right",
+      render: (_, row) => (
+        <Button danger size="small" icon={<DeleteOutlined />} onClick={() => onRemoveItem(row.bookId)}>
+          移除
+        </Button>
+      )
+    }
+  ];
+
+  const selectedRowKeys = rows.filter((row) => row.selected).map((row) => row.bookId);
+
   return (
     <section className="page card" aria-label="购物车页面">
       <header className="page__header">
-        <div>
-          <h1 className="page__title">我的购物车</h1>
-        </div>
-        <div className="pill">共 {rows.length} 件</div>
+        <Typography.Title level={3} className="page__title">我的购物车</Typography.Title>
+        <Tag>共 {rows.length} 件</Tag>
       </header>
 
       <section className="cart" aria-label="购物车内容区">
-        <section className="panel" aria-label="商品列表">
-          <header className="panel__header">
-            <h2 className="panel__title">商品</h2>
-            <label className="auth__checks" htmlFor="selectAll">
-              <input
-                id="selectAll"
-                type="checkbox"
-                checked={allSelected}
-                onChange={(event) => onToggleSelectAll(event.target.checked)}
-              />
+        <Card className="panel" title="商品">
+          <Space className="cart-antd-toolbar">
+            {/* 使用 Ant Design Checkbox 管理全选操作，仍然提交到原 action。 */}
+            <Checkbox checked={allSelected} onChange={(event) => onToggleSelectAll(event.target.checked)}>
               全选
-            </label>
-          </header>
-          <div className="panel__body">
-            <table className="table" aria-label="购物车表格">
-              <thead>
-                <tr>
-                  <th scope="col">选择</th>
-                  <th scope="col">书名</th>
-                  <th scope="col">作者</th>
-                  <th scope="col">单价</th>
-                  <th scope="col">数量</th>
-                  <th scope="col" className="u-right">小计</th>
-                  <th scope="col" className="u-right">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr className="table__row" key={row.bookId}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={row.selected}
-                        onChange={(event) => onToggleItem(row.bookId, event.target.checked)}
-                        aria-label={`选择商品 ${row.book.title}`}
-                      />
-                    </td>
-                    <td>
-                      {/* 从购物车进入详情时，除路径参数外额外传递当前行的完整书籍对象。
-                          这样详情页能优先使用 state.book，减少一次查找并保持页面间数据关联。 */}
-                      <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>{row.book.title}</Link>
-                    </td>
-                    <td>{row.book.author}</td>
-                    <td>￥{row.book.price.toFixed(2)}</td>
-                    <td>
-                      <div className="qty" aria-label="数量选择">
-                        <label className="u-sr-only" htmlFor={`qty-${row.bookId}`}>数量</label>
-                        <select
-                          id={`qty-${row.bookId}`}
-                          value={row.qty}
-                          onChange={(event) => onUpdateQty(row.bookId, Number(event.target.value))}
-                        >
-                          <option value={1}>1</option>
-                          <option value={2}>2</option>
-                          <option value={3}>3</option>
-                          <option value={4}>4</option>
-                        </select>
-                      </div>
-                    </td>
-                    <td className="u-right"><strong>￥{row.subtotal.toFixed(2)}</strong></td>
-                    <td className="u-right">
-                      <button className="btn btn-danger cart-remove-btn" type="button" onClick={() => onRemoveItem(row.bookId)}>移除</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+            </Checkbox>
+          </Space>
+          <Table
+            rowKey="bookId"
+            dataSource={rows}
+            columns={columns}
+            pagination={false}
+            rowSelection={{
+              selectedRowKeys,
+              onSelect: (record, selected) => onToggleItem(record.bookId, selected),
+              onSelectAll: (selected) => onToggleSelectAll(selected)
+            }}
+          />
+        </Card>
 
-        <aside className="panel" aria-label="结算信息">
-          <header className="panel__header">
-            <h2 className="panel__title">结算</h2>
-            <span className="tag tag--pending">待结算</span>
-          </header>
-          <div className="panel__body">
-            <div className="summary" aria-label="价格汇总">
-              <div className="summary__row">
-                <span>商品金额</span>
-                <strong>￥{subtotal.toFixed(2)}</strong>
-              </div>
-              <div className="summary__row">
-                <span>优惠</span>
-                <strong>￥0.00</strong>
-              </div>
-              <div className="summary__row summary__total">
-                <span>合计</span>
-                <strong>￥{subtotal.toFixed(2)}</strong>
-              </div>
+        <Card
+          className="panel"
+          title="结算"
+          extra={<Tag color="orange">待结算</Tag>}
+        >
+          {/* 使用 Ant Design Typography + Button 构建结算摘要与操作区。 */}
+          <div className="summary" aria-label="价格汇总">
+            <div className="summary__row">
+              <span>商品金额</span>
+              <strong>￥{subtotal.toFixed(2)}</strong>
             </div>
-
-            <div className="summary__actions">
-              <Link className="btn btn-secondary" to="/books">继续选购</Link>
-              <button className="btn btn-primary" type="button" onClick={onCheckout}>结算</button>
+            <div className="summary__row">
+              <span>优惠</span>
+              <strong>￥0.00</strong>
+            </div>
+            <div className="summary__row summary__total">
+              <span>合计</span>
+              <strong>￥{subtotal.toFixed(2)}</strong>
             </div>
           </div>
-        </aside>
+
+          <Space className="summary__actions">
+            <Button onClick={() => navigate("/books")}>继续选购</Button>
+            <Button type="primary" onClick={onCheckout}>结算</Button>
+          </Space>
+        </Card>
       </section>
     </section>
   );

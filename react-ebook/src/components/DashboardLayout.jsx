@@ -1,4 +1,13 @@
-import { NavLink } from "react-router-dom";
+import {
+  BookOutlined,
+  LogoutOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+  SolutionOutlined,
+  UserOutlined
+} from "@ant-design/icons";
+import { Avatar, Button, Input, Layout, Menu, Space, Typography } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // 后台主框架：把通用壳布局抽出来复用，页面只需要关注自己的业务内容。
 // 这里统一管理侧边导航、顶部搜索、用户头像与退出按钮，children 用来承载各页面主体。
@@ -10,80 +19,58 @@ function DashboardLayout({
   searchValue,
   onSearchChange
 }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // 使用 Ant Design Menu 统一侧边导航交互和激活态。
+  const menuItems = [
+    { key: "/books", icon: <BookOutlined />, label: "书城" },
+    { key: "/cart", icon: <ShoppingCartOutlined />, label: "购物车" },
+    { key: "/orders", icon: <SolutionOutlined />, label: "订单" },
+    { key: "/user", icon: <UserOutlined />, label: "用户信息" }
+  ];
+
+  const selectedKey = menuItems.find((item) => location.pathname.startsWith(item.key))?.key || "/books";
+
   return (
-    <div className="app">
-      {/* 左侧栏：承载品牌入口、主导航和退出操作。 */}
-      <aside className="sidebar" aria-label="侧栏导航">
-        {/* 品牌区：点击 Logo 可以回到书城首页。 */}
-        <div className="sidebar__brand">
-          <NavLink className="brand" to="/books" aria-label="返回书城首页">
-            <figure className="brand__logo">
-              <img src="/assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
-            </figure>
-            <div>
-              <div className="brand__title">EBook电子书城</div>
-            </div>
-          </NavLink>
+    // 使用 Ant Design Layout 构建统一后台壳层，保留原有“侧栏+顶部+内容”布局语义。
+    <Layout className="antd-shell">
+      <Layout.Sider width={230} className="antd-shell__sider">
+        <div className="antd-shell__brand" role="button" tabIndex={0} onClick={() => navigate("/books")} onKeyDown={(event) => event.key === "Enter" && navigate("/books")}>
+          <img src="/assets/logo.svg" alt="电子书城 Logo" width="34" height="34" />
         </div>
-
-        {/* 主导航：NavLink 会自动根据当前路由添加激活样式。 */}
-        <nav className="nav" aria-label="页面导航">
-          <NavLink to="/books" className={({ isActive }) => `nav__item${isActive ? " is-active" : ""}`}>
-            <span className="nav__dot" aria-hidden="true"></span>
-            <span>书城</span>
-          </NavLink>
-          <NavLink to="/cart" className={({ isActive }) => `nav__item${isActive ? " is-active" : ""}`}>
-            <span className="nav__dot" aria-hidden="true"></span>
-            <span>购物车</span>
-          </NavLink>
-          <NavLink to="/orders" className={({ isActive }) => `nav__item${isActive ? " is-active" : ""}`}>
-            <span className="nav__dot" aria-hidden="true"></span>
-            <span>订单</span>
-          </NavLink>
-          <NavLink to="/user" className={({ isActive }) => `nav__item${isActive ? " is-active" : ""}`}>
-            <span className="nav__dot" aria-hidden="true"></span>
-            <span>用户信息</span>
-          </NavLink>
-          <button type="button" className="nav__item nav__button" onClick={onLogout}>
-            <span className="nav__dot" aria-hidden="true"></span>
-            <span>退出（返回登录）</span>
-          </button>
-        </nav>
-      </aside>
-
-      {/* 主区域：顶部工具栏 + 页面内容容器。 */}
-      <main className="main">
-        {/* 顶栏：包含本地搜索和当前登录用户信息。 */}
-        <header className="topbar" aria-label="顶栏">
-          <div className="topbar__left">
-            {/* 顶部搜索只是前端筛选，不会提交表单，所以 onSubmit 里直接 preventDefault。 */}
-            <form className="search" onSubmit={(event) => event.preventDefault()} aria-label="搜索">
-              <span className="u-muted-2" aria-hidden="true">⌕</span>
-              <label className="u-sr-only" htmlFor="global-q">搜索</label>
-              <input
-                id="global-q"
-                type="search"
-                placeholder={searchPlaceholder}
-                value={searchValue}
-                onChange={(event) => onSearchChange(event.target.value)}
-              />
-            </form>
-          </div>
-          <div className="topbar__right">
-            {/* 用户区：展示头像与用户名，帮助区分当前登录身份。 */}
-            <div className="avatar" aria-label="用户信息">
-              <img className="avatar__img" src="/assets/avatar.svg" alt="用户头像" width="30" height="30" />
-              <div className="avatar__name">{username}</div>
-            </div>
-          </div>
-        </header>
-
-        {/* children 是插槽式内容：不同页面把自己的主体内容放进来。 */}
-        {children}
-      </main>
-    </div>
+        <Menu
+          mode="inline"
+          selectedKeys={[selectedKey]}
+          items={menuItems}
+          onClick={({ key }) => navigate(key)}
+        />
+        <Button className="antd-shell__logout" icon={<LogoutOutlined />} onClick={onLogout}>
+          退出（返回登录）
+        </Button>
+      </Layout.Sider>
+      <Layout>
+        <Layout.Header className="antd-shell__header">
+          {/* 使用 Ant Design Input + Icon 承担全局搜索输入，仍保持原 onChange 触发 action 的数据流。 */}
+          <Input
+            allowClear
+            className="antd-shell__search"
+            prefix={<SearchOutlined />}
+            placeholder={searchPlaceholder}
+            value={searchValue}
+            onChange={(event) => onSearchChange(event.target.value)}
+          />
+          <Space>
+            <Avatar size={30} icon={<UserOutlined />} />
+            <Typography.Text>{username}</Typography.Text>
+          </Space>
+        </Layout.Header>
+        <Layout.Content className="antd-shell__content">
+          {children}
+        </Layout.Content>
+      </Layout>
+    </Layout>
   );
 }
 
 export default DashboardLayout;
-

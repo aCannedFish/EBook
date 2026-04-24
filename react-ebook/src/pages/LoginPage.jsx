@@ -1,3 +1,4 @@
+import { Button, Card, Checkbox, Input, Space, Typography } from "antd";
 import { useState } from "react";
 import { Form, Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
 import { getRememberedUsername, getSnapshot, login } from "../data/appStore";
@@ -87,7 +88,8 @@ function LoginPage() {
   // main 表示当前页面的主内容区域。
   return (
     <main className="auth">
-      <section className="auth__panel card" aria-label="登录表单">
+      {/* 使用 Ant Design Card 作为登录容器，统一表单视觉结构。 */}
+      <Card className="auth__panel card" aria-label="登录表单">
         <header className="brand">
           <figure className="brand__logo" aria-label="网站 Logo">
             <img src="/assets/logo.svg" alt="电子书城 Logo" width="42" height="42" />
@@ -99,59 +101,57 @@ function LoginPage() {
 
         <section className="u-mt-18">
           <header>
-            <h1>登录</h1>
+            <Typography.Title level={4}>登录</Typography.Title>
           </header>
 
           {/* Form 默认提交到当前路由（/login）对应 action。 */}
           <Form method="post" onSubmit={handleSubmit}>
-            <div className="field">
-              <label className="field__label" htmlFor="username">用户名</label>
-              <input
-                className="input"
-                id="username"
-                type="text"
-                placeholder="请输入用户名"
-                autoComplete="username"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                required
-              />
-            </div>
+            <Space direction="vertical" size={12} className="auth-antd-form">
+              <div className="field">
+                <label className="field__label" htmlFor="username">用户名</label>
+                {/* 使用 Ant Design Input 提升输入框一致性和可维护性。 */}
+                <Input
+                  id="username"
+                  placeholder="请输入用户名"
+                  autoComplete="username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  required
+                />
+              </div>
 
-            <div className="field u-mt-12">
-              <label className="field__label" htmlFor="password">密码</label>
-              <input
-                className="input"
-                id="password"
-                type="password"
-                placeholder="请输入密码"
-                autoComplete="current-password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-              />
-            </div>
+              <div className="field">
+                <label className="field__label" htmlFor="password">密码</label>
+                {/* 使用 Ant Design Password 输入框内置可见性切换与反馈样式。 */}
+                <Input.Password
+                  id="password"
+                  placeholder="请输入密码"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+              </div>
 
-            <div className="auth__actions">
-              <label className="auth__checks" htmlFor="remember">
-                <input
+              <div className="auth__actions">
+                <Checkbox
                   id="remember"
-                  type="checkbox"
                   checked={remember}
                   onChange={(event) => setRemember(event.target.checked)}
-                />
-                Remember me
-              </label>
-              <Link className="link" to="/login" aria-label="忘记密码入口">忘记密码？</Link>
-            </div>
+                >
+                  Remember me
+                </Checkbox>
+                <Link className="link" to="/login" aria-label="忘记密码入口">忘记密码？</Link>
+              </div>
 
-            <div className="auth__cta">
-              <button className="btn btn-primary" type="submit">登录</button>
-              <button className="btn btn-secondary" type="button" onClick={handleGuest}>直接进入书城</button>
-            </div>
+              <div className="auth__cta">
+                <Button type="primary" htmlType="submit">登录</Button>
+                <Button onClick={handleGuest}>直接进入书城</Button>
+              </div>
+            </Space>
           </Form>
         </section>
-      </section>
+      </Card>
     </main>
   );
 }

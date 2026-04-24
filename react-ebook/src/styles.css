@@ -225,7 +225,7 @@ button, input, select{ font: inherit; }
   gap: 0;
 }
 .auth__panel .brand__title{
-  font-size: 31.5px;
+  font-size: 26px;
 ;
   margin-left: 5px;
 }
@@ -691,16 +691,106 @@ button, input, select{ font: inherit; }
   display: grid;
   gap: 12px;
 }
-.profile-form__textarea{
-  min-height: 88px;
-  resize: vertical;
+.profile-form__stack{
+  width: 100%;
 }
-.profile-form__hint{
-  margin: 0;
-  font-size: 13px;
+.profile-form__field{
+  display: grid;
+  gap: 8px;
 }
-.profile-form__hint--ok{ color: #166534; }
-.profile-form__hint--error{ color: #b91c1c; }
+
+/* =========================
+   Ant Design 适配层
+   作用：在保留现有布局语义的前提下，为 AntD 组件提供页面级尺寸与间距约束
+========================= */
+.antd-shell{
+  min-height: 100vh;
+}
+.antd-shell__sider{
+  background: #ffffff !important;
+  border-right: 1px solid var(--border);
+  padding: 14px 10px;
+}
+.antd-shell__brand{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px 14px;
+  cursor: pointer;
+}
+.antd-shell__logout{
+  margin-top: 12px;
+  width: 100%;
+}
+.antd-shell__header{
+  height: auto !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.antd-shell__search{
+  max-width: 440px;
+}
+.antd-shell__content{
+  padding: 18px;
+}
+.auth-antd-form{
+  width: 100%;
+}
+.book-antd-grid{
+  padding: 0 16px 16px;
+}
+.book-antd-card .ant-card-cover img{
+  height: 312px;
+  width: 100%;
+  object-fit: cover;
+  background: #f8fafc;
+}
+.book-antd-card__stack{
+  width: 100%;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+.book-antd-card__title{
+  margin: 0 !important;
+  line-height: 1.4 !important;
+  min-height: 44px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.book-antd-card__author{
+  min-height: 22px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.book-antd-card__meta{
+  min-height: 28px;
+}
+.book-antd-card__price{
+  color: #1d4ed8;
+}
+.book-antd-card__actions{
+  margin-top: auto;
+  width: 100%;
+}
+.book-antd-card__actions .book__action-form{
+  width: 100%;
+}
+.book-antd-col .book-antd-card{
+  height: 100%;
+}
+.cart-antd-toolbar{
+  margin-bottom: 12px;
+}
 
 /* 页脚：页面底部的版权/说明文字，适用于全站 */
 .footer{

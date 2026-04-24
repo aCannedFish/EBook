@@ -1,4 +1,5 @@
-import { Form, useActionData, useLoaderData } from "react-router-dom";
+import { Alert, Button, Card, Input, Space, Tag, Typography } from "antd";
+import { Form as RouterForm, useActionData, useLoaderData } from "react-router-dom";
 import { setPageSearch, updateUserProfile } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
@@ -57,48 +58,44 @@ function UserPage({ user, username, actionData }) {
         <section className="panel" aria-label="基本信息">
           <header className="panel__header">
             <h2 className="panel__title">基本信息</h2>
-            <button className="btn btn-secondary" type="submit" form="profile-form">提交</button>
+            <Button type="default" htmlType="submit" form="profile-form">提交</Button>
           </header>
           <div className="panel__body">
-            <Form id="profile-form" method="post" className="profile-form">
+            <RouterForm id="profile-form" method="post" className="profile-form">
               <input type="hidden" name="intent" value="update-profile" />
-              <table className="table" aria-label="用户信息表格">
-                <tbody>
-                  <tr className="table__row">
-                    <th scope="row">用户名</th>
-                    <td>
-                      <input className="input" name="username" defaultValue={username} required />
-                    </td>
-                  </tr>
-                  <tr className="table__row">
-                    <th scope="row">邮箱</th>
-                    <td>
-                      <input className="input" name="email" type="email" defaultValue={user.email} required />
-                    </td>
-                  </tr>
-                  <tr className="table__row">
-                    <th scope="row">个性签名</th>
-                    <td>
-                      <textarea
-                        className="input profile-form__textarea"
-                        name="signature"
-                        defaultValue={user.signature || ""}
-                        placeholder="介绍一下自己吧"
-                      />
-                    </td>
-                  </tr>
-                  <tr className="table__row">
-                    <th scope="row">会员等级</th>
-                    <td><span className="pill">{user.level}</span></td>
-                  </tr>
-                </tbody>
-              </table>
+              <Card size="small" bordered={false}>
+                <Space direction="vertical" size={16} className="profile-form__stack">
+                  <div className="profile-form__field">
+                    <Typography.Text type="secondary">用户名</Typography.Text>
+                    <Input name="username" defaultValue={username} required />
+                  </div>
+                  <div className="profile-form__field">
+                    <Typography.Text type="secondary">邮箱</Typography.Text>
+                    <Input name="email" type="email" defaultValue={user.email} required />
+                  </div>
+                  <div className="profile-form__field">
+                    <Typography.Text type="secondary">个性签名</Typography.Text>
+                    <Input.TextArea
+                      name="signature"
+                      defaultValue={user.signature || ""}
+                      placeholder="介绍一下自己吧"
+                      autoSize={{ minRows: 3, maxRows: 6 }}
+                    />
+                  </div>
+                  <div className="profile-form__field">
+                    <Typography.Text type="secondary">会员等级</Typography.Text>
+                    <div><Tag color="green">{user.level}</Tag></div>
+                  </div>
+                </Space>
+              </Card>
               {actionData?.message && (
-                <p className={`profile-form__hint ${actionData.status === "error" ? "profile-form__hint--error" : "profile-form__hint--ok"}`}>
-                  {actionData.message}
-                </p>
+                <Alert
+                  type={actionData.status === "error" ? "error" : "success"}
+                  message={actionData.message}
+                  showIcon
+                />
               )}
-            </Form>
+            </RouterForm>
           </div>
         </section>
       </section>

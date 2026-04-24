@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import "antd/dist/reset.css";
 import "./styles.css";
 
 // 应用启动入口：负责把 React 树挂载到 HTML 的 root 节点，并为整站提供路由能力。
