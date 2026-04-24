@@ -1,239 +1,270 @@
-# ANT_DESIGN.md
+# ANT_DESIGN：组件使用与 props 说明（当前实现）
 
-本文档说明本次迭代中 `react-ebook` 项目对 Ant Design（AntD）组件的使用方式、对应功能和代码落点。
+本文档对应当前 `react-ebook` 代码，逐项说明 Ant Design 组件在项目中的作用、调用位置，以及关键 props 的意义。
 
-## 1. 接入方式
+---
 
-### 1.1 依赖安装
+## 1. 接入
 
-在 `react-ebook/package.json` 中新增：
-
-- `antd`
-
-### 1.2 全局样式引入
-
-在 `react-ebook/src/main.jsx` 中引入：
+1. 依赖：`antd`
+2. 入口样式：`src/main.jsx`
 
 ```jsx
 import "antd/dist/reset.css";
 ```
 
-用途：重置 AntD 默认样式基线，避免与项目原有 CSS 产生不可控冲突。
+用途：重置 AntD 样式基线，减少与项目自定义 CSS 冲突。
 
 ---
 
-## 2. 总体设计原则
+## 2. DashboardLayout（`src/components/DashboardLayout.jsx`）
 
-本次重构遵循两条原则：
+## 2.1 `Layout` / `Layout.Sider` / `Layout.Header` / `Layout.Content`
 
-1. **只替换视图层组件**  
-   保留 Data Router 的 `loader/action` 数据流、`appStore` 状态读写规则不变。
+用途：统一后台壳层（侧栏+顶栏+内容区）。
 
-2. **交互语义不变**  
-   表单提交、页面跳转、购物车与订单操作仍使用原有 action 协议（`intent` 分派）。
+关键 props：
 
----
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Layout.Sider` | `width={230}` | 固定侧栏宽度，确保菜单区域稳定 |
+| `Layout.Header` | `className="antd-shell__header"` | 结合样式层控制顶栏高度与边框 |
+| `Layout.Content` | `className="antd-shell__content"` | 统一内容区内边距 |
 
-## 3. 组件清单与具体用法
+## 2.2 `Menu`
 
-## 3.1 布局与导航（Dashboard）
+用途：侧边导航。
 
-文件：`react-ebook/src/components/DashboardLayout.jsx`
+关键 props：
 
-使用组件：
+| props | 含义/用途 |
+|---|---|
+| `mode="inline"` | 纵向菜单样式 |
+| `selectedKeys={[selectedKey]}` | 根据当前路由高亮对应菜单 |
+| `items={menuItems}` | 菜单项配置（key/icon/label） |
+| `onClick={({ key }) => navigate(key)}` | 点击后跳转路由 |
 
-- `Layout`（`Layout.Sider / Header / Content`）
-- `Menu`
-- `Input`
-- `Avatar`
-- `Button`
-- `Typography`
-- `Space`
-- 图标：`BookOutlined / ShoppingCartOutlined / SolutionOutlined / UserOutlined / LogoutOutlined / SearchOutlined`
+## 2.3 `Input`（顶栏搜索）
 
-用途与写法：
+用途：共享搜索输入框。
 
-1. `Layout.Sider`：承载侧边导航与退出按钮  
-2. `Menu`：根据当前路由高亮选中项，`onClick` 导航到目标页面  
-3. `Input`：顶部搜索输入，`onChange` 继续调用原 `onSearchChange`，保持 action 更新搜索词  
-4. `Avatar + Typography.Text`：展示当前用户名  
-5. `Button`：退出登录触发原 `onLogout`
+关键 props：
 
----
+| props | 含义/用途 |
+|---|---|
+| `allowClear` | 显示清空按钮 |
+| `prefix={<SearchOutlined />}` | 搜索图标前缀 |
+| `placeholder={searchPlaceholder}` | 由当前激活子路由动态决定提示词 |
+| `value={searchValue}` | 受控输入值，来源于当前子路由 loader |
+| `onChange={(e) => onSearchChange(e.target.value)}` | 触发 Data Router action 写入搜索词 |
 
-## 3.2 登录页
+## 2.4 `Avatar` / `Typography.Text` / `Button`
 
-文件：`react-ebook/src/pages/LoginPage.jsx`
-
-使用组件：
-
-- `Card`
-- `Input` / `Input.Password`
-- `Checkbox`
-- `Button`
-- `Typography`
-- `Space`
-
-用途与写法：
-
-1. `Card`：登录表单外层容器  
-2. `Input / Input.Password`：用户名与密码输入  
-3. `Checkbox`：Remember me 选项  
-4. `Button`：登录和游客进入操作  
-5. 保留 React Router `<Form>` 与 `useSubmit()`，确保登录逻辑仍由 `loginAction` 处理
+- `Avatar size={30} icon={<UserOutlined />}`：显示用户图标
+- `Typography.Text`：显示当前用户名
+- 退出按钮：`Button icon={<LogoutOutlined />} onClick={onLogout}`
 
 ---
 
-## 3.3 书籍列表页 + 卡片
+## 3. LoginPage（`src/pages/LoginPage.jsx`）
 
-文件：
+## 3.1 `Card`
 
-- `react-ebook/src/pages/BooksPage.jsx`
-- `react-ebook/src/components/BookCard.jsx`
+- `className="auth__panel card"`：作为登录区容器
 
-使用组件：
+## 3.2 `Input` / `Input.Password`
 
-- `Row` / `Col`
-- `Tag`
-- `Typography`
-- `Card`
-- `Button`
-- `Space`
-- 图标：`ShoppingCartOutlined`
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Input` | `value/onChange` | 用户名受控输入 |
+| `Input` | `autoComplete="username"` | 浏览器自动填充优化 |
+| `Input.Password` | `value/onChange` | 密码受控输入 |
+| `Input.Password` | `autoComplete="current-password"` | 密码自动填充优化 |
 
-用途与写法：
+## 3.3 `Checkbox`
 
-1. `Row/Col`：替代原手写网格，提供响应式栅格布局  
-2. `BookCard` 用 `Card` 渲染书籍信息  
-3. `Button`：详情跳转、加入购物车  
-4. `Tag`：库存状态显示（绿色/橙色）  
-5. “加入购物车”仍通过 React Router `<Form method="post">` 提交 `intent=add-to-cart`
+- `checked={remember}`
+- `onChange={(e) => setRemember(e.target.checked)}`
 
----
+用途：控制 remember me 状态并传入 action。
 
-## 3.4 书籍详情页
+## 3.4 `Button`
 
-文件：`react-ebook/src/pages/BookDetailPage.jsx`
-
-使用组件：
-
-- `Typography`
-- `Tag`
-- `Card`
-- `Descriptions`
-- `Button`
-- `Space`
-
-用途与写法：
-
-1. `Typography`：标题、描述、段落文本  
-2. `Tag`：库存状态标签  
-3. `Descriptions`：结构化展示分类、状态、ISBN、发货方式  
-4. `Button`：加入购物车、购买、返回操作  
-5. 详情页 `Form` 仍提交到 `bookDetailAction`，数据更新链路不变
+- 登录：`type="primary" htmlType="submit"`
+- 游客进入：`onClick={handleGuest}`
 
 ---
 
-## 3.5 购物车页
+## 4. BooksPage + BookCard
 
-文件：`react-ebook/src/pages/CartPage.jsx`
+## 4.1 BooksPage（`src/pages/BooksPage.jsx`）
 
-使用组件：
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Typography.Title` | `level={3}` | 页面主标题层级 |
+| `Tag` | `color="blue"` | 列表数量提示 |
+| `Row` | `gutter={[16,16]}` | 卡片栅格行间距和列间距 |
+| `Col` | `xs/sm/lg/xl` | 响应式列宽 |
 
-- `Table`
-- `Card`
-- `Checkbox`
-- `Select`
-- `Button`
-- `Tag`
-- `Typography`
-- `Space`
-- 图标：`DeleteOutlined`
+## 4.2 BookCard（`src/components/BookCard.jsx`）
 
-用途与写法：
-
-1. `Table`：展示购物车明细，替代原 HTML table  
-2. `rowSelection`：与已有 `selected` 状态双向同步（单选/全选）  
-3. `Select`：数量选择（1~4）并调用 `onUpdateQty`  
-4. `Button`：移除商品、结算、继续选购  
-5. `Card`：商品区与结算区分组
-
----
-
-## 3.6 订单页
-
-文件：`react-ebook/src/pages/OrdersPage.jsx`
-
-使用组件：
-
-- `Table`
-- `Tag`
-- `Button`
-- `Typography`
-- `Space`
-
-用途与写法：
-
-1. `Table`：订单列表展示  
-2. `Tag`：订单状态（待付款/已付款/已取消）  
-3. `Button`：取消、付款、再次购买等行操作  
-4. 保持 `onUpdateOrderStatus`、`onBuyAgain` 原行为，仍走 action
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Card` | `className="book-antd-card"` | 书籍卡片容器 |
+| `Card` | `cover={<img .../>}` | 封面区域 |
+| `Typography.Title` | `level={5}` | 卡片标题 |
+| `Tag` | `color={warn? "orange":"green"}` | 库存状态 |
+| `Button` | `block` | 按钮同宽铺满卡片内容宽度 |
+| `Button` | `type="primary"` | 主操作（加入购物车）视觉强调 |
+| `Button` | `icon={<ShoppingCartOutlined />}` | 加购语义图标 |
+| `Button` | `htmlType="submit"` | 交给 Router `<Form>` 提交 action |
 
 ---
 
-## 3.7 用户信息页
+## 5. BookDetailPage（`src/pages/BookDetailPage.jsx`）
 
-文件：`react-ebook/src/pages/UserPage.jsx`
-
-使用组件：
-
-- `Card`
-- `Input` / `Input.TextArea`
-- `Button`
-- `Tag`
-- `Alert`
-- `Typography`
-- `Space`
-
-用途与写法：
-
-1. 使用 `Card + Input` 构建资料编辑表单  
-2. 使用 `Alert` 显示提交结果（成功/错误）  
-3. 使用 `Tag` 展示会员等级  
-4. 仍使用 React Router `<Form method="post">` 提交 `intent=update-profile`
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Typography.Title` | `level={3/4}` | 主标题与“作品简介”分级 |
+| `Typography.Paragraph` | - | 副标题和正文段落 |
+| `Tag` | `color` | 库存状态视觉反馈 |
+| `Card` | `size="small"` | 关键信息容器 |
+| `Descriptions` | `column={1}` | 单列信息展示 |
+| `Descriptions` | `size="small"` | 紧凑信息行 |
+| `Button` | `htmlType="submit"` | 加购提交 |
+| `Space` | `wrap` | 操作按钮自动换行 |
 
 ---
 
-## 4. 与数据路由的配合方式
+## 6. CartPage（`src/pages/CartPage.jsx`）
 
-虽然 UI 替换为 AntD，但所有业务动作依旧是：
+## 6.1 页面级组件
 
-1. 组件交互（点击/输入）
-2. 提交到 route action（`intent`）
-3. action 调用 `appStore` 更新状态
-4. loader 重新读取快照
-5. 页面基于新数据渲染
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Card` | `title="商品"` | 商品区分组 |
+| `Card` | `title="结算"` / `extra={<Tag .../>}` | 结算区分组及状态角标 |
+| `Checkbox` | `checked/onChange` | 全选控制 |
+| `Select` | `size="small"` | 紧凑数量选择器 |
+| `Select` | `value/options/onChange` | 数量值绑定与更新 |
+| `Button` | `type="primary"` | 结算主操作 |
 
-这保证了“UI 重构”不会破坏既有路由与状态设计。
+## 6.2 复用组件：`ResourceTable`
+
+调用：
+
+```jsx
+<ResourceTable
+  rowKey="bookId"
+  dataSource={rows}
+  columns={columns}
+  rowSelection={...}
+/>
+```
+
+props 说明：
+
+| props | 含义/用途 |
+|---|---|
+| `rowKey="bookId"` | 行唯一键，保证选择状态稳定 |
+| `dataSource={rows}` | 购物车行数据 |
+| `columns={columns}` | 列定义（书名/作者/数量/小计/操作） |
+| `rowSelection` | 与 `selected` 状态联动，实现单选/全选 |
+
+## 6.3 复用组件：`RowActions`
+
+调用（移除按钮）：
+
+```jsx
+<RowActions actions={[{ key, label, danger, icon, onClick }]} />
+```
+
+props 说明：
+
+| props | 含义/用途 |
+|---|---|
+| `actions` | 动作配置数组，驱动按钮渲染 |
+| `key` | 按钮稳定键 |
+| `label` | 按钮文案 |
+| `danger` | 危险操作视觉样式 |
+| `icon` | 操作图标 |
+| `onClick` | 对应业务动作（如移除） |
 
 ---
 
-## 5. 样式适配
+## 7. OrdersPage（`src/pages/OrdersPage.jsx`）
 
-文件：`react-ebook/src/styles.css`
+## 7.1 页面级组件
 
-新增了 AntD 适配类（如 `.antd-shell__*`、`.book-antd-card*`、`.cart-antd-toolbar`），用于：
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Typography.Title` | `level={3}` | 页面标题 |
+| `Tag` | - | 订单数量提示 |
 
-- 约束布局尺寸
-- 对齐间距
-- 保持与原项目页面结构一致
+## 7.2 复用组件：`StatusTag`
 
-这些样式只做页面级适配，不改动业务逻辑。
+调用：
+
+```jsx
+<StatusTag status={status} metaMap={statusMeta} />
+```
+
+props 说明：
+
+| props | 含义/用途 |
+|---|---|
+| `status` | 当前状态值（pending/paid/cancelled） |
+| `metaMap` | 状态映射表（`label/color`） |
+
+## 7.3 复用组件：`RowActions`
+
+调用为多动作数组（取消/付款/查看/再次购买）。
+
+额外 props：
+
+| props | 含义/用途 |
+|---|---|
+| `type` | 按钮类型（主按钮等） |
+| `hidden` | 条件渲染开关（按状态显示对应动作） |
+
+## 7.4 复用组件：`ResourceTable`
+
+调用：
+
+```jsx
+<ResourceTable rowKey="id" dataSource={rows} columns={columns} />
+```
+
+用途：统一订单列表表格壳配置。
 
 ---
 
-## 6. 注意事项
+## 8. UserPage（`src/pages/UserPage.jsx`）
 
-1. 引入 AntD 后打包体积增加（构建会提示 chunk 偏大），属于预期现象。  
-2. 当前仍可继续按页面分批优化（如按需拆分、路由级代码分割）来降低首屏包体积。  
-3. 本次改造未推送仓库，仅完成本地迭代。
+| 组件 | props | 含义/用途 |
+|---|---|---|
+| `Card` | `size="small"` / `bordered={false}` | 表单信息区容器 |
+| `Input` | `name/defaultValue/required` | 用户名/邮箱字段提交与回填 |
+| `Input.TextArea` | `autoSize={{minRows,maxRows}}` | 签名自适应高度 |
+| `Tag` | `color="green"` | 会员等级展示 |
+| `Alert` | `type/message/showIcon` | 提交结果反馈 |
+| `Button` | `htmlType="submit" form="profile-form"` | 顶部按钮触发表单提交 |
+| `Typography.Text` | `type="secondary"` | 字段标签弱化样式 |
+| `Space` | `direction="vertical"` | 纵向字段分组 |
+
+---
+
+## 9. 适配样式层（`src/styles.css`）
+
+项目通过 `.antd-shell__*`、`.book-antd-card*`、`.book-antd-grid` 等类对 AntD 组件做页面级约束，目的：
+
+1. 保持课程项目既有布局结构
+2. 统一卡片、网格、间距与响应式表现
+3. 不改变数据流和 action 行为
+
+---
+
+## 10. 结论
+
+当前 AntD 改造已经覆盖主要页面。所有组件调用都保持“展示层替换、数据层不动”的策略：  
+`UI 交互 -> action(intent) -> appStore -> loader -> UI`

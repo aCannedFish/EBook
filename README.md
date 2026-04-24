@@ -25,9 +25,13 @@ react-version
       pages/                 各业务页面（按模块下沉 loader/action）
       routes/                Root 路由、鉴权处理、错误边界
       data/                  Data.json 与前端内存仓库 appStore
-      components/            可复用组件
+      components/            可复用组件（含 BookCard、DashboardLayout、ResourceTable 等）
     public/assets/           静态资源
   REACT_DESIGN.md            React 设计说明（随 react-version 架构同步维护）
+  DATA.md                    数据交互与状态流转说明
+  ACTION.md                  Data Router action 机制说明
+  SEARCH.md                  顶栏搜索在共享布局下的数据流说明
+  ANT_DESIGN.md              Ant Design 组件使用与 props 说明
 ```
 
 ### 运行方法
@@ -56,6 +60,7 @@ React 版本当前采用：
 - Data Router（loader/action/redirect）
 - `App.jsx` 仅做路由装配（业务 loader/action 下沉到模块文件）
 - `DashboardLayout` 在受保护父路由中统一共享（子页面只渲染内容区）
+- UI 组件层使用 Ant Design（保留原数据路由与 `appStore` 读写链路）
 
 #### 3) 查看文档主分支
 

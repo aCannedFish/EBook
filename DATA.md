@@ -74,7 +74,7 @@
 ### 3.2 写入（action）
 
 所有写操作通过 `<Form method="post">` 或 `useSubmit()` 进入 action。  
-每个 action 用 `intent` 分派动作（`readIntent(formData)`）：
+每个 action 用 `intent` 分派动作（`String(formData.get("intent") || "")`）：
 
 - `booksAction`
   - `set-search`
@@ -103,6 +103,8 @@
   - 退出并重定向登录页
 
 action 内部真正改状态的都是 `appStore` 导出函数（例如 `addToCart/updateCartQty/updateOrderStatus/updateUserProfile`）。
+
+说明：购物车与订单页面虽已抽出 `ResourceTable/StatusTag/RowActions` 复用组件，但这些组件只负责 UI 渲染，数据写入依旧通过 action -> appStore。
 
 ---
 
