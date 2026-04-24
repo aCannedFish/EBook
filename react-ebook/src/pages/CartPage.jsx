@@ -1,6 +1,8 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Select, Space, Table, Tag, Typography } from "antd";
+import { Button, Card, Checkbox, Select, Space, Tag, Typography } from "antd";
 import { Link, redirect, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
+import ResourceTable from "../components/ResourceTable";
+import RowActions from "../components/RowActions";
 import {
   checkoutSelected,
   removeCartItem,
@@ -155,9 +157,17 @@ function CartPage({
       dataIndex: "action",
       align: "right",
       render: (_, row) => (
-        <Button danger size="small" icon={<DeleteOutlined />} onClick={() => onRemoveItem(row.bookId)}>
-          移除
-        </Button>
+        <RowActions
+          actions={[
+            {
+              key: `remove-${row.bookId}`,
+              label: "移除",
+              danger: true,
+              icon: <DeleteOutlined />,
+              onClick: () => onRemoveItem(row.bookId)
+            }
+          ]}
+        />
       )
     }
   ];
@@ -179,11 +189,10 @@ function CartPage({
               全选
             </Checkbox>
           </Space>
-          <Table
+          <ResourceTable
             rowKey="bookId"
             dataSource={rows}
             columns={columns}
-            pagination={false}
             rowSelection={{
               selectedRowKeys,
               onSelect: (record, selected) => onToggleItem(record.bookId, selected),

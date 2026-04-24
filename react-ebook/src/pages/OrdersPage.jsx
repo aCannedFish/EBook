@@ -1,5 +1,8 @@
-import { Button, Space, Table, Tag, Typography } from "antd";
+import { Tag, Typography } from "antd";
 import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
+import ResourceTable from "../components/ResourceTable";
+import RowActions from "../components/RowActions";
+import StatusTag from "../components/StatusTag";
 import { addToCart, setPageSearch, updateOrderStatus } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
@@ -96,7 +99,7 @@ function OrdersPage({
     {
       title: "状态",
       dataIndex: "status",
-      render: (status) => <Tag color={statusMeta[status].color}>{statusMeta[status].label}</Tag>
+      render: (status) => <StatusTag status={status} metaMap={statusMeta} />
     },
     {
       title: "书名",
@@ -127,20 +130,35 @@ function OrdersPage({
       dataIndex: "action",
       align: "right",
       render: (_, row) => (
-        <Space>
-          {row.status === "pending" && (
-            <>
-              <Button danger size="small" onClick={() => onUpdateOrderStatus(row.id, "cancelled")}>取消</Button>
-              <Button type="primary" size="small" onClick={() => onUpdateOrderStatus(row.id, "paid")}>付款</Button>
-            </>
-          )}
-          {row.status === "paid" && (
-            <Button size="small">查看</Button>
-          )}
-          {row.status === "cancelled" && (
-            <Button size="small" onClick={() => onBuyAgain(row.bookId)}>再次购买</Button>
-          )}
-        </Space>
+        <RowActions
+          actions={[
+            {
+              key: `cancel-${row.id}`,
+              label: "取消",
+              danger: true,
+              hidden: row.status !== "pending",
+              onClick: () => onUpdateOrderStatus(row.id, "cancelled")
+            },
+            {
+              key: `pay-${row.id}`,
+              label: "付款",
+              type: "primary",
+              hidden: row.status !== "pending",
+              onClick: () => onUpdateOrderStatus(row.id, "paid")
+            },
+            {
+              key: `view-${row.id}`,
+              label: "查看",
+              hidden: row.status !== "paid"
+            },
+            {
+              key: `again-${row.id}`,
+              label: "再次购买",
+              hidden: row.status !== "cancelled",
+              onClick: () => onBuyAgain(row.bookId)
+            }
+          ]}
+        />
       )
     }
   ];
@@ -153,7 +171,7 @@ function OrdersPage({
       </header>
 
       <section className="orders" aria-label="订单列表">
-        <Table rowKey="id" dataSource={rows} columns={columns} pagination={false} />
+        <ResourceTable rowKey="id" dataSource={rows} columns={columns} />
       </section>
     </section>
   );
