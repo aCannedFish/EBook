@@ -3,10 +3,13 @@ import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
 import ResourceTable from "../components/ResourceTable";
 import RowActions from "../components/RowActions";
 import StatusTag from "../components/StatusTag";
-import { addToCart, setPageSearch, updateOrderStatus } from "../data/appStore";
+import { addToCart, ensureBooksLoaded, ensureOrdersLoaded, setPageSearch, updateOrderStatus } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function ordersLoader() {
+  requireAuthSnapshot();
+  await ensureBooksLoaded();
+  await ensureOrdersLoaded();
   const snapshot = requireAuthSnapshot();
   return {
     books: snapshot.books,
@@ -29,7 +32,7 @@ export async function ordersAction({ request }) {
     const orderId = String(formData.get("orderId") || "");
     const status = String(formData.get("status") || "");
     if (orderId && ["pending", "paid", "cancelled"].includes(status)) {
-      updateOrderStatus(orderId, status);
+      await updateOrderStatus(orderId, status);
     }
     return null;
   }
@@ -37,7 +40,7 @@ export async function ordersAction({ request }) {
   if (intent === "buy-again") {
     const bookId = String(formData.get("bookId") || "");
     if (bookId) {
-      addToCart(bookId);
+      await addToCart(bookId);
     }
     throw redirect(String(formData.get("redirectTo") || "/books"));
   }

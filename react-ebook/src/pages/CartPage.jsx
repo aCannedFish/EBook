@@ -5,6 +5,8 @@ import ResourceTable from "../components/ResourceTable";
 import RowActions from "../components/RowActions";
 import {
   checkoutSelected,
+  ensureCartLoaded,
+  ensureBooksLoaded,
   removeCartItem,
   setPageSearch,
   toggleCartItem,
@@ -14,6 +16,9 @@ import {
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function cartLoader() {
+  requireAuthSnapshot();
+  await ensureBooksLoaded();
+  await ensureCartLoaded();
   const snapshot = requireAuthSnapshot();
   return {
     books: snapshot.books,
@@ -33,7 +38,7 @@ export async function cartAction({ request }) {
   }
 
   if (intent === "toggle-select-all") {
-    toggleSelectAllCart(formData.get("checked") === "true");
+    await toggleSelectAllCart(formData.get("checked") === "true");
     return null;
   }
 
@@ -41,7 +46,7 @@ export async function cartAction({ request }) {
     const bookId = String(formData.get("bookId") || "");
     const checked = formData.get("checked") === "true";
     if (bookId) {
-      toggleCartItem(bookId, checked);
+      await toggleCartItem(bookId, checked);
     }
     return null;
   }
@@ -50,7 +55,7 @@ export async function cartAction({ request }) {
     const bookId = String(formData.get("bookId") || "");
     const qty = Number(formData.get("qty"));
     if (bookId && Number.isInteger(qty) && qty >= 1 && qty <= 4) {
-      updateCartQty(bookId, qty);
+      await updateCartQty(bookId, qty);
     }
     return null;
   }
@@ -58,13 +63,13 @@ export async function cartAction({ request }) {
   if (intent === "remove-item") {
     const bookId = String(formData.get("bookId") || "");
     if (bookId) {
-      removeCartItem(bookId);
+      await removeCartItem(bookId);
     }
     return null;
   }
 
   if (intent === "checkout") {
-    checkoutSelected();
+    await checkoutSelected();
     throw redirect("/orders");
   }
 

@@ -1,13 +1,15 @@
 import { Col, Row, Tag, Typography } from "antd";
 import BookCard from "../components/BookCard";
 import { redirect, useLoaderData } from "react-router-dom";
-import { addToCart, setPageSearch } from "../data/appStore";
+import { addToCart, ensureBooksLoaded, setPageSearch } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function booksLoader() {
   const snapshot = requireAuthSnapshot();
+  await ensureBooksLoaded();
+  const latestSnapshot = requireAuthSnapshot();
   return {
-    books: snapshot.books,
+    books: latestSnapshot.books,
     search: snapshot.searchByPage.books
   };
 }
@@ -25,7 +27,7 @@ export async function booksAction({ request }) {
   if (intent === "add-to-cart") {
     const bookId = String(formData.get("bookId") || "");
     if (bookId) {
-      addToCart(bookId);
+      await addToCart(bookId);
     }
     throw redirect(String(formData.get("redirectTo") || "/cart"));
   }

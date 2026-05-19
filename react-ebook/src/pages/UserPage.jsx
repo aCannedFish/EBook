@@ -33,11 +33,18 @@ export async function userAction({ request }) {
       };
     }
 
-    updateUserProfile({ username, email, signature });
-    return {
-      status: "success",
-      message: "个人信息已更新。"
-    };
+    try {
+      await updateUserProfile({ username, email, signature });
+      return {
+        status: "success",
+        message: "个人信息已更新。"
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: error?.message || "更新失败，请稍后再试。"
+      };
+    }
   }
 
   return null;

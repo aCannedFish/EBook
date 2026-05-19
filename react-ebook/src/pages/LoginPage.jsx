@@ -1,7 +1,8 @@
 import { Button, Card, Checkbox, Input, Space, Typography } from "antd";
 import { useState } from "react";
-import { Form, Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
-import { getRememberedUsername, getSnapshot, login } from "../data/appStore";
+import { Form, Link, redirect, useActionData, useLoaderData, useSubmit } from "react-router-dom";
+import { loginUser, registerUser } from "../api/backendApi";
+import { getRememberedUsername, getSnapshot, setAuthenticatedUser } from "../data/appStore";
 
 export async function loginLoader() {
   const snapshot = getSnapshot();
@@ -22,16 +23,64 @@ export async function loginAction({ request }) {
     const password = String(formData.get("password") || "").trim();
     const remember = formData.get("remember") === "on";
     if (!username || !password) {
-      return null;
+      return {
+        status: "error",
+        message: "请输入用户名和密码。"
+      };
     }
-    login(username, remember);
-    throw redirect("/books");
+    try {
+      const user = await loginUser({ username, password });
+      setAuthenticatedUser(user, remember);
+      throw redirect("/books");
+    } catch (error) {
+      return {
+        status: "error",
+        message: error?.message || "登录失败，请检查账号和密码。"
+      };
+    }
   }
 
   if (intent === "guest") {
-    const username = String(formData.get("username") || "").trim() || "同学A";
-    login(username, false);
-    throw redirect("/books");
+    try {
+      const user = await loginUser({ username: "同学A", password: "123456" });
+      setAuthenticatedUser(user, false);
+      throw redirect("/books");
+    } catch (error) {
+      return {
+        status: "error",
+        message: error?.message || "体验账号不可用，请使用注册登录。"
+      };
+    }
+  }
+
+  if (intent === "register") {
+    const username = String(formData.get("username") || "").trim();
+    const password = String(formData.get("password") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const remember = formData.get("remember") === "on";
+    if (!username || !password || !email) {
+      return {
+        status: "error",
+        message: "用户名、密码和邮箱不能为空。"
+      };
+    }
+
+    try {
+      const user = await registerUser({
+        username,
+        password,
+        email,
+        signature: "",
+        level: "普通用户"
+      });
+      setAuthenticatedUser(user, remember);
+      throw redirect("/books");
+    } catch (error) {
+      return {
+        status: "error",
+        message: error?.message || "注册失败，请稍后重试。"
+      };
+    }
   }
 
   return null;
@@ -41,6 +90,7 @@ export async function loginAction({ request }) {
 function LoginPage() {
   // loaderData 由 /login 的 loader 返回（见 App.jsx -> loginLoader）。
   const loaderData = useLoaderData();
+  const actionData = useActionData();
   // submit 用于命令式触发当前路由 action（等价于提交 Form）。
   const submit = useSubmit();
   // username 保存用户名输入框的实时内容。
@@ -49,6 +99,7 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   // remember 控制“记住我”复选框状态，决定是否写入本地存储。
   const [remember, setRemember] = useState(false);
+  const [email, setEmail] = useState("");
 
   // 提交表单：先阻止默认刷新，再做最基础的非空校验，最后通知上层更新登录态。
   const handleSubmit = (event) => {
@@ -133,6 +184,18 @@ function LoginPage() {
                 />
               </div>
 
+              <div className="field">
+                <label className="field__label" htmlFor="email">邮箱（用于注册）</label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="请输入邮箱"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </div>
+
               <div className="auth__actions">
                 <Checkbox
                   id="remember"
@@ -147,7 +210,26 @@ function LoginPage() {
               <div className="auth__cta">
                 <Button type="primary" htmlType="submit">登录</Button>
                 <Button onClick={handleGuest}>直接进入书城</Button>
+                <Button
+                  onClick={() =>
+                    submit(
+                      {
+                        intent: "register",
+                        username: username.trim(),
+                        password: password.trim(),
+                        email: email.trim(),
+                        remember: remember ? "on" : ""
+                      },
+                      { method: "post" }
+                    )
+                  }
+                >
+                  注册并登录
+                </Button>
               </div>
+              {actionData?.status === "error" ? (
+                <Typography.Text type="danger">{actionData.message}</Typography.Text>
+              ) : null}
             </Space>
           </Form>
         </section>

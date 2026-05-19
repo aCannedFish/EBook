@@ -1,12 +1,22 @@
 import { Button, Card, Descriptions, Space, Tag, Typography } from "antd";
 import { Form, redirect, useLoaderData, useLocation, useNavigate, useParams } from "react-router-dom";
-import { addToCart, getBookById, setPageSearch } from "../data/appStore";
+import { addToCart, ensureBooksLoaded, fetchAndStoreBookById, getBookById, setPageSearch } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 
 export async function bookDetailLoader({ params }) {
+  requireAuthSnapshot();
+  await ensureBooksLoaded();
   const snapshot = requireAuthSnapshot();
+  let detailBook = getBookById(params.bookId);
+  try {
+    detailBook = await fetchAndStoreBookById(params.bookId);
+  } catch (error) {
+    if (error?.status !== 404) {
+      throw error;
+    }
+  }
   return {
-    detailBook: getBookById(params.bookId),
+    detailBook,
     search: snapshot.searchByPage.detail
   };
 }
@@ -24,7 +34,7 @@ export async function bookDetailAction({ request, params }) {
   if (intent === "add-to-cart") {
     const bookId = String(formData.get("bookId") || params.bookId || "");
     if (bookId) {
-      addToCart(bookId);
+      await addToCart(bookId);
     }
     throw redirect(String(formData.get("redirectTo") || "/cart"));
   }

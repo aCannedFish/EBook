@@ -62,6 +62,27 @@ React 版本当前采用：
 - `DashboardLayout` 在受保护父路由中统一共享（子页面只渲染内容区）
 - UI 组件层使用 Ant Design（保留原数据路由与 `appStore` 读写链路）
 
+#### 2.1) 运行 Spring Boot 后端（推荐一键脚本）
+
+```bash
+cd springboot-ebook
+chmod +x run-local.sh stop-local.sh
+./run-local.sh
+```
+
+后端默认地址：`http://localhost:8080`，可用以下接口验证：
+
+- `GET /api/v1/books`
+- `GET /api/v1/book/1`
+- `POST /api/v1/users/register`
+
+停止临时 MySQL 容器：
+
+```bash
+cd springboot-ebook
+./stop-local.sh
+```
+
 #### 3) 查看文档主分支
 
 ```bash
@@ -71,4 +92,4 @@ git checkout main
 ### 说明
 
 - `README.md` 在三个分支中内容保持一致。
-- 业务数据目前为前端演示数据，不包含真实后端接口。
+- React 版本已接入 Spring Boot 后端 API（`/api/v1/books`、`/api/v1/book/{id}`、`/api/v1/users/register`），购物车/订单等仍保留前端本地状态演示。
