@@ -51,6 +51,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Java 22+ 下消除 Tomcat 的 System::load 受限方法警告 -->
+                    <jvmArguments>--enable-native-access=ALL-UNNAMED</jvmArguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>

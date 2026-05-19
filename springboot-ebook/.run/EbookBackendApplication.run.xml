@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EbookBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="springboot-ebook" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.ebook.backend.EbookBackendApplication" />
+    <option name="VM_PARAMETERS" value="--enable-native-access=ALL-UNNAMED" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
