@@ -38,7 +38,7 @@ if ! docker ps --format '{{.Names}}' | grep -qx "$CONTAINER_NAME"; then
   docker run -d \
     --name "$CONTAINER_NAME" \
     -e MYSQL_ROOT_PASSWORD=root \
-    -e MYSQL_DATABASE=ebook_hw4 \
+    -e MYSQL_DATABASE=ebook_backend \
     -p "$MYSQL_PORT:3306" \
     mysql:8.0 >/dev/null
 fi
@@ -65,7 +65,7 @@ fi
 
 echo "Starting backend at http://localhost:8080 ..."
 cd "$ROOT_DIR"
-DB_URL="jdbc:mysql://localhost:${MYSQL_PORT}/ebook_hw4?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC" \
+DB_URL="jdbc:mysql://localhost:${MYSQL_PORT}/ebook_backend?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC" \
 DB_USERNAME="root" \
 DB_PASSWORD="root" \
 java -jar "$JAR_PATH"

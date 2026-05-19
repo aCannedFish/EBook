@@ -87,7 +87,7 @@
 └─────────────────────────────────────────────────────────│────────┘
                                                           ▼
                                               ┌───────────────────┐
-                                              │  MySQL (ebook_hw4) │
+                                              │  MySQL (ebook_backend) │
                                               │  users / books /     │
                                               │  cart_items / orders │
                                               └───────────────────┘
@@ -362,7 +362,7 @@ backend/
 
 文件：`springboot-ebook/src/main/resources/application.properties`
 
-- `spring.datasource.url`：JDBC 指向 MySQL 库 `ebook_hw4`（本地脚本使用端口 **3307**）。
+- `spring.datasource.url`：JDBC 指向 MySQL 库 `ebook_backend`（本地脚本使用端口 **3307**）。
 - `spring.datasource.username` / `password`：可通过环境变量 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD` 覆盖。
 - `spring.jpa.hibernate.ddl-auto=none`：表结构由 `schema.sql` 管理，不由 Hibernate 自动改表。
 - `spring.sql.init.mode=always`：启动执行 `schema.sql` + `data.sql`。
@@ -407,7 +407,7 @@ chmod +x run-local.sh stop-local.sh
 
 1. 若不存在则构建 `target/springboot-ebook-0.0.1-SNAPSHOT.jar`；  
 2. 启动 Docker 容器 `ebook-mysql-local`（主机端口 **3307** → 容器 3306）；  
-3. 以 `DB_URL=jdbc:mysql://localhost:3307/ebook_hw4...`、`DB_PASSWORD=root` 启动 Spring Boot。
+3. 以 `DB_URL=jdbc:mysql://localhost:3307/ebook_backend...`、`DB_PASSWORD=root` 启动 Spring Boot。
 
 验证后端：
 
@@ -468,7 +468,7 @@ echo 'VITE_API_BASE_URL=http://localhost:8080' > .env.local
 ```bash
 cd springboot-ebook
 mvn clean package -DskipTests
-DB_URL='jdbc:mysql://localhost:3306/ebook_hw4?...' \
+DB_URL='jdbc:mysql://localhost:3306/ebook_backend?...' \
 DB_USERNAME=root \
 DB_PASSWORD=你的密码 \
 java -jar target/springboot-ebook-0.0.1-SNAPSHOT.jar

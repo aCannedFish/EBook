@@ -139,7 +139,7 @@ springboot-ebook/
 
 前后端本地联调方式：
 
-1. 启动 MySQL 并创建数据库（默认 `ebook_hw4`）
+1. 启动 MySQL 并创建数据库（默认 `ebook_backend`）
 2. 启动后端 `springboot-ebook`
 3. 启动前端 `react-ebook`
 4. 前端通过 `/api/v1/...` 请求后端接口
