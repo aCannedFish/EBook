@@ -21,8 +21,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    /** 用户表仓储。 */
     private final UserRepository userRepository;
 
+    /**
+     * @param userRepository 由 Spring 注入的 {@link UserRepository}
+     */
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -30,6 +34,8 @@ public class UserService {
     /**
      * 注册：校验用户名、邮箱唯一后插入 {@link User}。
      *
+     * @param request 注册参数
+     * @return 不含密码的用户 DTO
      * @throws IllegalArgumentException 用户名或邮箱已存在（→ 400）
      */
     public UserResponse register(UserRegisterRequest request) {
@@ -56,6 +62,8 @@ public class UserService {
     /**
      * 登录：按用户名查库并比对密码；失败统一文案，避免泄露「用户是否存在」。
      *
+     * @param request 登录名与密码
+     * @return 用户 DTO
      * @throws IllegalArgumentException 用户不存在或密码错误（→ 400）
      */
     public UserResponse login(UserLoginRequest request) {
@@ -69,6 +77,9 @@ public class UserService {
 
     /**
      * 按 id 获取用户公开信息。
+     *
+     * @param id 用户主键
+     * @return 用户 DTO
      */
     public UserResponse getById(Long id) {
         User user = userRepository.findById(id)
@@ -78,6 +89,10 @@ public class UserService {
 
     /**
      * 更新资料：允许改用户名/邮箱，但不得与其他用户冲突。
+     *
+     * @param id      被更新用户 id
+     * @param request 新用户名、邮箱、签名
+     * @return 更新后的 DTO
      */
     public UserResponse updateProfile(Long id, UserProfileUpdateRequest request) {
         User user = userRepository.findById(id)
@@ -103,6 +118,9 @@ public class UserService {
 
     /**
      * Entity → 对外 DTO，显式排除 password。
+     *
+     * @param user 持久化用户实体
+     * @return API 响应对象
      */
     private UserResponse toResponse(User user) {
         UserResponse response = new UserResponse();

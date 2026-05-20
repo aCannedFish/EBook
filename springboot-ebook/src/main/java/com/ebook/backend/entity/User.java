@@ -18,22 +18,28 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class User {
 
+    /** 主键，自增；登录成功后前端保存此 id 用于后续 API 路径。 */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** 登录名，唯一，最长 60 字符。 */
     @Column(nullable = false, unique = true, length = 60)
     private String username;
 
+    /** 登录密码（演示环境明文存储，不通过 API 返回）。 */
     @Column(nullable = false, length = 128)
     private String password;
 
+    /** 邮箱，唯一，用于注册校验与资料展示。 */
     @Column(nullable = false, unique = true, length = 120)
     private String email;
 
+    /** 个性签名，可为空字符串。 */
     @Column(length = 200)
     private String signature;
 
+    /** 用户等级展示文案，如「普通用户」。 */
     @Column(nullable = false, length = 30)
     private String level;
 

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class OrderStatusRequest {
 
+    /** 目标状态，不能为空。 */
     @NotBlank(message = "status is required")
     private String status;
 

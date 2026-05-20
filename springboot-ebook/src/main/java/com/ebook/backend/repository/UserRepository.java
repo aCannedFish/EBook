@@ -6,14 +6,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * 用户数据访问接口（Spring Data JPA）。
- * <p>
- * 自定义方法由方法名解析生成查询（如 {@code findByUsername} → {@code WHERE username = ?}）。
- * 供 {@link com.ebook.backend.service.UserService} 及购物车/订单中的用户存在性校验使用。
- * </p>
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    /**
+     * 按登录名查询，用于登录与注册唯一性校验。
+     *
+     * @param username 用户名
+     * @return 匹配的用户，无则 empty
+     */
     Optional<User> findByUsername(String username);
 
+    /**
+     * 按邮箱查询，用于注册/改资料时的唯一性校验。
+     *
+     * @param email 邮箱
+     * @return 匹配的用户，无则 empty
+     */
     Optional<User> findByEmail(String email);
 }

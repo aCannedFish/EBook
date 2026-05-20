@@ -27,14 +27,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
+    /** 用户业务服务。 */
     private final UserService userService;
 
+    /**
+     * @param userService 由 Spring 注入的 {@link UserService}
+     */
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     /**
      * 注册新用户；成功返回 201 Created。
+     *
+     * @param request 注册表单 JSON，经 {@code @Valid} 校验
+     * @return 新用户信息（不含密码）
      */
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRegisterRequest request) {
@@ -43,7 +50,9 @@ public class UserController {
 
     /**
      * 登录：校验库中用户名与密码（演示项目为明文比对）。
-     * 前端保存返回的 {@link UserResponse#getId()} 供后续购物车/订单 API 使用。
+     *
+     * @param request 用户名与密码
+     * @return 用户信息，前端保存 {@link UserResponse#getId()}
      */
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@Valid @RequestBody UserLoginRequest request) {
@@ -52,6 +61,9 @@ public class UserController {
 
     /**
      * 按 id 查询用户公开资料。
+     *
+     * @param id 用户主键
+     * @return 用户 DTO
      */
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
@@ -60,6 +72,10 @@ public class UserController {
 
     /**
      * 更新用户名、邮箱、个性签名（不可改密码）。
+     *
+     * @param id      要更新的用户 id，须与 body 中业务一致（当前未做 Token 校验）
+     * @param request 新资料
+     * @return 更新后的用户 DTO
      */
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateProfile(@PathVariable Long id,

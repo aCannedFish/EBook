@@ -12,22 +12,27 @@ import jakarta.validation.constraints.Size;
  */
 public class UserRegisterRequest {
 
+    /** 新用户名，最长 60，库表唯一。 */
     @NotBlank(message = "username is required")
     @Size(max = 60)
     private String username;
 
+    /** 密码，长度 6～128。 */
     @NotBlank(message = "password is required")
     @Size(min = 6, max = 128)
     private String password;
 
+    /** 邮箱，须符合邮箱格式且唯一。 */
     @Email(message = "email format invalid")
     @NotBlank(message = "email is required")
     @Size(max = 120)
     private String email;
 
+    /** 个性签名，可选。 */
     @Size(max = 200)
     private String signature;
 
+    /** 用户等级，可选；缺省时 Service 设为「普通用户」。 */
     @Size(max = 30)
     private String level;
 

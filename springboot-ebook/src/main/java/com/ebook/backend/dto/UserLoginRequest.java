@@ -11,9 +11,11 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class UserLoginRequest {
 
+    /** 登录用户名，不能为空。 */
     @NotBlank(message = "username is required")
     private String username;
 
+    /** 登录密码，不能为空（演示环境明文传输）。 */
     @NotBlank(message = "password is required")
     private String password;
 

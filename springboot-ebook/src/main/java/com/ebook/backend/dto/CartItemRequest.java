@@ -11,9 +11,11 @@ import jakarta.validation.constraints.NotNull;
  */
 public class CartItemRequest {
 
+    /** 要加入购物车的书籍主键，必填。 */
     @NotNull(message = "bookId is required")
     private Long bookId;
 
+    /** 本次增加的数量；null 时按 1 处理。 */
     private Integer qty;
 
     public Long getBookId() {

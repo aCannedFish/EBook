@@ -9,10 +9,19 @@ package com.ebook.backend.dto;
  */
 public class OrderResponse {
 
+    /** 业务订单号，对应 {@link com.ebook.backend.entity.OrderEntity#getOrderNo()}。 */
     private String id;
+
+    /** 订单状态：pending / paid / cancelled。 */
     private String status;
+
+    /** 所购书籍 id。 */
     private Long bookId;
+
+    /** 购买数量。 */
     private Integer qty;
+
+    /** 下单时单价快照。 */
     private Integer unitPrice;
 
     public String getId() {

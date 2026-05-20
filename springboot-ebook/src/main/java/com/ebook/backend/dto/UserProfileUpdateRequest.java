@@ -12,15 +12,18 @@ import jakarta.validation.constraints.Size;
  */
 public class UserProfileUpdateRequest {
 
+    /** 新用户名（不得与其他用户冲突）。 */
     @NotBlank(message = "username is required")
     @Size(max = 60)
     private String username;
 
+    /** 新邮箱（不得与其他用户冲突）。 */
     @NotBlank(message = "email is required")
     @Email(message = "email format invalid")
     @Size(max = 120)
     private String email;
 
+    /** 个性签名，可为空。 */
     @Size(max = 200)
     private String signature;
 

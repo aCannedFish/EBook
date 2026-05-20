@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局 REST 异常处理器（Spring MVC {@link RestControllerAdvice}）。
- * <p>
- * 将 Controller/Service 抛出的异常统一转换为 JSON {@code {"message": "..."}}，
- * 避免各接口自行 try-catch，并与前端 {@code backendApi.js} 的错误解析约定一致。
- * </p>
  */
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    /** 业务参数或规则错误（如密码错误、qty 超范围）→ 400 */
+    /**
+     * 处理业务参数或规则类错误。
+     *
+     * @param ex 异常，message 将返回给前端
+     * @return HTTP 400 + JSON body
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -26,7 +27,12 @@ public class ApiExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    /** 资源不存在（书/用户/购物车行/订单）→ 404 */
+    /**
+     * 处理资源不存在。
+     *
+     * @param ex 异常
+     * @return HTTP 404 + JSON body
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -35,8 +41,10 @@ public class ApiExceptionHandler {
     }
 
     /**
-     * {@code @Valid} 请求体校验失败（Jakarta Bean Validation）→ 400。
-     * 取第一个字段错误信息作为 message。
+     * 处理 {@code @Valid} 请求体验证失败。
+     *
+     * @param ex 绑定校验异常
+     * @return HTTP 400 + 第一个字段错误信息
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {

@@ -23,14 +23,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/orders")
 public class OrderController {
 
+    /** 订单业务服务。 */
     private final OrderService orderService;
 
+    /**
+     * @param orderService 由 Spring 注入的 {@link OrderService}
+     */
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
     /**
      * 查询用户订单，按创建时间倒序。
+     *
+     * @param userId 用户主键
+     * @return 订单 DTO 列表
      */
     @GetMapping("/{userId}")
     public List<OrderResponse> getOrders(@PathVariable Long userId) {
@@ -40,7 +47,10 @@ public class OrderController {
     /**
      * 更新订单状态（pending / paid / cancelled）。
      *
+     * @param userId  订单所属用户（用于校验归属）
      * @param orderNo 业务订单号，与 {@link OrderResponse#getId()} 一致
+     * @param request 含新 status
+     * @return 更新后的订单 DTO
      */
     @PatchMapping("/{userId}/{orderNo}")
     public OrderResponse updateStatus(@PathVariable Long userId,

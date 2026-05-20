@@ -9,8 +9,13 @@ package com.ebook.backend.dto;
  */
 public class CartItemResponse {
 
+    /** 书籍主键，用于 join 书目信息。 */
     private Long bookId;
+
+    /** 该行购买数量。 */
     private Integer qty;
+
+    /** 是否勾选参与结算。 */
     private Boolean selected;
 
     public Long getBookId() {

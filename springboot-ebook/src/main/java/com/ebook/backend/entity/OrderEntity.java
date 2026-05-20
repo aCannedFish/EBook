@@ -20,28 +20,36 @@ import java.time.LocalDateTime;
 @Table(name = "orders")
 public class OrderEntity {
 
+    /** 表主键，自增；对外业务标识使用 {@link #orderNo}。 */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** 业务订单号，唯一，如 ORD-20260519120000-0001-4521。 */
     @Column(name = "order_no", nullable = false, unique = true, length = 40)
     private String orderNo;
 
+    /** 下单用户 id。 */
     @Column(nullable = false)
     private Long userId;
 
+    /** 所购书籍 id。 */
     @Column(nullable = false)
     private Long bookId;
 
+    /** 购买数量。 */
     @Column(nullable = false)
     private Integer qty;
 
+    /** 下单时单价快照（分/元与 books.price 一致）。 */
     @Column(nullable = false)
     private Integer unitPrice;
 
+    /** 订单状态：pending / paid / cancelled。 */
     @Column(nullable = false, length = 20)
     private String status;
 
+    /** 创建时间，仅读，由数据库 DEFAULT CURRENT_TIMESTAMP 写入。 */
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 

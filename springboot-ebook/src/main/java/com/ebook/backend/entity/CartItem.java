@@ -18,19 +18,24 @@ import jakarta.persistence.Table;
 @Table(name = "cart_items")
 public class CartItem {
 
+    /** 购物车行主键，自增。 */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** 所属用户 id，外键逻辑关联 {@link User#getId()}。 */
     @Column(nullable = false)
     private Long userId;
 
+    /** 书籍 id，外键逻辑关联 {@link Book#getId()}。 */
     @Column(nullable = false)
     private Long bookId;
 
+    /** 购买数量，业务上限 4（在 Service 层 enforced）。 */
     @Column(nullable = false)
     private Integer qty;
 
+    /** 是否参与结算；true 的行在 checkout 时转为订单。 */
     @Column(nullable = false)
     private Boolean selected;
 

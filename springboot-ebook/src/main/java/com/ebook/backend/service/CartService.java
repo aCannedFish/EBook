@@ -27,14 +27,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class CartService {
 
-    /** 单本书在购物车中的最大购买数量 */
+    /** 单本书在购物车中的最大购买数量。 */
     private static final int MAX_QTY_PER_BOOK = 4;
 
+    /** 购物车行持久化。 */
     private final CartItemRepository cartItemRepository;
+
+    /** 用于 ensureUser 校验用户存在。 */
     private final UserRepository userRepository;
+
+    /** 加购、结算时校验书籍存在并读取 id。 */
     private final BookRepository bookRepository;
+
+    /** 结算时创建订单。 */
     private final OrderService orderService;
 
+    /**
+     * @param cartItemRepository 购物车表仓储
+     * @param userRepository     用户表仓储
+     * @param bookRepository     图书表仓储
+     * @param orderService       订单服务（结算编排）
+     */
     public CartService(CartItemRepository cartItemRepository,
                        UserRepository userRepository,
                        BookRepository bookRepository,
@@ -47,6 +60,9 @@ public class CartService {
 
     /**
      * 查询用户购物车并转为 {@link CartItemResponse} 列表。
+     *
+     * @param userId 用户主键
+     * @return 购物车 DTO 列表
      */
     public List<CartItemResponse> getCartItems(Long userId) {
         ensureUser(userId);
@@ -58,14 +74,10 @@ public class CartService {
 
     /**
      * 加购：存在则累加数量，不存在则新建行；数量不超过 {@link #MAX_QTY_PER_BOOK}。
-     * <p>
-     * 逻辑说明：
-     * <ol>
-     *   <li>{@code orElseGet}：无行时创建 transient {@link CartItem}，qty 先置 0 再参与累加；</li>
-     *   <li>{@code save}：JPA 对无 id 行 INSERT，有 id 行 UPDATE；</li>
-     *   <li>返回全量列表，供前端刷新整张购物车表。</li>
-     * </ol>
-     * </p>
+     *
+     * @param userId  购物车所属用户
+     * @param request 含 bookId、可选 qty
+     * @return 更新后的完整购物车列表
      */
     public List<CartItemResponse> addToCart(Long userId, CartItemRequest request) {
         ensureUser(userId);
@@ -93,6 +105,11 @@ public class CartService {
 
     /**
      * PATCH 式更新：仅当 request 中字段非 null 时才写入实体。
+     *
+     * @param userId  用户 id
+     * @param bookId  书籍 id
+     * @param request 部分更新字段
+     * @return 更新后的完整购物车列表
      */
     public List<CartItemResponse> updateCartItem(Long userId, Long bookId, CartItemUpdateRequest request) {
         ensureUser(userId);
@@ -117,6 +134,10 @@ public class CartService {
 
     /**
      * 按用户与书 id 删除一行购物车记录。
+     *
+     * @param userId 用户 id
+     * @param bookId 书籍 id
+     * @return 删除后的完整购物车列表
      */
     public List<CartItemResponse> removeCartItem(Long userId, Long bookId) {
         ensureUser(userId);
@@ -126,10 +147,9 @@ public class CartService {
 
     /**
      * 结算：将已勾选行转为订单并删除对应购物车行。
-     * <p>
-     * 跨服务调用 {@link OrderService#createOrders}；当前未使用 {@code @Transactional}，
-     * 极端情况下可能出现订单已建但购物车未删，生产环境建议在方法上加事务注解。
-     * </p>
+     *
+     * @param userId 下单用户
+     * @return 本次创建的订单列表；无勾选行时返回空列表
      */
     public List<OrderResponse> checkout(Long userId) {
         ensureUser(userId);
@@ -147,6 +167,8 @@ public class CartService {
 
     /**
      * 校验用户存在，供本类各方法复用。
+     *
+     * @param userId 待校验的用户 id
      */
     private void ensureUser(Long userId) {
         userRepository.findById(userId)
@@ -154,7 +176,10 @@ public class CartService {
     }
 
     /**
-     * 持久化实体 → API 响应 DTO（不含书名等，由前端 join books 数据）。
+     * 持久化实体 → API 响应 DTO。
+     *
+     * @param item 购物车行实体
+     * @return 对外 DTO
      */
     private CartItemResponse toResponse(CartItem item) {
         CartItemResponse response = new CartItemResponse();

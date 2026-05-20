@@ -18,37 +18,48 @@ import jakarta.persistence.Table;
 @Table(name = "books")
 public class Book {
 
+    /** 主键，自增；购物车、订单通过 bookId 引用。 */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** 书名。 */
     @Column(nullable = false, length = 150)
     private String title;
 
+    /** 作者。 */
     @Column(nullable = false, length = 100)
     private String author;
 
+    /** 售价（整数，单位：元，与订单 unit_price 一致）。 */
     @Column(nullable = false)
     private Integer price;
 
+    /** 分类标签，用于列表筛选展示。 */
     @Column(nullable = false, length = 120)
     private String category;
 
+    /** 出版社名称。 */
     @Column(nullable = false, length = 120)
     private String publisher;
 
+    /** 国际标准书号，唯一；前端用于匹配封面图。 */
     @Column(nullable = false, unique = true, length = 30)
     private String isbn;
 
+    /** 售卖形式文案，如「电子书 · 立即阅读」。 */
     @Column(nullable = false, length = 60)
     private String format;
 
+    /** 库存状态类型：如 ok / warn，供前端 Tag 颜色。 */
     @Column(nullable = false, length = 50)
     private String stockType;
 
+    /** 库存状态展示文案：如「有货」「库存紧张」。 */
     @Column(nullable = false, length = 50)
     private String stockText;
 
+    /** 内容简介。 */
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 

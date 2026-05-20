@@ -20,18 +20,28 @@ import org.springframework.stereotype.Service;
  * <p>
  * 被 {@link com.ebook.backend.controller.OrderController} 与 {@link CartService#checkout} 调用；
  * 通过 {@link OrderRepository} 持久化 {@link OrderEntity}。
- * 每条购物车结算行生成一条订单（一书一单），单价取自下单瞬间的 {@link Book#getPrice()}。
  * </p>
  */
 @Service
 public class OrderService {
 
+    /** 允许写入数据库的订单状态枚举值。 */
     private static final List<String> ALLOWED_STATUSES = List.of("pending", "paid", "cancelled");
 
+    /** 订单表仓储。 */
     private final OrderRepository orderRepository;
+
+    /** 校验用户存在。 */
     private final UserRepository userRepository;
+
+    /** 创建订单时读取书名对应价格。 */
     private final BookRepository bookRepository;
 
+    /**
+     * @param orderRepository 订单仓储
+     * @param userRepository  用户仓储
+     * @param bookRepository  图书仓储
+     */
     public OrderService(OrderRepository orderRepository,
                         UserRepository userRepository,
                         BookRepository bookRepository) {
@@ -41,7 +51,10 @@ public class OrderService {
     }
 
     /**
-     * 查询用户全部订单，按 {@code created_at} 降序（Repository 方法名推导排序）。
+     * 查询用户全部订单，按 {@code created_at} 降序。
+     *
+     * @param userId 用户主键
+     * @return 订单 DTO 列表
      */
     public List<OrderResponse> getOrders(Long userId) {
         ensureUser(userId);
@@ -53,6 +66,11 @@ public class OrderService {
 
     /**
      * 更新订单状态；订单必须属于该 userId。
+     *
+     * @param userId  用户 id
+     * @param orderNo 业务订单号
+     * @param status  新状态
+     * @return 更新后的订单 DTO
      */
     public OrderResponse updateStatus(Long userId, String orderNo, String status) {
         ensureUser(userId);
@@ -67,10 +85,6 @@ public class OrderService {
 
     /**
      * 根据购物车已选行批量创建订单（供结算调用）。
-     * <p>
-     * 每个 {@link CartItem} 对应一条 {@link OrderEntity}；
-     * {@link OrderEntity#setUnitPrice} 为价格快照，避免日后改书价影响历史订单。
-     * </p>
      *
      * @param userId 下单用户
      * @param items  已勾选的购物车行，非空
@@ -97,21 +111,25 @@ public class OrderService {
             orders.add(order);
             index += 1;
         }
-        // saveAll：Spring Data JPA 批量 INSERT，返回带生成 id 的实体列表
         return orderRepository.saveAll(orders)
                 .stream()
                 .map(this::toResponse)
                 .toList();
     }
 
+    /**
+     * @param userId 用户 id
+     */
     private void ensureUser(Long userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user not found: " + userId));
     }
 
     /**
-     * 生成业务订单号：时间戳 + 批次内序号 + 随机后缀，降低同秒冲突概率。
-     * 格式示例：{@code ORD-20260519120000-0001-4521}
+     * 生成业务订单号。
+     *
+     * @param index 同一批次内的序号，从 1 递增
+     * @return 形如 ORD-20260519120000-0001-4521 的字符串
      */
     private String generateOrderNo(int index) {
         String timestamp = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
@@ -121,7 +139,8 @@ public class OrderService {
     }
 
     /**
-     * 将 {@link OrderEntity} 转为 API DTO；对外 {@code id} 使用 {@link OrderEntity#getOrderNo()}。
+     * @param order 订单实体
+     * @return API 用 DTO，id 字段为 orderNo
      */
     private OrderResponse toResponse(OrderEntity order) {
         OrderResponse response = new OrderResponse();

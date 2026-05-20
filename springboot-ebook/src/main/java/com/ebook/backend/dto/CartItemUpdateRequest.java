@@ -9,8 +9,10 @@ package com.ebook.backend.dto;
  */
 public class CartItemUpdateRequest {
 
+    /** 新数量；null 表示不修改；合法范围为 1～4。 */
     private Integer qty;
 
+    /** 是否勾选结算；null 表示不修改。 */
     private Boolean selected;
 
     public Integer getQty() {

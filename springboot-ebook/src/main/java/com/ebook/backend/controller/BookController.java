@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class BookController {
 
+    /** 图书业务服务，构造器注入。 */
     private final BookService bookService;
 
+    /**
+     * @param bookService 由 Spring 容器注入的 {@link BookService} Bean
+     */
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
