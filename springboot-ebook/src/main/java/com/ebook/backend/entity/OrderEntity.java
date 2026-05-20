@@ -8,6 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
+/**
+ * 订单实体，映射表 {@code orders}（类名避免与 SQL 关键字及模块歧义）。
+ * <p>
+ * {@link #orderNo} 为业务订单号，对外 API 的 {@link com.ebook.backend.dto.OrderResponse#getId()} 即此字段；
+ * {@link #unitPrice} 为下单时从 {@link Book#getPrice()} 复制的快照；
+ * {@link #createdAt} 由数据库默认时间戳填充（insertable/updatable=false）。
+ * </p>
+ */
 @Entity
 @Table(name = "orders")
 public class OrderEntity {

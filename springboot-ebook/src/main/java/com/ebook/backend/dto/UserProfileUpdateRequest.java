@@ -4,6 +4,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * 更新用户资料 API 请求体（不含密码）。
+ * <p>
+ * 对应 {@link com.ebook.backend.controller.UserController#updateProfile}。
+ * </p>
+ */
 public class UserProfileUpdateRequest {
 
     @NotBlank(message = "username is required")

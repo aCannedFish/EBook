@@ -15,8 +15,18 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.stereotype.Service;
 
+/**
+ * 订单业务服务。
+ * <p>
+ * 被 {@link com.ebook.backend.controller.OrderController} 与 {@link CartService#checkout} 调用；
+ * 通过 {@link OrderRepository} 持久化 {@link OrderEntity}。
+ * 每条购物车结算行生成一条订单（一书一单），单价取自下单瞬间的 {@link Book#getPrice()}。
+ * </p>
+ */
 @Service
 public class OrderService {
+
+    private static final List<String> ALLOWED_STATUSES = List.of("pending", "paid", "cancelled");
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
@@ -30,6 +40,9 @@ public class OrderService {
         this.bookRepository = bookRepository;
     }
 
+    /**
+     * 查询用户全部订单，按 {@code created_at} 降序（Repository 方法名推导排序）。
+     */
     public List<OrderResponse> getOrders(Long userId) {
         ensureUser(userId);
         return orderRepository.findByUserIdOrderByCreatedAtDesc(userId)
@@ -38,9 +51,12 @@ public class OrderService {
                 .toList();
     }
 
+    /**
+     * 更新订单状态；订单必须属于该 userId。
+     */
     public OrderResponse updateStatus(Long userId, String orderNo, String status) {
         ensureUser(userId);
-        if (!List.of("pending", "paid", "cancelled").contains(status)) {
+        if (!ALLOWED_STATUSES.contains(status)) {
             throw new IllegalArgumentException("invalid status");
         }
         OrderEntity order = orderRepository.findByOrderNoAndUserId(orderNo, userId)
@@ -49,6 +65,17 @@ public class OrderService {
         return toResponse(orderRepository.save(order));
     }
 
+    /**
+     * 根据购物车已选行批量创建订单（供结算调用）。
+     * <p>
+     * 每个 {@link CartItem} 对应一条 {@link OrderEntity}；
+     * {@link OrderEntity#setUnitPrice} 为价格快照，避免日后改书价影响历史订单。
+     * </p>
+     *
+     * @param userId 下单用户
+     * @param items  已勾选的购物车行，非空
+     * @return 已持久化的订单 DTO 列表
+     */
     public List<OrderResponse> createOrders(Long userId, List<CartItem> items) {
         ensureUser(userId);
         if (items == null || items.isEmpty()) {
@@ -70,6 +97,7 @@ public class OrderService {
             orders.add(order);
             index += 1;
         }
+        // saveAll：Spring Data JPA 批量 INSERT，返回带生成 id 的实体列表
         return orderRepository.saveAll(orders)
                 .stream()
                 .map(this::toResponse)
@@ -81,6 +109,10 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("user not found: " + userId));
     }
 
+    /**
+     * 生成业务订单号：时间戳 + 批次内序号 + 随机后缀，降低同秒冲突概率。
+     * 格式示例：{@code ORD-20260519120000-0001-4521}
+     */
     private String generateOrderNo(int index) {
         String timestamp = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
                 .format(LocalDateTime.now());
@@ -88,6 +120,9 @@ public class OrderService {
         return String.format("ORD-%s-%04d-%d", timestamp, index, suffix);
     }
 
+    /**
+     * 将 {@link OrderEntity} 转为 API DTO；对外 {@code id} 使用 {@link OrderEntity#getOrderNo()}。
+     */
     private OrderResponse toResponse(OrderEntity order) {
         OrderResponse response = new OrderResponse();
         response.setId(order.getOrderNo());

@@ -7,6 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * 购物车行实体，映射表 {@code cart_items}。
+ * <p>
+ * 同一 {@link #userId} 与 {@link #bookId} 在表上有唯一约束，保证每用户每书仅一行；
+ * {@link #selected} 表示结算时是否勾选。由 {@link com.ebook.backend.service.CartService} 读写。
+ * </p>
+ */
 @Entity
 @Table(name = "cart_items")
 public class CartItem {

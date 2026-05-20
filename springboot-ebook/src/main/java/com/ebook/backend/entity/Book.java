@@ -7,6 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * 图书实体，映射表 {@code books}。
+ * <p>
+ * 可由 {@link com.ebook.backend.controller.BookController} 直接序列化为 JSON 返回前端（无敏感字段）；
+ * 封面路径不在库中，由前端按 {@link #isbn} 映射静态资源。
+ * </p>
+ */
 @Entity
 @Table(name = "books")
 public class Book {

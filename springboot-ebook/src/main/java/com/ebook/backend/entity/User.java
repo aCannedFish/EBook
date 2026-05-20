@@ -7,6 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * 用户实体，映射表 {@code users}（JPA/Hibernate）。
+ * <p>
+ * 持久化层使用；对外 API 通过 {@link com.ebook.backend.dto.UserResponse} 暴露，避免泄露 {@link #password}。
+ * 与 {@link CartItem}、{@link OrderEntity} 通过 {@code userId} 逻辑关联（未使用 JPA 关联注解）。
+ * </p>
+ */
 @Entity
 @Table(name = "users")
 public class User {

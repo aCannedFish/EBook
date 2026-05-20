@@ -4,6 +4,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * 用户注册 API 请求体。
+ * <p>
+ * 校验通过后由 {@link com.ebook.backend.service.UserService#register} 转为 {@link com.ebook.backend.entity.User} 持久化。
+ * </p>
+ */
 public class UserRegisterRequest {
 
     @NotBlank(message = "username is required")

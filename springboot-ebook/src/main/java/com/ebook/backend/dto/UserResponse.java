@@ -1,5 +1,12 @@
 package com.ebook.backend.dto;
 
+/**
+ * 用户 API 响应体（Java → JSON）。
+ * <p>
+ * 由 {@link com.ebook.backend.service.UserService} 从 {@link com.ebook.backend.entity.User} 转换而来，
+ *  有意不包含 password，供登录/注册/资料接口返回给前端。
+ * </p>
+ */
 public class UserResponse {
 
     private Long id;

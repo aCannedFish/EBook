@@ -1,5 +1,12 @@
 package com.ebook.backend.dto;
 
+/**
+ * 购物车单行 API 响应体。
+ * <p>
+ * 仅含前端拼表所需字段；书名、价格由前端用 {@link #bookId} 关联已加载的书目列表。
+ * 由 {@link com.ebook.backend.service.CartService} 从 {@link com.ebook.backend.entity.CartItem} 转换。
+ * </p>
+ */
 public class CartItemResponse {
 
     private Long bookId;
