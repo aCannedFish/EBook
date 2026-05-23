@@ -1,9 +1,13 @@
 package com.ebook.backend.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 订单 API 响应体。
  * <p>
  * {@link #id} 在业务上对应库表 {@code orders.order_no}（非自增主键 id），便于前端展示与 PATCH 路径一致；
+ * {@link #items} 为同一结算批次下的书籍明细；{@link #totalPrice} 为明细行金额之和。
  * 由 {@link com.ebook.backend.service.OrderService} 组装。
  * </p>
  */
@@ -15,14 +19,11 @@ public class OrderResponse {
     /** 订单状态：pending / paid / cancelled。 */
     private String status;
 
-    /** 所购书籍 id。 */
-    private Long bookId;
+    /** 本单合计金额（各明细 qty × unitPrice 之和）。 */
+    private Integer totalPrice;
 
-    /** 购买数量。 */
-    private Integer qty;
-
-    /** 下单时单价快照。 */
-    private Integer unitPrice;
+    /** 同一批次下的书籍明细。 */
+    private List<OrderItemResponse> items = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -40,27 +41,19 @@ public class OrderResponse {
         this.status = status;
     }
 
-    public Long getBookId() {
-        return bookId;
+    public Integer getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
+    public void setTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public Integer getQty() {
-        return qty;
+    public List<OrderItemResponse> getItems() {
+        return items;
     }
 
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
-
-    public Integer getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Integer unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setItems(List<OrderItemResponse> items) {
+        this.items = items;
     }
 }

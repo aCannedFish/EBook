@@ -15,6 +15,12 @@ INSERT INTO cart_items (user_id, book_id, qty, selected) VALUES
 (1, 1, 1, TRUE),
 (1, 3, 2, TRUE);
 
-INSERT INTO orders (order_no, user_id, book_id, qty, unit_price, status) VALUES
-('ORD-20260519-0001', 1, 2, 1, 88, 'paid'),
-('ORD-20260519-0002', 1, 4, 1, 99, 'pending');
+INSERT INTO orders (order_no, user_id, status) VALUES
+('ORD-20260519-0001', 1, 'paid'),
+('ORD-20260519-0002', 1, 'pending');
+
+INSERT INTO order_items (order_id, book_id, qty, unit_price) VALUES
+(1, 2, 1, 88),
+(1, 4, 1, 99),
+(2, 1, 1, 59),
+(2, 3, 2, 79);

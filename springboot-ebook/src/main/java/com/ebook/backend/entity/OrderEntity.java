@@ -1,18 +1,22 @@
 package com.ebook.backend.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 订单实体，映射表 {@code orders}（类名避免与 SQL 关键字及模块歧义）。
+ * 订单头实体，映射表 {@code orders}（类名避免与 SQL 关键字及模块歧义）。
  * <p>
  * {@link #orderNo} 为业务订单号，对外 API 的 {@link com.ebook.backend.dto.OrderResponse#getId()} 即此字段；
- * {@link #unitPrice} 为下单时从 {@link Book#getPrice()} 复制的快照；
+ * 一次结算批次对应一条订单头，多本书明细在 {@link #items} 中；
  * {@link #createdAt} 由数据库默认时间戳填充（insertable/updatable=false）。
  * </p>
  */
@@ -25,25 +29,13 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** 业务订单号，唯一，如 ORD-20260519120000-0001-4521。 */
+    /** 业务订单号，唯一，如 ORD-20260519120000-4521。 */
     @Column(name = "order_no", nullable = false, unique = true, length = 40)
     private String orderNo;
 
     /** 下单用户 id。 */
     @Column(nullable = false)
     private Long userId;
-
-    /** 所购书籍 id。 */
-    @Column(nullable = false)
-    private Long bookId;
-
-    /** 购买数量。 */
-    @Column(nullable = false)
-    private Integer qty;
-
-    /** 下单时单价快照（分/元与 books.price 一致）。 */
-    @Column(nullable = false)
-    private Integer unitPrice;
 
     /** 订单状态：pending / paid / cancelled。 */
     @Column(nullable = false, length = 20)
@@ -52,6 +44,10 @@ public class OrderEntity {
     /** 创建时间，仅读，由数据库 DEFAULT CURRENT_TIMESTAMP 写入。 */
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    /** 本批次下的书籍明细；级联持久化，不单独使用 OrderItemRepository。 */
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -77,30 +73,6 @@ public class OrderEntity {
         this.userId = userId;
     }
 
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
-    }
-
-    public Integer getQty() {
-        return qty;
-    }
-
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
-
-    public Integer getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Integer unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -111,5 +83,23 @@ public class OrderEntity {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
+
+    /**
+     * 向本订单追加一行明细并维护双向关联。
+     *
+     * @param item 订单明细
+     */
+    public void addItem(OrderItem item) {
+        items.add(item);
+        item.setOrder(this);
     }
 }

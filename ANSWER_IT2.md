@@ -44,7 +44,7 @@
 |--------|------|----------|------|
 | **A.i** 正确连接数据库并说明流程 | 2 | `application.properties` + JPA + `schema.sql`/`data.sql` 初始化；见 [§9](#9-数据库访问与持久化过程评分-a) | 可得 |
 | **A.ii** 正确使用 Repository / SQL | 2 | `BookRepository`、`CartItemRepository` 等声明式方法 + `save`/`delete` | 可得 |
-| **A.iii** 实体类抽象 | 1 | `entity/Book`、`User`、`CartItem`、`OrderEntity` | 可得 |
+| **A.iii** 实体类抽象 | 1 | `entity/Book`、`User`、`CartItem`、`OrderEntity`、`OrderItem` | 可得 |
 | **B** 登录、书单、详情、加购、下单（各 1 分） | 5 | 均已实现且数据来自/写入数据库 | 可得 |
 | **C.i** 异步 + 合理 JSON | 2 | Fetch + DTO 响应 | 可得 |
 | **C.ii** 详述请求全链路 | 3 | 见 [§8](#8-前后端通信全流程评分-cii) | 可得 |
@@ -169,7 +169,8 @@ backend/
 │   ├── Book.java
 │   ├── User.java
 │   ├── CartItem.java
-│   └── OrderEntity.java
+│   ├── OrderEntity.java
+│   └── OrderItem.java
 ├── dto/                           # 请求/响应 DTO（不暴露密码等敏感字段）
 ├── exception/
 │   ├── ResourceNotFoundException.java
@@ -208,16 +209,17 @@ backend/
 | `users` | 用户 | `id`, `username`(唯一), `password`, `email`, `signature`, `level` |
 | `books` | 书籍 | `id`, `title`, `author`, `price`, `category`, `publisher`, `isbn`, `stock_type`, `description`… |
 | `cart_items` | 购物车 | `user_id`, `book_id`, `qty`, `selected`；`(user_id, book_id)` 唯一 |
-| `orders` | 订单 | `order_no`(唯一), `user_id`, `book_id`, `qty`, `unit_price`, `status`, `created_at` |
+| `orders` | 订单头 | `order_no`(唯一), `user_id`, `status`, `created_at` |
+| `order_items` | 订单明细 | `order_id`, `book_id`, `qty`, `unit_price`；同一订单下 `(order_id, book_id)` 唯一 |
 
-外键：`cart_items`、`orders` 均引用 `users.id` 与 `books.id`。
+外键：`cart_items`、`orders`、`order_items` 均引用 `users.id` 与/或 `books.id`；`order_items.order_id` 引用 `orders.id`。`OrderItem` **无** Repository，经 `OrderEntity` 级联持久化。
 
 ### 5.3 演示账号与数据量
 
-- **体验账号**：用户名 `同学A`，密码 `123456`（`data.sql` 插入，`id` 一般为 `1`）。
+- **体验账号**：用户名 `DefaultUser`，密码 `123456`（`data.sql` 插入，`id` 一般为 `1`）。
 - **书籍**：8 本（与前端 `Data.json` 书目一致，避免联调时只显示 4 本的问题）。
 - **初始购物车**（用户 1）：书 id 1 数量 1、书 id 3 数量 2。
-- **初始订单**（用户 1）：2 条示例订单（`paid` / `pending`）。
+- **初始订单**（用户 1）：2 个批次——`ORD-20260519-0001`（paid，含书 2+4）、`ORD-20260519-0002`（pending，含书 1+3×2）。
 
 ---
 
@@ -231,14 +233,14 @@ backend/
 | **书籍列表** | `/books`，`booksLoader` → `ensureBooksLoaded()` | `GET /api/v1/books` | 读 `books` |
 | **书籍详情** | `/books/:bookId`，`fetchAndStoreBookById` | `GET /api/v1/book/{id}` | 读 `books` |
 | **加入购物车** | 列表/详情「加入购物车」→ `addToCart` | `POST /api/v1/cart/{userId}/items` | 写 `cart_items`（同书累加，上限 4） |
-| **下订单** | `/cart` 结算 → `checkoutSelected` | `POST /api/v1/cart/{userId}/checkout` | 选中项 → `orders`，并删除对应 `cart_items` |
+| **下订单** | `/cart` 结算 → `checkoutSelected` | `POST /api/v1/cart/{userId}/checkout` | 选中项 → 一条 `orders` + 多条 `order_items`，并删除对应 `cart_items` |
 
 ### 6.2 页面联动（评分 B + A）
 
 | 用户操作 | 联动结果 |
 |----------|----------|
 | 详情页/列表页「加入购物车」 | `redirect` 到 `/cart`，`cartLoader` 从后端拉取，**立即看到新书** |
-| 购物车勾选后「结算」 | `redirect` 到 `/orders`，`ordersLoader` 拉取，**新订单出现在列表** |
+| 购物车勾选后「结算」 | `redirect` 到 `/orders`，`ordersLoader` 拉取，**新批次以一行订单展示（含多本书与合计金额）** |
 | 退出后重新登录 | 购物车、订单仍从数据库按 `userId` 加载（**持久化**） |
 
 ### 6.3 扩展功能（超出最低要求）
@@ -331,13 +333,13 @@ backend/
       → checkoutCart(userId)  // POST /api/v1/cart/{userId}/checkout
 4. CartService.checkout
       → 查询 selected=true 的 cart_items
-      → OrderService.createOrders：每条生成 OrderEntity（status=pending，单价来自 books.price）
-      → orderRepository.saveAll()
+      → OrderService.createOrders：生成一条 OrderEntity + 多条 OrderItem（status=pending，单价来自 books.price）
+      → orderRepository.save(order)  // 级联保存明细
       → cartItemRepository.deleteAll(已结算行)
-5. 返回 List<OrderResponse> JSON
+5. 返回 List<OrderResponse> JSON（通常 1 条，含 items[] 与 totalPrice）
 6. appStore：ensureCartLoaded(true) + ensureOrdersLoaded(true)
 7. redirect("/orders")
-8. ordersLoader → GET /api/v1/orders/{userId} → OrdersPage 展示新订单
+8. ordersLoader → GET /api/v1/orders/{userId} → OrdersPage 按批次一行展示
 ```
 
 ### 8.4 登录（数据库校验账号）
@@ -446,7 +448,7 @@ echo 'VITE_API_BASE_URL=http://localhost:8080' > .env.local
 
 1. 确认后端 `GET /api/v1/books` 返回 **8** 条记录。  
 2. 打开前端 `http://localhost:5173`，进入登录页。  
-3. 点击 **「直接进入书城」** 或登录：`同学A` / `123456`。  
+3. 点击 **「直接进入书城」** 或登录：`DefaultUser` / `123456`。  
 4. **书籍列表**应显示 8 本书（数据来自 MySQL）。  
 5. 进入任意 **详情页** → **加入购物车** → 自动跳转购物车，可见对应书籍。  
 6. 勾选商品 → **结算** → 跳转 **订单页**，可见新订单（`pending`）。  
@@ -458,7 +460,7 @@ echo 'VITE_API_BASE_URL=http://localhost:8080' > .env.local
 |------|------|------|
 | 只显示 4 本书 | 旧版 `data.sql` 仅 4 条或未重启后端 | 确认 `data.sql` 有 8 条 `INSERT`，重新 `./run-local.sh` |
 | 前端报跨域错误 | 后端未启动或端口不对 | 确认 8080 已监听；`CorsConfig` 已允许 `5173` |
-| 登录后购物车为空 | 未带 `userId` 或用了新注册用户 | 用 `同学A` 演示账号或先加购再查看 |
+| 登录后购物车为空 | 未带 `userId` 或用了新注册用户 | 用 `DefaultUser` 演示账号或先加购再查看 |
 | 封面不显示 | 数据库存的是书目信息，封面路径在前端 `Data.json` 按 ISBN 映射 | 属设计取舍，不影响书目与价格来自库 |
 
 ### 10.6 使用自有 MySQL（不用 Docker 脚本）

@@ -55,7 +55,7 @@ const statusMeta = {
   cancelled: { label: "已取消", color: "red" }
 };
 
-// 订单页：基于订单列表和图书列表拼装展示数据，并提供状态操作入口。
+// 订单页：按结算批次展示订单，同一单内多本书合并为一行并汇总总价。
 function OrdersPage({
   books,
   orders,
@@ -63,36 +63,43 @@ function OrdersPage({
   onUpdateOrderStatus,
   onBuyAgain
 }) {
-  // 统一处理搜索词，便于进行大小写不敏感匹配。
   const keyword = search.trim().toLowerCase();
-  // rows 是用于渲染的增强版订单数据：补齐书籍对象并计算总价。
   const rows = orders
     .map((order) => {
-      // 先把订单中的 bookId 映射回完整书籍信息。
-      const book = books.find((item) => item.id === order.bookId);
-      if (!book) {
+      const items = (order.items || [])
+        .map((item) => {
+          const book = books.find((entry) => entry.id === item.bookId);
+          if (!book) {
+            return null;
+          }
+          return {
+            ...item,
+            book,
+            lineTotal: item.qty * item.unitPrice
+          };
+        })
+        .filter(Boolean);
+
+      if (items.length === 0) {
         return null;
       }
 
-      // total = 数量 × 单价，表示这笔订单的金额。
       return {
         ...order,
-        book,
-        total: order.qty * order.unitPrice
+        items,
+        total: order.totalPrice || items.reduce((sum, item) => sum + item.lineTotal, 0)
       };
     })
-    // 去掉找不到书籍的异常订单行。
     .filter(Boolean)
-    // 仅保留订单号或书名命中的行。
     .filter((row) => {
       if (!keyword) {
         return true;
       }
 
-      return `${row.id} ${row.book.title}`.toLowerCase().includes(keyword);
+      const bookTitles = row.items.map((item) => item.book.title).join(" ");
+      return `${row.id} ${bookTitles}`.toLowerCase().includes(keyword);
     });
 
-  // 使用 Ant Design Table 统一订单列表渲染、状态标签与行操作按钮。
   const columns = [
     {
       title: "订单号",
@@ -105,25 +112,25 @@ function OrdersPage({
       render: (status) => <StatusTag status={status} metaMap={statusMeta} />
     },
     {
-      title: "书名",
-      dataIndex: "book",
-      render: (_, row) => (
-        <Link className="link" to={`/books/${row.bookId}`} state={{ book: row.book }}>
-          {row.book.title}
-        </Link>
+      title: "商品明细",
+      dataIndex: "items",
+      render: (items) => (
+        <div className="order-items">
+          {items.map((item) => (
+            <div key={`${item.bookId}-${item.qty}`} className="order-items__line">
+              <Link className="link" to={`/books/${item.bookId}`} state={{ book: item.book }}>
+                {item.book.title}
+              </Link>
+              <span className="order-items__meta">
+                ×{item.qty} · ￥{Number(item.unitPrice).toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </div>
       )
     },
     {
-      title: "数量",
-      dataIndex: "qty"
-    },
-    {
-      title: "单价",
-      dataIndex: "unitPrice",
-      render: (value) => `￥${Number(value).toFixed(2)}`
-    },
-    {
-      title: "总价",
+      title: "订单总价",
       dataIndex: "total",
       align: "right",
       render: (value) => <strong>￥{Number(value).toFixed(2)}</strong>
@@ -132,37 +139,41 @@ function OrdersPage({
       title: "操作",
       dataIndex: "action",
       align: "right",
-      render: (_, row) => (
-        <RowActions
-          actions={[
-            {
-              key: `cancel-${row.id}`,
-              label: "取消",
-              danger: true,
-              hidden: row.status !== "pending",
-              onClick: () => onUpdateOrderStatus(row.id, "cancelled")
-            },
-            {
-              key: `pay-${row.id}`,
-              label: "付款",
-              type: "primary",
-              hidden: row.status !== "pending",
-              onClick: () => onUpdateOrderStatus(row.id, "paid")
-            },
-            {
-              key: `view-${row.id}`,
-              label: "查看",
-              hidden: row.status !== "paid"
-            },
-            {
-              key: `again-${row.id}`,
-              label: "再次购买",
-              hidden: row.status !== "cancelled",
-              onClick: () => onBuyAgain(row.bookId)
-            }
-          ]}
-        />
-      )
+      render: (_, row) => {
+        const actions = [
+          {
+            key: `cancel-${row.id}`,
+            label: "取消",
+            danger: true,
+            hidden: row.status !== "pending",
+            onClick: () => onUpdateOrderStatus(row.id, "cancelled")
+          },
+          {
+            key: `pay-${row.id}`,
+            label: "付款",
+            type: "primary",
+            hidden: row.status !== "pending",
+            onClick: () => onUpdateOrderStatus(row.id, "paid")
+          },
+          {
+            key: `view-${row.id}`,
+            label: "查看",
+            hidden: row.status !== "paid"
+          }
+        ];
+
+        if (row.status === "cancelled") {
+          row.items.forEach((item) => {
+            actions.push({
+              key: `again-${row.id}-${item.bookId}`,
+              label: `再次购买：${item.book.title}`,
+              onClick: () => onBuyAgain(item.bookId)
+            });
+          });
+        }
+
+        return <RowActions actions={actions} />;
+      }
     }
   ];
 

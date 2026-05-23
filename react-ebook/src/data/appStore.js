@@ -136,8 +136,13 @@ function pruneItemsWithoutBooks() {
     .map((item) => ({ ...item, bookId: String(item.bookId) }))
     .filter((item) => bookIdSet.has(item.bookId));
   state.orders = state.orders
-    .map((order) => ({ ...order, bookId: String(order.bookId) }))
-    .filter((order) => bookIdSet.has(order.bookId));
+    .map((order) => ({
+      ...order,
+      items: (order.items || [])
+        .map((line) => ({ ...line, bookId: String(line.bookId) }))
+        .filter((line) => bookIdSet.has(line.bookId))
+    }))
+    .filter((order) => order.items.length > 0);
 }
 
 export async function ensureBooksLoaded(force = false) {
@@ -185,10 +190,13 @@ export async function ensureOrdersLoaded(force = false) {
   state.orders = items.map((item) => ({
     ...item,
     id: String(item.id),
-    bookId: String(item.bookId),
-    qty: Number(item.qty) || 1,
-    unitPrice: Number(item.unitPrice) || 0,
-    status: item.status
+    status: item.status,
+    totalPrice: Number(item.totalPrice) || 0,
+    items: (item.items || []).map((line) => ({
+      bookId: String(line.bookId),
+      qty: Number(line.qty) || 1,
+      unitPrice: Number(line.unitPrice) || 0
+    }))
   }));
   ordersLoaded = true;
   return state.orders;

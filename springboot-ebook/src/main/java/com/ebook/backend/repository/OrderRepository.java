@@ -3,6 +3,7 @@ package com.ebook.backend.repository;
 import com.ebook.backend.entity.OrderEntity;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -11,11 +12,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
     /**
-     * 按用户查询订单，创建时间从新到旧。
+     * 按用户查询订单（含明细），创建时间从新到旧。
      *
      * @param userId 用户主键
      * @return 订单列表
      */
+    @EntityGraph(attributePaths = "items")
     List<OrderEntity> findByUserIdOrderByCreatedAtDesc(Long userId);
 
     /**
@@ -25,5 +27,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
      * @param userId  用户 id
      * @return 订单或 empty
      */
+    @EntityGraph(attributePaths = "items")
     Optional<OrderEntity> findByOrderNoAndUserId(String orderNo, Long userId);
 }

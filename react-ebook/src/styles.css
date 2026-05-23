@@ -672,6 +672,20 @@ button, input, select{ font: inherit; }
   font-size: 12px;
   color: var(--muted);
 }
+.order-items{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.order-items__line{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.order-items__meta{
+  font-size: 12px;
+  color: var(--muted);
+}
 .tag{
   display:inline-flex;
   align-items:center;

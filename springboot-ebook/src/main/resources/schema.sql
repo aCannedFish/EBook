@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS cart_items;
 DROP TABLE IF EXISTS users;
@@ -41,11 +42,18 @@ CREATE TABLE orders (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     order_no VARCHAR(40) NOT NULL UNIQUE,
     user_id BIGINT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_order_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE order_items (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    order_id BIGINT NOT NULL,
     book_id BIGINT NOT NULL,
     qty INT NOT NULL,
     unit_price INT NOT NULL,
-    status VARCHAR(20) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_order_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_order_book FOREIGN KEY (book_id) REFERENCES books(id)
+    UNIQUE KEY uk_order_item_order_book (order_id, book_id),
+    CONSTRAINT fk_order_item_order FOREIGN KEY (order_id) REFERENCES orders(id),
+    CONSTRAINT fk_order_item_book FOREIGN KEY (book_id) REFERENCES books(id)
 );
