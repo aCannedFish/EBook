@@ -92,4 +92,4 @@ git checkout main
 ### 说明
 
 - `README.md` 在三个分支中内容保持一致。
-- React 版本已接入 Spring Boot 后端 API（`/api/v1/books`、`/api/v1/book/{id}`、`/api/v1/users/register`），购物车/订单等仍保留前端本地状态演示。
+- React 版本已接入 Spring Boot 后端 API；书籍、用户、购物车、订单均通过 `/api/v1/**` 与 MySQL 持久化联调（详见 `ANSWER_HW5.md`、`ANSWER_IT2.md`）。

@@ -1,66 +1,45 @@
-package com.ebook.backend.entity;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.ebook.backend.dto;
 
 /**
- * 图书实体，映射表 {@code books}。
+ * 图书 API 响应体（Java → JSON）。
  * <p>
- * 可由 {@link com.ebook.backend.dto.BookResponse} 对外序列化为 JSON（无敏感字段）；
- * 封面路径不在库中，由前端按 {@link #isbn} 映射静态资源。
+ * 由 {@link com.ebook.backend.service.BookService} 从 {@link com.ebook.backend.entity.Book} 转换而来，
+ * 对外屏蔽 JPA 实体细节，便于后续切换异构数据源时保持 API 契约不变。
  * </p>
  */
-@Entity
-@Table(name = "books")
-public class Book {
+public class BookResponse {
 
-    /** 主键，自增；购物车、订单通过 bookId 引用。 */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /** 图书主键。 */
     private Long id;
 
     /** 书名。 */
-    @Column(nullable = false, length = 150)
     private String title;
 
     /** 作者。 */
-    @Column(nullable = false, length = 100)
     private String author;
 
-    /** 售价（整数，单位：元，与订单 unit_price 一致）。 */
-    @Column(nullable = false)
+    /** 售价（整数，单位：元）。 */
     private Integer price;
 
-    /** 分类标签，用于列表筛选展示。 */
-    @Column(nullable = false, length = 120)
+    /** 分类。 */
     private String category;
 
-    /** 出版社名称。 */
-    @Column(nullable = false, length = 120)
+    /** 出版社。 */
     private String publisher;
 
-    /** 国际标准书号，唯一；前端用于匹配封面图。 */
-    @Column(nullable = false, unique = true, length = 30)
+    /** 国际标准书号。 */
     private String isbn;
 
-    /** 售卖形式文案，如「电子书 · 立即阅读」。 */
-    @Column(nullable = false, length = 60)
+    /** 售卖形式文案。 */
     private String format;
 
-    /** 库存状态类型：如 ok / warn，供前端 Tag 颜色。 */
-    @Column(nullable = false, length = 50)
+    /** 库存状态类型：ok / warn 等。 */
     private String stockType;
 
-    /** 库存状态展示文案：如「有货」「库存紧张」。 */
-    @Column(nullable = false, length = 50)
+    /** 库存状态展示文案。 */
     private String stockText;
 
     /** 内容简介。 */
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     public Long getId() {
