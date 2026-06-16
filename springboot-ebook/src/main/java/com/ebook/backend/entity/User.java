@@ -39,9 +39,13 @@ public class User {
     @Column(length = 200)
     private String signature;
 
-    /** 用户等级展示文案，如「普通用户」。 */
+    /** 用户等级展示文案，如「普通用户」「管理员」。 */
     @Column(nullable = false, length = 30)
     private String level;
+
+    /** 账号是否可用；false 时禁止登录。 */
+    @Column(nullable = false)
+    private Boolean enabled = true;
 
     public Long getId() {
         return id;
@@ -89,5 +93,13 @@ public class User {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

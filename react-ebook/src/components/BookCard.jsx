@@ -35,8 +35,8 @@ function BookCard({ book }) {
           <Typography.Text strong className="book-antd-card__price">
             ￥{book.price.toFixed(2)}
           </Typography.Text>
-          <Tag color={book.stockType === "warn" ? "orange" : "green"}>
-            {book.stockText}
+          <Tag color={book.stockType === "warn" ? "orange" : book.stockType === "out" ? "red" : "green"}>
+            {book.stockText} · 库存 {book.stockQty ?? 0}
           </Tag>
         </Space>
         <Space direction="vertical" size={8} className="book-antd-card__actions">

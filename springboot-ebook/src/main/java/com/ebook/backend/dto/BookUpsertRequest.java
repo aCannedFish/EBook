@@ -1,60 +1,52 @@
 package com.ebook.backend.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 /**
- * 图书 API 响应体（Java → JSON）。
- * <p>
- * 由 {@link com.ebook.backend.service.BookService} 从 {@link com.ebook.backend.entity.Book} 转换而来，
- * 对外屏蔽 JPA 实体细节，便于后续切换异构数据源时保持 API 契约不变。
- * </p>
+ * 管理员创建/更新图书请求体。
  */
-public class BookResponse {
+public class BookUpsertRequest {
 
-    /** 图书主键。 */
-    private Long id;
-
-    /** 书名。 */
+    @NotBlank(message = "title is required")
+    @Size(max = 150)
     private String title;
 
-    /** 作者。 */
+    @NotBlank(message = "author is required")
+    @Size(max = 100)
     private String author;
 
-    /** 售价（整数，单位：元）。 */
+    @NotNull(message = "price is required")
+    @Min(value = 0, message = "price must be >= 0")
     private Integer price;
 
-    /** 分类。 */
+    @NotBlank(message = "category is required")
+    @Size(max = 120)
     private String category;
 
-    /** 出版社。 */
+    @NotBlank(message = "publisher is required")
+    @Size(max = 120)
     private String publisher;
 
-    /** 国际标准书号。 */
+    @NotBlank(message = "isbn is required")
+    @Size(max = 30)
     private String isbn;
 
-    /** 售卖形式文案。 */
+    @NotBlank(message = "format is required")
+    @Size(max = 60)
     private String format;
 
-    /** 库存状态类型：ok / warn 等。 */
-    private String stockType;
-
-    /** 库存状态展示文案。 */
-    private String stockText;
-
-    /** 库存数量。 */
+    @NotNull(message = "stockQty is required")
+    @Min(value = 0, message = "stockQty must be >= 0")
     private Integer stockQty;
 
-    /** 封面 URL。 */
+    @Size(max = 512)
     private String coverUrl;
 
-    /** 内容简介。 */
+    @NotBlank(message = "description is required")
     private String description;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -110,22 +102,6 @@ public class BookResponse {
 
     public void setFormat(String format) {
         this.format = format;
-    }
-
-    public String getStockType() {
-        return stockType;
-    }
-
-    public void setStockType(String stockType) {
-        this.stockType = stockType;
-    }
-
-    public String getStockText() {
-        return stockText;
-    }
-
-    public void setStockText(String stockText) {
-        this.stockText = stockText;
     }
 
     public Integer getStockQty() {

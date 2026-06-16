@@ -10,7 +10,8 @@ CREATE TABLE users (
     password VARCHAR(128) NOT NULL,
     email VARCHAR(120) NOT NULL UNIQUE,
     signature VARCHAR(200),
-    level VARCHAR(30) NOT NULL
+    level VARCHAR(30) NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE books (
@@ -24,6 +25,8 @@ CREATE TABLE books (
     format VARCHAR(60) NOT NULL,
     stock_type VARCHAR(50) NOT NULL,
     stock_text VARCHAR(50) NOT NULL,
+    stock_qty INT NOT NULL DEFAULT 0,
+    cover_url VARCHAR(512),
     description TEXT NOT NULL
 );
 

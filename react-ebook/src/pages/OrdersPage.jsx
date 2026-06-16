@@ -1,38 +1,75 @@
-import { Tag, Typography } from "antd";
+import { Input, Space, Tag, Typography } from "antd";
 import { Link, redirect, useLoaderData, useSubmit } from "react-router-dom";
 import ResourceTable from "../components/ResourceTable";
 import RowActions from "../components/RowActions";
 import StatusTag from "../components/StatusTag";
-import { addToCart, ensureBooksLoaded, ensureOrdersLoaded, setPageSearch, updateOrderStatus } from "../data/appStore";
-import { requireAuthSnapshot } from "../routes/authRouteHandlers";
+import {
+  addToCart,
+  ensureBooksLoaded,
+  ensureOrdersLoaded,
+  setOrderFilters,
+  setPageSearch,
+  updateOrderStatus
+} from "../data/appStore";
+import { requireAdminSnapshot, requireAuthSnapshot } from "../routes/authRouteHandlers";
+import { formatDateTime } from "../utils/format";
 
 export async function ordersLoader() {
   requireAuthSnapshot();
   await ensureBooksLoaded();
-  await ensureOrdersLoaded();
+  await ensureOrdersLoaded(true, { adminView: false });
   const snapshot = requireAuthSnapshot();
   return {
     books: snapshot.books,
     orders: snapshot.orders,
-    search: snapshot.searchByPage.orders
+    search: snapshot.searchByPage.orders,
+    filters: snapshot.orderFilters,
+    adminView: false
   };
 }
 
-export async function ordersAction({ request }) {
+export async function adminOrdersLoader() {
+  requireAdminSnapshot();
+  await ensureBooksLoaded();
+  await ensureOrdersLoaded(true, { adminView: true });
+  const snapshot = requireAdminSnapshot();
+  return {
+    books: snapshot.books,
+    orders: snapshot.orders,
+    search: snapshot.searchByPage.adminOrders,
+    filters: snapshot.orderFilters,
+    adminView: true
+  };
+}
+
+async function handleOrdersAction(request, pageKey) {
   requireAuthSnapshot();
   const formData = await request.formData();
   const intent = String(formData.get("intent") || "");
 
   if (intent === "set-search") {
-    setPageSearch("orders", String(formData.get("value") || ""));
+    setPageSearch(pageKey, String(formData.get("value") || ""));
+    return null;
+  }
+
+  if (intent === "set-filters") {
+    setOrderFilters({
+      from: String(formData.get("from") || ""),
+      to: String(formData.get("to") || ""),
+      bookTitle: String(formData.get("bookTitle") || "")
+    });
+    await ensureOrdersLoaded(true, { adminView: pageKey === "adminOrders" });
     return null;
   }
 
   if (intent === "update-status") {
     const orderId = String(formData.get("orderId") || "");
+    const userId = Number(formData.get("userId") || formData.get("ownerId") || 0);
     const status = String(formData.get("status") || "");
+    const snapshot = requireAuthSnapshot();
+    const targetUserId = userId || snapshot.user.id;
     if (orderId && ["pending", "paid", "cancelled"].includes(status)) {
-      await updateOrderStatus(orderId, status);
+      await updateOrderStatus(orderId, status, targetUserId);
     }
     return null;
   }
@@ -48,6 +85,14 @@ export async function ordersAction({ request }) {
   return null;
 }
 
+export async function ordersAction({ request }) {
+  return handleOrdersAction(request, "orders");
+}
+
+export async function adminOrdersAction({ request }) {
+  return handleOrdersAction(request, "adminOrders");
+}
+
 // 订单状态映射表：把内部状态值和展示文案、样式类集中管理，避免 JSX 中到处写条件分支。
 const statusMeta = {
   pending: { label: "待付款", color: "orange" },
@@ -60,8 +105,11 @@ function OrdersPage({
   books,
   orders,
   search,
+  filters,
+  adminView,
   onUpdateOrderStatus,
-  onBuyAgain
+  onBuyAgain,
+  onFilterChange
 }) {
   const keyword = search.trim().toLowerCase();
   const rows = orders
@@ -106,6 +154,18 @@ function OrdersPage({
       dataIndex: "id",
       render: (value) => <span className="order-id">{value}</span>
     },
+    ...(adminView
+      ? [{
+          title: "用户",
+          dataIndex: "username",
+          render: (value, row) => value || `用户#${row.userId}`
+        }]
+      : []),
+    {
+      title: "下单时间",
+      dataIndex: "createdAt",
+      render: (value) => formatDateTime(value)
+    },
     {
       title: "状态",
       dataIndex: "status",
@@ -146,14 +206,14 @@ function OrdersPage({
             label: "取消",
             danger: true,
             hidden: row.status !== "pending",
-            onClick: () => onUpdateOrderStatus(row.id, "cancelled")
+            onClick: () => onUpdateOrderStatus(row.id, "cancelled", row.userId)
           },
           {
             key: `pay-${row.id}`,
             label: "付款",
             type: "primary",
             hidden: row.status !== "pending",
-            onClick: () => onUpdateOrderStatus(row.id, "paid")
+            onClick: () => onUpdateOrderStatus(row.id, "paid", row.userId)
           },
           {
             key: `view-${row.id}`,
@@ -180,11 +240,34 @@ function OrdersPage({
   return (
     <section className="page card" aria-label="订单页面">
       <header className="page__header">
-        <Typography.Title level={3} className="page__title">我的订单</Typography.Title>
+        <Typography.Title level={3} className="page__title">
+          {adminView ? "全部订单" : "我的订单"}
+        </Typography.Title>
         <Tag>共 {rows.length} 单</Tag>
       </header>
 
-      <section className="orders" aria-label="订单列表">
+      <div className="page__toolbar">
+        <Space wrap>
+          <Input
+            type="date"
+            value={filters.from || ""}
+            onChange={(event) => onFilterChange({ from: event.target.value })}
+          />
+          <Input
+            type="date"
+            value={filters.to || ""}
+            onChange={(event) => onFilterChange({ to: event.target.value })}
+          />
+          <Input
+            placeholder="按书名过滤"
+            value={filters.bookTitle || ""}
+            onChange={(event) => onFilterChange({ bookTitle: event.target.value })}
+            style={{ width: 220 }}
+          />
+        </Space>
+      </div>
+
+      <section className="page__section orders" aria-label="订单列表">
         <ResourceTable rowKey="id" dataSource={rows} columns={columns} />
       </section>
     </section>
@@ -197,13 +280,48 @@ export function OrdersRoute() {
 
   return (
     <OrdersPage
-      books={data.books}
-      orders={data.orders}
-      search={data.search}
-      onUpdateOrderStatus={(orderId, status) =>
-        submit({ intent: "update-status", orderId, status }, { method: "post", action: "/orders", navigate: false })
+      {...data}
+      onUpdateOrderStatus={(orderId, status, ownerId) =>
+        submit({ intent: "update-status", orderId, status, ownerId }, { method: "post", action: "/orders", navigate: false })
       }
       onBuyAgain={(bookId) => submit({ intent: "buy-again", bookId, redirectTo: "/books" }, { method: "post", action: "/orders" })}
+      onFilterChange={(partial) =>
+        submit(
+          {
+            intent: "set-filters",
+            from: partial.from ?? data.filters.from,
+            to: partial.to ?? data.filters.to,
+            bookTitle: partial.bookTitle ?? data.filters.bookTitle
+          },
+          { method: "post", navigate: false }
+        )
+      }
+    />
+  );
+}
+
+export function AdminOrdersRoute() {
+  const data = useLoaderData();
+  const submit = useSubmit();
+
+  return (
+    <OrdersPage
+      {...data}
+      onUpdateOrderStatus={(orderId, status, ownerId) =>
+        submit({ intent: "update-status", orderId, status, ownerId }, { method: "post", action: "/admin/orders", navigate: false })
+      }
+      onBuyAgain={(bookId) => submit({ intent: "buy-again", bookId, redirectTo: "/books" }, { method: "post", action: "/admin/orders" })}
+      onFilterChange={(partial) =>
+        submit(
+          {
+            intent: "set-filters",
+            from: partial.from ?? data.filters.from,
+            to: partial.to ?? data.filters.to,
+            bookTitle: partial.bookTitle ?? data.filters.bookTitle
+          },
+          { method: "post", navigate: false }
+        )
+      }
     />
   );
 }

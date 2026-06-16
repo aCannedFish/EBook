@@ -439,6 +439,20 @@ button, input, select{ font: inherit; }
 }
 .page__desc{ margin: 8px 0 0; color: var(--muted); line-height: 1.6; }
 
+/* 页面内工具栏（日期筛选等），与 header 左右边距对齐 */
+.page__toolbar{
+  padding: 0 18px 12px;
+}
+
+/* 页面主体内容区（表格、Tabs 等），与 header 左右边距对齐 */
+.page__section{
+  padding: 0 18px 18px;
+}
+
+.page__section .ant-tabs-nav{
+  margin-bottom: 12px;
+}
+
 /* =========================
    书籍列表页卡片区域
    作用：控制书籍封面、标题、作者、价格和操作按钮布局

@@ -1,8 +1,16 @@
 # =========================
-# Custom local artifacts
+# Documentation (only README is tracked)
 # =========================
-Sum.md
-Ans.docx
+*.md
+!README.md
+!**/README.md
+
+*.pdf
+*.doc
+*.docx
+*.txt
+*.rst
+*.adoc
 
 # =========================
 # OS / Editor

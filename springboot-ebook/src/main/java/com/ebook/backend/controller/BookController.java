@@ -1,52 +1,61 @@
 package com.ebook.backend.controller;
 
 import com.ebook.backend.dto.BookResponse;
+import com.ebook.backend.dto.BookUpsertRequest;
 import com.ebook.backend.service.BookService;
+import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 图书 REST 接口（Spring Web MVC {@link RestController}）。
- * <p>
- * 路径前缀 {@code /api/v1}；返回 {@link BookResponse} DTO（由 Service 从 Entity 转换），
- * 不直接暴露 {@link com.ebook.backend.entity.Book} 实体。
- * </p>
+ * 图书 REST 接口。
  */
 @RestController
 @RequestMapping("/api/v1")
 public class BookController {
 
-    /** 图书业务服务，构造器注入。 */
     private final BookService bookService;
 
-    /**
-     * @param bookService 由 Spring 容器注入的 {@link BookService} Bean
-     */
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
-    /**
-     * 获取全部图书，对应前端书城列表页。
-     *
-     * @return 库中所有图书 DTO，JSON 数组
-     */
     @GetMapping("/books")
     public List<BookResponse> getAllBooks() {
         return bookService.listAll();
     }
 
-    /**
-     * 按主键获取单本书详情。
-     *
-     * @param id 路径中的图书 id（Long，与库表一致）
-     * @return 图书 DTO；不存在时 Service 抛 {@link com.ebook.backend.exception.ResourceNotFoundException} → 404
-     */
     @GetMapping("/book/{id}")
     public BookResponse getBookById(@PathVariable Long id) {
         return bookService.getById(id);
+    }
+
+    @PostMapping("/books")
+    public ResponseEntity<BookResponse> createBook(@RequestParam Long operatorId,
+                                                   @Valid @RequestBody BookUpsertRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.create(operatorId, request));
+    }
+
+    @PutMapping("/books/{id}")
+    public BookResponse updateBook(@RequestParam Long operatorId,
+                                   @PathVariable Long id,
+                                   @Valid @RequestBody BookUpsertRequest request) {
+        return bookService.update(operatorId, id, request);
+    }
+
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<Void> deleteBook(@RequestParam Long operatorId, @PathVariable Long id) {
+        bookService.delete(operatorId, id);
+        return ResponseEntity.noContent().build();
     }
 }

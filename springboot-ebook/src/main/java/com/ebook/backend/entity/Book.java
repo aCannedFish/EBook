@@ -59,6 +59,14 @@ public class Book {
     @Column(nullable = false, length = 50)
     private String stockText;
 
+    /** 库存数量，结算时扣减。 */
+    @Column(name = "stock_qty", nullable = false)
+    private Integer stockQty = 0;
+
+    /** 封面 URL，可为空（前端可回退 ISBN 映射）。 */
+    @Column(name = "cover_url", length = 512)
+    private String coverUrl;
+
     /** 内容简介。 */
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
@@ -141,6 +149,22 @@ public class Book {
 
     public void setStockText(String stockText) {
         this.stockText = stockText;
+    }
+
+    public Integer getStockQty() {
+        return stockQty;
+    }
+
+    public void setStockQty(Integer stockQty) {
+        this.stockQty = stockQty;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public String getDescription() {

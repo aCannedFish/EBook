@@ -29,4 +29,10 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
      */
     @EntityGraph(attributePaths = "items")
     Optional<OrderEntity> findByOrderNoAndUserId(String orderNo, Long userId);
+
+    /**
+     * 管理员查询全部订单（含明细），创建时间从新到旧。
+     */
+    @EntityGraph(attributePaths = "items")
+    List<OrderEntity> findAllByOrderByCreatedAtDesc();
 }

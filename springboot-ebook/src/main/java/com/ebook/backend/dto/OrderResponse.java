@@ -25,6 +25,15 @@ public class OrderResponse {
     /** 同一批次下的书籍明细。 */
     private List<OrderItemResponse> items = new ArrayList<>();
 
+    /** 下单用户 id（管理员查看全部订单时使用）。 */
+    private Long userId;
+
+    /** 下单用户名（管理员查看全部订单时使用）。 */
+    private String username;
+
+    /** 创建时间 ISO 字符串。 */
+    private String createdAt;
+
     public String getId() {
         return id;
     }
@@ -55,5 +64,29 @@ public class OrderResponse {
 
     public void setItems(List<OrderItemResponse> items) {
         this.items = items;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -1,12 +1,22 @@
 import data from "./Data.json";
+import { resolveBookCover } from "../utils/cover";
 import {
   addCartItem,
   checkoutCart,
+  createBook as createBookApi,
+  deleteBook as deleteBookApi,
+  fetchAllOrders,
+  fetchAllUsers,
   fetchBookById,
+  fetchBookSalesStats,
   fetchBooks,
   fetchCartItems,
+  fetchMyPurchaseStats,
   fetchOrders,
+  fetchUserSpendingStats,
   removeCartItem as removeCartItemApi,
+  setUserEnabled,
+  updateBook as updateBookApi,
   updateCartItem,
   updateOrderStatus as updateOrderStatusApi,
   updateUserProfile as updateUserProfileApi
@@ -71,7 +81,7 @@ const initialUser = {
 };
 
 const fallbackCoverByIsbn = new Map(
-  data.books.map((book) => [book.isbn, book.cover])
+  data.books.map((book) => [book.isbn, resolveBookCover(book)])
 );
 
 function normalizeBook(rawBook) {
@@ -79,7 +89,8 @@ function normalizeBook(rawBook) {
     ...rawBook,
     id: String(rawBook.id),
     price: Number(rawBook.price) || 0,
-    cover: rawBook.cover || fallbackCoverByIsbn.get(rawBook.isbn) || "/assets/logo.svg"
+    stockQty: Number(rawBook.stockQty ?? rawBook.stock_qty ?? 0),
+    cover: resolveBookCover(rawBook) || fallbackCoverByIsbn.get(rawBook.isbn) || "/assets/logo.svg"
   };
 }
 
@@ -103,12 +114,29 @@ const state = {
   },
   cartItems: [],
   orders: [],
+  adminUsers: [],
+  orderFilters: {
+    from: "",
+    to: "",
+    bookTitle: ""
+  },
+  statsFilters: {
+    from: "",
+    to: ""
+  },
+  bookSalesStats: [],
+  userSpendingStats: [],
+  myPurchaseStats: null,
   searchByPage: {
     books: "",
     detail: "",
     cart: "",
     orders: "",
-    user: ""
+    user: "",
+    adminBooks: "",
+    adminUsers: "",
+    adminOrders: "",
+    stats: ""
   },
   isLoggedIn: Boolean(authUsername && Number.isFinite(storedUserId))
 };
@@ -125,6 +153,12 @@ export function getSnapshot() {
     user: { ...state.user },
     cartItems: state.cartItems.map((item) => ({ ...item })),
     orders: state.orders.map((item) => ({ ...item })),
+    adminUsers: state.adminUsers.map((item) => ({ ...item })),
+    orderFilters: { ...state.orderFilters },
+    statsFilters: { ...state.statsFilters },
+    bookSalesStats: state.bookSalesStats,
+    userSpendingStats: state.userSpendingStats,
+    myPurchaseStats: state.myPurchaseStats,
     searchByPage: { ...state.searchByPage },
     isLoggedIn: state.isLoggedIn
   };
@@ -177,7 +211,7 @@ export async function ensureCartLoaded(force = false) {
   return state.cartItems;
 }
 
-export async function ensureOrdersLoaded(force = false) {
+export async function ensureOrdersLoaded(force = false, { adminView = false, filters = state.orderFilters } = {}) {
   if (ordersLoaded && !force) {
     return state.orders;
   }
@@ -186,12 +220,22 @@ export async function ensureOrdersLoaded(force = false) {
     ordersLoaded = true;
     return state.orders;
   }
-  const items = await fetchOrders(state.user.id);
+  const query = {
+    from: filters.from || undefined,
+    to: filters.to || undefined,
+    bookTitle: filters.bookTitle || undefined
+  };
+  const items = adminView && state.user.admin
+    ? await fetchAllOrders(state.user.id, query)
+    : await fetchOrders(state.user.id, query);
   state.orders = items.map((item) => ({
     ...item,
     id: String(item.id),
     status: item.status,
     totalPrice: Number(item.totalPrice) || 0,
+    userId: item.userId,
+    username: item.username,
+    createdAt: item.createdAt,
     items: (item.items || []).map((line) => ({
       bookId: String(line.bookId),
       qty: Number(line.qty) || 1,
@@ -200,6 +244,79 @@ export async function ensureOrdersLoaded(force = false) {
   }));
   ordersLoaded = true;
   return state.orders;
+}
+
+export function setOrderFilters(filters) {
+  state.orderFilters = { ...state.orderFilters, ...filters };
+  ordersLoaded = false;
+}
+
+export function setStatsFilters(filters) {
+  state.statsFilters = { ...state.statsFilters, ...filters };
+}
+
+export async function ensureAdminUsersLoaded(force = false) {
+  if (!state.user.admin || !state.user.id) {
+    state.adminUsers = [];
+    return state.adminUsers;
+  }
+  if (state.adminUsers.length && !force) {
+    return state.adminUsers;
+  }
+  state.adminUsers = await fetchAllUsers(state.user.id);
+  return state.adminUsers;
+}
+
+export async function toggleUserEnabled(userId, enabled) {
+  if (!state.user.admin || !state.user.id) {
+    return;
+  }
+  await setUserEnabled(state.user.id, userId, enabled);
+  await ensureAdminUsersLoaded(true);
+}
+
+export async function saveBook(bookPayload, bookId) {
+  if (!state.user.admin || !state.user.id) {
+    return;
+  }
+  if (bookId) {
+    await updateBookApi(state.user.id, bookId, bookPayload);
+  } else {
+    await createBookApi(state.user.id, bookPayload);
+  }
+  await ensureBooksLoaded(true);
+}
+
+export async function removeBook(bookId) {
+  if (!state.user.admin || !state.user.id) {
+    return;
+  }
+  await deleteBookApi(state.user.id, bookId);
+  await ensureBooksLoaded(true);
+}
+
+export async function loadStats(force = false) {
+  if (!state.isLoggedIn || !state.user.id) {
+    return;
+  }
+  const query = {
+    from: state.statsFilters.from || undefined,
+    to: state.statsFilters.to || undefined
+  };
+  if (state.user.admin) {
+    state.bookSalesStats = await fetchBookSalesStats(state.user.id, query);
+    state.userSpendingStats = await fetchUserSpendingStats(state.user.id, query);
+    state.myPurchaseStats = null;
+  } else {
+    state.myPurchaseStats = await fetchMyPurchaseStats(state.user.id, query);
+    state.bookSalesStats = [];
+    state.userSpendingStats = [];
+  }
+  return {
+    bookSalesStats: state.bookSalesStats,
+    userSpendingStats: state.userSpendingStats,
+    myPurchaseStats: state.myPurchaseStats
+  };
 }
 
 export async function fetchAndStoreBookById(bookId) {
@@ -232,7 +349,9 @@ export function setAuthenticatedUser(user, remember) {
     username: user.username,
     email: user.email,
     signature: user.signature || "",
-    level: user.level || state.user.level
+    level: user.level || state.user.level,
+    admin: Boolean(user.admin),
+    enabled: user.enabled !== false
   };
   setStoredValue(AUTH_USER_KEY, user.username);
   setStoredValue(AUTH_USER_ID_KEY, String(user.id));
@@ -384,11 +503,11 @@ export async function checkoutSelected() {
 }
 
 // 按订单号更新订单状态（pending/paid/cancelled）。
-export async function updateOrderStatus(orderId, status) {
-  if (!state.user.id) {
+export async function updateOrderStatus(orderId, status, userId = state.user.id) {
+  if (!userId) {
     return;
   }
-  const updated = await updateOrderStatusApi(state.user.id, orderId, { status });
+  const updated = await updateOrderStatusApi(userId, orderId, { status });
   state.orders = state.orders.map((order) =>
     order.id === updated.id ? { ...order, status: updated.status } : order
   );

@@ -27,6 +27,8 @@ export function ProtectedRootRoute() {
   return (
     <DashboardLayout
       username={loaderData?.username || ""}
+      isAdmin={Boolean(loaderData?.isAdmin)}
+      level={loaderData?.level || ""}
       onLogout={() => submit(null, { method: "post", action: "/logout" })}
       searchPlaceholder={activeSearchRoute?.handle?.searchPlaceholder || "搜索"}
       searchValue={activeSearchRoute?.data?.search || ""}

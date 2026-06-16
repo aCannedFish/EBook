@@ -1,6 +1,7 @@
 package com.ebook.backend.repository;
 
 import com.ebook.backend.entity.Book;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -11,5 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * </p>
  */
 public interface BookRepository extends JpaRepository<Book, Long> {
-    // 无自定义方法；使用 JpaRepository 内置 CRUD 即可
+
+    Optional<Book> findByIsbn(String isbn);
 }

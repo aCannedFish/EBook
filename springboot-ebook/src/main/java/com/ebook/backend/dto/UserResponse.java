@@ -24,6 +24,12 @@ public class UserResponse {
     /** 用户等级展示文案。 */
     private String level;
 
+    /** 账号是否可用。 */
+    private Boolean enabled;
+
+    /** 是否为管理员（由 level 推导）。 */
+    private Boolean admin;
+
     public Long getId() {
         return id;
     }
@@ -62,5 +68,21 @@ public class UserResponse {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 }

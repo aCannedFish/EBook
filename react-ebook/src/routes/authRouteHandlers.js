@@ -12,13 +12,22 @@ export function requireAuthSnapshot() {
 }
 
 // requireAuthLoader：受保护路由的统一鉴权入口。
-// 读取当前快照，未登录则在路由层直接重定向到 /login。
-// 同时返回共享布局需要的最小公共数据（username）。
 export async function requireAuthLoader() {
   const snapshot = requireAuthSnapshot();
   return {
-    username: snapshot.user.username
+    username: snapshot.user.username,
+    isAdmin: Boolean(snapshot.user.admin),
+    level: snapshot.user.level
   };
+}
+
+// requireAdminSnapshot：管理员页面鉴权。
+export function requireAdminSnapshot() {
+  const snapshot = requireAuthSnapshot();
+  if (!snapshot.user.admin) {
+    throw redirect("/books");
+  }
+  return snapshot;
 }
 
 // authRedirectLoader：根路径和兜底路径的分流逻辑。
