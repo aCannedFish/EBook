@@ -89,9 +89,7 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem item : items) {
             Book book = bookRepository.findById(item.getBookId())
                     .orElseThrow(() -> new ResourceNotFoundException("book not found: " + item.getBookId()));
-            if (book.getStockQty() == null || book.getStockQty() < item.getQty()) {
-                throw new IllegalArgumentException("insufficient stock for: " + book.getTitle());
-            }
+            StockHelper.ensureSufficient(book, item.getQty());
         }
 
         OrderEntity order = new OrderEntity();

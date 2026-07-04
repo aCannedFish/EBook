@@ -1,8 +1,9 @@
-import { Col, Row, Tag, Typography } from "antd";
+import { Col, Row, Tag, Typography, Alert } from "antd";
 import BookCard from "../components/BookCard";
-import { redirect, useLoaderData } from "react-router-dom";
+import { redirect, useActionData, useLoaderData } from "react-router-dom";
 import { addToCart, ensureBooksLoaded, setPageSearch } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
+import { getApiErrorMessage } from "../utils/apiError";
 
 export async function booksLoader() {
   const snapshot = requireAuthSnapshot();
@@ -27,7 +28,15 @@ export async function booksAction({ request }) {
   if (intent === "add-to-cart") {
     const bookId = String(formData.get("bookId") || "");
     if (bookId) {
-      await addToCart(bookId);
+      try {
+        await addToCart(bookId);
+      } catch (error) {
+        await ensureBooksLoaded(true);
+        return {
+          status: "error",
+          message: getApiErrorMessage(error, "加入购物车失败，请检查库存。")
+        };
+      }
     }
     throw redirect(String(formData.get("redirectTo") || "/cart"));
   }
@@ -38,7 +47,8 @@ export async function booksAction({ request }) {
 // 书城主页：先做本地关键词过滤，再把结果交给卡片网格展示。
 function BooksPage({
   books,
-  search
+  search,
+  actionError
 }) {
   // 将搜索词统一转成小写并去掉空格，便于做大小写不敏感的模糊匹配。
   const keyword = search.trim().toLowerCase();
@@ -69,6 +79,12 @@ function BooksPage({
         <Tag color="blue" aria-label="提示">共 {filteredBooks.length} 本</Tag>
       </header>
 
+      {actionError ? (
+        <div className="page__toolbar">
+          <Alert type="error" showIcon message={actionError} />
+        </div>
+      ) : null}
+
       {/* 使用 Ant Design Row/Col 统一响应式栅格，保持原卡片网格布局。 */}
       <Row gutter={[16, 16]} aria-label="书籍卡片列表" className="book-antd-grid">
         {filteredBooks.map((book) => (
@@ -83,11 +99,14 @@ function BooksPage({
 
 export function BooksRoute() {
   const data = useLoaderData();
+  const actionData = useActionData();
+  const actionError = actionData?.status === "error" ? actionData.message : null;
 
   return (
     <BooksPage
       books={data.books}
       search={data.search}
+      actionError={actionError}
     />
   );
 }

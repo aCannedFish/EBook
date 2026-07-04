@@ -1,7 +1,9 @@
-import { Button, Card, Descriptions, Space, Tag, Typography } from "antd";
-import { Form, redirect, useLoaderData, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Alert, Button, Card, Descriptions, Space, Tag, Typography } from "antd";
+import { Form, redirect, useActionData, useLoaderData, useLocation, useNavigate, useParams } from "react-router-dom";
 import { addToCart, ensureBooksLoaded, fetchAndStoreBookById, getBookById, setPageSearch } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
+import { getApiErrorMessage } from "../utils/apiError";
+import { isOutOfStock } from "../utils/stock";
 
 export async function bookDetailLoader({ params }) {
   requireAuthSnapshot();
@@ -34,7 +36,15 @@ export async function bookDetailAction({ request, params }) {
   if (intent === "add-to-cart") {
     const bookId = String(formData.get("bookId") || params.bookId || "");
     if (bookId) {
-      await addToCart(bookId);
+      try {
+        await addToCart(bookId);
+      } catch (error) {
+        await ensureBooksLoaded(true);
+        return {
+          status: "error",
+          message: getApiErrorMessage(error, "加入购物车失败，请检查库存。")
+        };
+      }
     }
     throw redirect(String(formData.get("redirectTo") || "/cart"));
   }
@@ -44,7 +54,8 @@ export async function bookDetailAction({ request, params }) {
 
 // 书籍详情页：通过 URL 参数定位单本书，并展示完整的商品信息与操作入口。
 function BookDetailPage({
-  detailBook
+  detailBook,
+  actionError
 }) {
   const navigate = useNavigate();
   // 封面错误处理：图片加载失败时回退到站点 Logo，避免空白占位破坏布局。
@@ -104,10 +115,16 @@ function BookDetailPage({
           <Typography.Title level={3} className="page__title">{book.title}</Typography.Title>
           <Typography.Paragraph className="page__desc">分类：{book.category} · 作者：{book.author}</Typography.Paragraph>
         </div>
-        <Tag color={book.stockType === "warn" ? "orange" : "green"} aria-label="库存状态">
-          {book.stockType === "warn" ? "库存紧张" : "库存充足"}
+        <Tag color={book.stockType === "warn" ? "orange" : book.stockType === "out" ? "red" : "green"} aria-label="库存状态">
+          {book.stockType === "out" ? "缺货" : book.stockType === "warn" ? "库存紧张" : "库存充足"}
         </Tag>
       </header>
+
+      {actionError ? (
+        <div className="page__toolbar">
+          <Alert type="error" showIcon message={actionError} />
+        </div>
+      ) : null}
 
       <section className="detail" aria-label="详情布局">
         <figure className="detail__media" aria-label="书籍封面">
@@ -144,8 +161,9 @@ function BookDetailPage({
               <input type="hidden" name="intent" value="add-to-cart" />
               <input type="hidden" name="bookId" value={book.id} />
               <input type="hidden" name="redirectTo" value="/cart" />
-              {/* 使用 Ant Design Button 呈现操作入口，提交仍由 Router Form 处理。 */}
-              <Button type="primary" htmlType="submit">加入购物车</Button>
+              <Button type="primary" htmlType="submit" disabled={isOutOfStock(book)}>
+                {isOutOfStock(book) ? "已缺货" : "加入购物车"}
+              </Button>
             </Form>
             <Space wrap>
               <Button onClick={() => navigate("/orders")}>立即购买</Button>
@@ -160,10 +178,13 @@ function BookDetailPage({
 
 export function BookDetailRoute() {
   const data = useLoaderData();
+  const actionData = useActionData();
+  const actionError = actionData?.status === "error" ? actionData.message : null;
 
   return (
     <BookDetailPage
       detailBook={data.detailBook}
+      actionError={actionError}
     />
   );
 }

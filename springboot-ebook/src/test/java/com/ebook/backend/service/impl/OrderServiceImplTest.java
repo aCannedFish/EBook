@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -77,5 +78,32 @@ class OrderServiceImplTest {
         ArgumentCaptor<Book> bookCaptor = ArgumentCaptor.forClass(Book.class);
         verify(bookRepository).save(bookCaptor.capture());
         assertEquals(8, bookCaptor.getValue().getStockQty());
+    }
+
+    @Test
+    void createOrders_rejectsInsufficientStock() {
+        Long userId = 2L;
+        User user = new User();
+        user.setId(userId);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        Book book = new Book();
+        book.setId(1L);
+        book.setTitle("Test Book");
+        book.setPrice(59);
+        book.setStockQty(1);
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+
+        CartItem cartItem = new CartItem();
+        cartItem.setUserId(userId);
+        cartItem.setBookId(1L);
+        cartItem.setQty(3);
+        cartItem.setSelected(true);
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> orderService.createOrders(userId, List.of(cartItem))
+        );
+        assertEquals("《Test Book》库存不足：当前仅剩 1 本，您需要 3 本。", ex.getMessage());
     }
 }

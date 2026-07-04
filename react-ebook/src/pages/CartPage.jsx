@@ -1,6 +1,6 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Select, Space, Tag, Typography } from "antd";
-import { Link, redirect, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
+import { Alert, Button, Card, Checkbox, Select, Space, Tag, Typography } from "antd";
+import { Link, redirect, useActionData, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
 import ResourceTable from "../components/ResourceTable";
 import RowActions from "../components/RowActions";
 import {
@@ -14,6 +14,8 @@ import {
   updateCartQty
 } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
+import { getApiErrorMessage } from "../utils/apiError";
+import { maxPurchasableQty, validateCheckoutSelection } from "../utils/stock";
 
 export async function cartLoader() {
   requireAuthSnapshot();
@@ -55,7 +57,13 @@ export async function cartAction({ request }) {
     const bookId = String(formData.get("bookId") || "");
     const qty = Number(formData.get("qty"));
     if (bookId && Number.isInteger(qty) && qty >= 1 && qty <= 4) {
-      await updateCartQty(bookId, qty);
+      try {
+        await updateCartQty(bookId, qty);
+      } catch (error) {
+        await ensureBooksLoaded(true);
+        await ensureCartLoaded(true);
+        return { status: "error", message: getApiErrorMessage(error, "更新数量失败。") };
+      }
     }
     return null;
   }
@@ -69,7 +77,16 @@ export async function cartAction({ request }) {
   }
 
   if (intent === "checkout") {
-    await checkoutSelected();
+    try {
+      await checkoutSelected();
+    } catch (error) {
+      await ensureBooksLoaded(true);
+      await ensureCartLoaded(true);
+      return {
+        status: "error",
+        message: getApiErrorMessage(error, "结算失败，请检查库存后重试。")
+      };
+    }
     throw redirect("/orders");
   }
 
@@ -81,6 +98,7 @@ function CartPage({
   books,
   cartItems,
   search,
+  actionError,
   onToggleSelectAll,
   onToggleItem,
   onUpdateQty,
@@ -113,10 +131,17 @@ function CartPage({
 
   // selectedRows 表示当前被勾选、准备结算的商品行。
   const selectedRows = rows.filter((row) => row.selected);
-  // 是否“全选”：只有当前有行且每一行都被选中时才算全选。
+  const checkoutBlockedMessage = validateCheckoutSelection(selectedRows);
   const allSelected = rows.length > 0 && selectedRows.length === rows.length;
-  // 结算金额只统计已勾选项，确保汇总值和结算动作一致。
   const subtotal = selectedRows.reduce((sum, row) => sum + row.subtotal, 0);
+
+  const qtyOptionsForRow = (row) => {
+    const maxQty = maxPurchasableQty(row.book);
+    return Array.from({ length: maxQty }, (_, index) => {
+      const value = index + 1;
+      return { value, label: String(value) };
+    });
+  };
 
   // 使用 Ant Design Table 定义购物车列，统一表格渲染与交互控件。
   const columns = [
@@ -145,8 +170,9 @@ function CartPage({
       render: (_, row) => (
         <Select
           size="small"
-          value={row.qty}
-          options={[1, 2, 3, 4].map((value) => ({ value, label: String(value) }))}
+          value={Math.min(row.qty, maxPurchasableQty(row.book) || row.qty)}
+          options={qtyOptionsForRow(row)}
+          disabled={maxPurchasableQty(row.book) === 0}
           onChange={(value) => onUpdateQty(row.bookId, Number(value))}
         />
       )
@@ -185,6 +211,17 @@ function CartPage({
         <Typography.Title level={3} className="page__title">我的购物车</Typography.Title>
         <Tag>共 {rows.length} 件</Tag>
       </header>
+
+      {actionError ? (
+        <div className="page__toolbar">
+          <Alert type="error" showIcon message={actionError} />
+        </div>
+      ) : null}
+      {checkoutBlockedMessage && selectedRows.length > 0 ? (
+        <div className="page__toolbar">
+          <Alert type="warning" showIcon message={checkoutBlockedMessage} />
+        </div>
+      ) : null}
 
       <section className="cart" aria-label="购物车内容区">
         <Card className="panel" title="商品">
@@ -229,7 +266,13 @@ function CartPage({
 
           <Space className="summary__actions">
             <Button onClick={() => navigate("/books")}>继续选购</Button>
-            <Button type="primary" onClick={onCheckout}>结算</Button>
+            <Button
+              type="primary"
+              disabled={selectedRows.length === 0 || Boolean(checkoutBlockedMessage)}
+              onClick={onCheckout}
+            >
+              结算
+            </Button>
           </Space>
         </Card>
       </section>
@@ -239,13 +282,16 @@ function CartPage({
 
 export function CartRoute() {
   const data = useLoaderData();
+  const actionData = useActionData();
   const submit = useSubmit();
+  const actionError = actionData?.status === "error" ? actionData.message : null;
 
   return (
     <CartPage
       books={data.books}
       cartItems={data.cartItems}
       search={data.search}
+      actionError={actionError}
       onToggleSelectAll={(checked) =>
         submit({ intent: "toggle-select-all", checked: String(checked) }, { method: "post", action: "/cart", navigate: false })
       }

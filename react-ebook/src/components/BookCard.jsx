@@ -1,10 +1,12 @@
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Card, Space, Tag, Typography } from "antd";
 import { Form, useNavigate } from "react-router-dom";
+import { isOutOfStock } from "../utils/stock";
 
 // 列表页复用卡片：把单本书的展示信息和操作按钮封装起来，便于在书城页循环渲染。
 function BookCard({ book }) {
   const navigate = useNavigate();
+  const outOfStock = isOutOfStock(book);
   // 图片错误处理：封面加载失败时只替换一次，避免 onError 因替换后再次失败而循环触发。
   const handleImageError = (event) => {
     // currentTarget 指向当前 <img>，而不是触发事件的子元素。
@@ -52,8 +54,8 @@ function BookCard({ book }) {
             <input type="hidden" name="intent" value="add-to-cart" />
             <input type="hidden" name="bookId" value={book.id} />
             <input type="hidden" name="redirectTo" value="/cart" />
-            <Button block type="primary" icon={<ShoppingCartOutlined />} htmlType="submit">
-              加入购物车
+            <Button block type="primary" icon={<ShoppingCartOutlined />} htmlType="submit" disabled={outOfStock}>
+              {outOfStock ? "已缺货" : "加入购物车"}
             </Button>
           </Form>
         </Space>

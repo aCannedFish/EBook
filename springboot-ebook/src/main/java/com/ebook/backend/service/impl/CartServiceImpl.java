@@ -12,6 +12,7 @@ import com.ebook.backend.repository.CartItemRepository;
 import com.ebook.backend.repository.UserRepository;
 import com.ebook.backend.service.CartService;
 import com.ebook.backend.service.OrderService;
+import com.ebook.backend.service.support.StockHelper;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class CartServiceImpl implements CartService {
-
-    private static final int MAX_QTY_PER_BOOK = 4;
 
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
@@ -53,12 +52,9 @@ public class CartServiceImpl implements CartService {
         ensureUser(userId);
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new ResourceNotFoundException("book not found: " + request.getBookId()));
-        if (book.getStockQty() == null || book.getStockQty() <= 0) {
-            throw new IllegalArgumentException("book out of stock: " + book.getTitle());
-        }
         int increment = request.getQty() == null ? 1 : request.getQty();
         if (increment < 1) {
-            throw new IllegalArgumentException("qty must be >= 1");
+            throw new IllegalArgumentException("购买数量至少为 1 本。");
         }
 
         CartItem item = cartItemRepository.findByUserIdAndBookId(userId, book.getId())
@@ -70,10 +66,8 @@ public class CartServiceImpl implements CartService {
                     created.setSelected(true);
                     return created;
                 });
-        int nextQty = Math.min(item.getQty() + increment, MAX_QTY_PER_BOOK);
-        if (nextQty > book.getStockQty()) {
-            throw new IllegalArgumentException("insufficient stock for: " + book.getTitle());
-        }
+        StockHelper.ensureCanAddToCart(book, item.getQty(), increment);
+        int nextQty = Math.min(item.getQty() + increment, StockHelper.MAX_QTY_PER_BOOK);
         item.setQty(nextQty);
         cartItemRepository.save(item);
         return getCartItems(userId);
@@ -89,12 +83,10 @@ public class CartServiceImpl implements CartService {
 
         if (request.getQty() != null) {
             int qty = request.getQty();
-            if (qty < 1 || qty > MAX_QTY_PER_BOOK) {
-                throw new IllegalArgumentException("qty must be between 1 and 4");
+            if (qty < 1 || qty > StockHelper.MAX_QTY_PER_BOOK) {
+                throw new IllegalArgumentException("每本书购物车数量需在 1～" + StockHelper.MAX_QTY_PER_BOOK + " 本之间。");
             }
-            if (qty > book.getStockQty()) {
-                throw new IllegalArgumentException("insufficient stock for: " + book.getTitle());
-            }
+            StockHelper.ensureSufficient(book, qty);
             item.setQty(qty);
         }
 
@@ -122,7 +114,7 @@ public class CartServiceImpl implements CartService {
                 .filter(CartItem::getSelected)
                 .toList();
         if (selectedItems.isEmpty()) {
-            return List.of();
+            throw new IllegalArgumentException("请先勾选要结算的商品。");
         }
         List<OrderResponse> createdOrders = orderService.createOrders(userId, selectedItems);
         cartItemRepository.deleteByUserId(userId);
