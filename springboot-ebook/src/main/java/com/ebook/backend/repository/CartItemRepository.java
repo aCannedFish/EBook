@@ -34,4 +34,11 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
      * @param bookId 书籍 id
      */
     void deleteByUserIdAndBookId(Long userId, Long bookId);
+
+    /**
+     * 清空某用户的全部购物车行（结算后使用）。
+     *
+     * @param userId 用户 id
+     */
+    void deleteByUserId(Long userId);
 }

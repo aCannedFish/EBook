@@ -125,7 +125,7 @@ public class CartServiceImpl implements CartService {
             return List.of();
         }
         List<OrderResponse> createdOrders = orderService.createOrders(userId, selectedItems);
-        cartItemRepository.deleteAll(selectedItems);
+        cartItemRepository.deleteByUserId(userId);
         return createdOrders;
     }
 

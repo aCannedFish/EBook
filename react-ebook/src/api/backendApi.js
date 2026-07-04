@@ -1,19 +1,32 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ??
+  (import.meta.env.DEV ? "" : "http://localhost:8080");
 
 async function request(path, options = {}) {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    },
-    ...options
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      },
+      ...options
+    });
+  } catch {
+    throw new Error(
+      "无法连接后端。请确认 springboot-ebook 已在 8080 启动；若 5173 端口被占用请先关闭旧的前端进程。"
+    );
+  }
 
   if (!response.ok) {
     let message = `request failed: ${response.status}`;
+    if (response.status === 403) {
+      message =
+        "请求被拒绝 (403)。请重启后端：在 springboot-ebook 目录执行 ./run-local.sh；若前端端口不是 5173，请关闭占用 5173 的旧进程后重新 npm run dev。";
+    }
     try {
       const body = await response.json();
-      if (body?.message) {
+      if (body?.message && response.status !== 403) {
         message = String(body.message);
       }
     } catch {

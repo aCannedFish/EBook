@@ -123,7 +123,10 @@ function BookDetailPage({
           <Card size="small">
             <Descriptions column={1} size="small">
               <Descriptions.Item label="分类">{book.category}</Descriptions.Item>
-              <Descriptions.Item label="状态">在售 · 可加入购物车</Descriptions.Item>
+              <Descriptions.Item label="出版社">{book.publisher}</Descriptions.Item>
+              <Descriptions.Item label="库存">
+                {book.stockText} · 库存 {book.stockQty ?? 0} 本
+              </Descriptions.Item>
               <Descriptions.Item label="ISBN">{book.isbn}</Descriptions.Item>
               <Descriptions.Item label="发货方式">{book.format}</Descriptions.Item>
             </Descriptions>

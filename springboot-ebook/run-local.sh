@@ -21,15 +21,13 @@ if ! docker info >/dev/null 2>&1; then
   exit 1
 fi
 
-if [ ! -f "$JAR_PATH" ]; then
-  if command -v mvn >/dev/null 2>&1; then
-    echo "Jar not found, building with Maven..."
-    (cd "$ROOT_DIR" && mvn -q clean package -DskipTests)
-  else
-    echo "Error: $JAR_PATH not found and mvn is unavailable."
-    echo "Please run 'mvn clean package' first."
-    exit 1
-  fi
+if command -v mvn >/dev/null 2>&1; then
+  echo "Building backend (ensures latest code, e.g. CORS)..."
+  (cd "$ROOT_DIR" && mvn -q package -DskipTests)
+elif [ ! -f "$JAR_PATH" ]; then
+  echo "Error: $JAR_PATH not found and mvn is unavailable."
+  echo "Please run 'mvn clean package' first."
+  exit 1
 fi
 
 if ! docker ps --format '{{.Names}}' | grep -qx "$CONTAINER_NAME"; then

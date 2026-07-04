@@ -31,6 +31,9 @@ function BookCard({ book }) {
         <Typography.Text type="secondary" className="book-antd-card__author">
           作者：{book.author}
         </Typography.Text>
+        <Typography.Text type="secondary" className="book-antd-card__isbn">
+          ISBN：{book.isbn}
+        </Typography.Text>
         <Space className="book-antd-card__meta">
           <Typography.Text strong className="book-antd-card__price">
             ￥{book.price.toFixed(2)}

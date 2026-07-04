@@ -1,5 +1,6 @@
-import { Input, Space, Table, Tabs, Tag, Typography } from "antd";
+import { Input, Space, Tabs, Tag, Typography } from "antd";
 import { useLoaderData, useSubmit } from "react-router-dom";
+import ResourceTable from "../components/ResourceTable";
 import { loadStats, setPageSearch, setStatsFilters } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 import { formatPrice } from "../utils/format";
@@ -99,12 +100,24 @@ function StatsPage({ user, bookSalesStats, userSpendingStats, myPurchaseStats, f
               {
                 key: "sales",
                 label: "热销榜",
-                children: <Table rowKey="bookId" columns={bookColumns} dataSource={bookSalesStats} pagination={false} />
+                children: (
+                  <ResourceTable
+                    rowKey="bookId"
+                    columns={bookColumns}
+                    dataSource={bookSalesStats}
+                  />
+                )
               },
               {
                 key: "spending",
                 label: "消费榜",
-                children: <Table rowKey="userId" columns={spendingColumns} dataSource={userSpendingStats} pagination={false} />
+                children: (
+                  <ResourceTable
+                    rowKey="userId"
+                    columns={spendingColumns}
+                    dataSource={userSpendingStats}
+                  />
+                )
               }
             ]}
           />
@@ -124,7 +137,11 @@ function StatsPage({ user, bookSalesStats, userSpendingStats, myPurchaseStats, f
       </header>
       {filterBar}
       <div className="page__section">
-        <Table rowKey="bookId" columns={myColumns} dataSource={myPurchaseStats?.items || []} pagination={false} />
+        <ResourceTable
+          rowKey="bookId"
+          columns={myColumns}
+          dataSource={myPurchaseStats?.items || []}
+        />
       </div>
     </section>
   );
