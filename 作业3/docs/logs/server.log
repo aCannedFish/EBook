@@ -1,0 +1,129 @@
+INFO:     Started server process [10955]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:60152 (Press CTRL+C to quit)
+2026-10-06 17:45:02,798 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-06 17:45:02,799 WARNING huggingface_hub.utils._http Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-06 17:45:03,072 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/modules.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:03,537 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:03,811 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/config_sentence_transformers.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22dcb0c0d97d09b930d13600b1a773ddb27e441aab%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:03,814 INFO sentence_transformers.base.model Loading SentenceTransformer model from BAAI/bge-small-zh-v1.5.
+2026-10-06 17:45:04,281 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:04,557 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/config_sentence_transformers.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22dcb0c0d97d09b930d13600b1a773ddb27e441aab%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:04,822 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:05,025 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:05,108 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/modules.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:05,326 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/README.md?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2FREADME.md=&etag=%2220e39cd51a31d3afb1d003a9a4239f527530b1c0%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:05,604 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:05,791 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:05,889 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/config_sentence_transformers.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22dcb0c0d97d09b930d13600b1a773ddb27e441aab%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:05,891 INFO sentence_transformers.base.model Loading SentenceTransformer model from BAAI/bge-small-zh-v1.5.
+2026-10-06 17:45:06,068 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/modules.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:06,361 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:06,533 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:06,647 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/config_sentence_transformers.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22dcb0c0d97d09b930d13600b1a773ddb27e441aab%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:06,812 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/sentence_bert_config.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fsentence_bert_config.json=&etag=%22ea85692bff64b0d1917833c31ddbca8ab10f5455%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:07,123 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:07,277 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:07,409 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/README.md?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2FREADME.md=&etag=%2220e39cd51a31d3afb1d003a9a4239f527530b1c0%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:07,749 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+2026-10-06 17:45:07,886 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:08,172 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/modules.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:08,253 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/71 [00:00<?, ?it/s]Loading weights: 100%|██████████| 71/71 [00:00<00:00, 45052.28it/s]
+2026-10-06 17:45:08,660 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:08,800 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+2026-10-06 17:45:08,945 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/sentence_bert_config.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fsentence_bert_config.json=&etag=%22ea85692bff64b0d1917833c31ddbca8ab10f5455%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:09,275 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:09,418 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:09,753 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-06 17:45:09,929 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+2026-10-06 17:45:10,045 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:10,251 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:10,318 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/modules.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:10,524 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/1_Pooling%2Fconfig.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2F1_Pooling%2Fconfig.json=&etag=%22e25f4f3261cf0c6156611f5b5fdba0825859f4f3%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:10,532 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/71 [00:00<?, ?it/s]Loading weights: 100%|██████████| 71/71 [00:00<00:00, 11163.43it/s]
+2026-10-06 17:45:10,781 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:10,989 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:11,042 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+2026-10-06 17:45:11,069 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/config_sentence_transformers.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22dcb0c0d97d09b930d13600b1a773ddb27e441aab%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:11,070 INFO sentence_transformers.base.model Loading SentenceTransformer model from BAAI/bge-small-zh-v1.5.
+2026-10-06 17:45:11,470 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+2026-10-06 17:45:11,545 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:11,547 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:11,826 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/config_sentence_transformers.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22dcb0c0d97d09b930d13600b1a773ddb27e441aab%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:12,030 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-06 17:45:12,290 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:12,553 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:12,563 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/README.md?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2FREADME.md=&etag=%2220e39cd51a31d3afb1d003a9a4239f527530b1c0%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:12,837 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/1_Pooling%2Fconfig.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2F1_Pooling%2Fconfig.json=&etag=%22e25f4f3261cf0c6156611f5b5fdba0825859f4f3%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:13,027 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:13,336 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/modules.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:13,401 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:13,835 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:13,872 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:60199 - "GET /api/guide/health HTTP/1.1" 200 OK
+2026-10-06 17:45:13,999 INFO ebook.guide.server 用户提问：我想买一本关于微服务的书，另外如果我买了不喜欢，拆了塑封还能退吗？
+2026-10-06 17:45:14,001 INFO ebook.guide.server [REACT] step=1 action=search_book_catalog({"query": "微服务"}) -> ok (0ms)
+Thought: 用户想找书，关键词是「微服务」。先检索书目，看有没有匹配的图书和库存。
+Action: search_book_catalog
+Action Input: {"query": "微服务"}
+Observation: {"ok": true, "query": "微服务", "filters": {"category": null, "maxPrice": null, "inStockOnly": false, "limit": 3}, "count": 3, "results": [{"isbn": "978-7-111-60000-1", "title": "微服务架构设计模式", "author": "Chris Richardson", "publisher": "机械工业出版社", "year": 2019, "price": 129, "category": "计算机 / 软件架构", "tags": ["微服务", "架构", "分布式系统", "Spring Cloud", "领域驱动"], "summary": "从单体到微服务的拆分模式与迁移策略，覆盖服务边界、分布式事务与事件溯源。", "stockQty": 42, "inStock": true, "rating": 4.8, "sales": 3200, "score": 8.667, "matchedTerms": ["微服务"]}, {"isbn": "978-7-121-30000-4", "title": "微服务与容器化实践", "author": "张开元", "publisher": "电子工业出版社", "year": 2022, "price": 99, "category": "计算机 / 软件架构", "tags": ["微服务", "Docker", "Kubernetes", "云原生"], "summary": "用容器编排微服务的完整实践手册，包含 CI/CD 流水线与灰度发布案例。", "stockQty": 0, "inStock": false, "rating": 4.3, "sales": 1500, "score": 8.667, "matchedTerms": ["微服务"]}, {"isbn": "978-7-115-40000-2", "title": "微服务设计", "author": "Sam Newman", "publisher": "人民邮电出版社", "year": 2016, "price": 79, "category": "计算机 / 软件架构", "tags": ["微服务", "架构", "服务拆分", "持续交付"], "summary": "讲清服务边界怎么划、集成方式怎么选、部署与监控怎么做，适合作为入门第一本。", "stockQty": 8, "inStock": true, "rating": 4.6, "sales": 2100, "score": 8.333, "matchedTerms": ["微服务"]}], "outOfStockMatches": [], "source": "mock-catalog"}
+2026-10-06 17:45:14,005 INFO ebook.guide.server [REACT] step=2 action=query_store_policy({"question": "如果我买了不喜欢，拆了塑封还能退吗", "top_k": 3}) -> ok (2ms)
+Thought: 用户还问了政策问题「如果我买了不喜欢，拆了塑封还能退吗」。这是退换货/会员政策，必须查政策库拿条款原文，不能凭常识回答。
+Action: query_store_policy
+Action Input: {"question": "如果我买了不喜欢，拆了塑封还能退吗", "top_k": 3}
+Observation: {"ok": true, "question": "如果我买了不喜欢，拆了塑封还能退吗", "topScore": 0.7317, "count": 3, "passages": [{"id": "policy-0006", "score": 0.7317, "section": "第二章  退换货政策", "clause": "第六条【塑封与拆封规则】", "headingPath": "第二章  退换货政策 · 第六条【塑封与拆封规则】", "charStart": 740, "charEnd": 966, "text": "《退换货与会员政策》 第二章  退换货政策 第六条【塑封与拆封规则】\n第六条【塑封与拆封规则】\n塑封状态是判断图书是否完好的主要标准，按下列情形处理：\n（一）塑封未拆：可直接申请七天无理由退货，无需说明理由。\n（二）塑封已拆：原则上不支持七天无理由退货。图书一旦拆封即视为已使用，\n本店无法再作为新书销售，因此不再适用无理由退货。\n（三）塑封已拆但仍可退换的例外：属于第七条约定的质量问题、或适用第二十条\n\"已拆封退货权益\"的会员订单，仍可申请退换货。\n（四）线下门店购买、当场拆封后发现问题的，按第七条质量问题流程处理。"}, {"id": "policy-0008", "score": 0.6453, "section": "第二章  退换货政策", "clause": "第八条【不支持退换的商品】", "headingPath": "第二章  退换货政策 · 第八条【不支持退换的商品】", "charStart": 1140, "charEnd": 1335, "text": "《退换货与会员政策》 第二章  退换货政策 第八条【不支持退换的商品】\n第八条【不支持退换的商品】\n下列商品一经售出，除质量问题外不支持退换货：\n（一）签名版、限量版、编号珍藏版、钤印本；\n（二）已拆封的音像制品、盲盒、拼图等一次性封装商品；\n（三）按需印刷（POD）与个人定制商品；\n（四）二手书、库存书（详情页标注\"特价\"\"微瑕\"的商品）；\n（五）已激活或已下载的数字内容（电子书、有声书、在线课程激活码）；\n（六）已开具纸质专用发票且未办理红冲的定制教材。"}, {"id": "policy-0020", "score": 0.6111, "section": "第四章  会员体系", "clause": "第二十条【已拆封退货权益】", "headingPath": "第四章  会员体系 · 第二十条【已拆封退货权益】", "charStart": 2734, "charEnd": 2969, "text": "《退换货与会员政策》 第四章  会员体系 第二十条【已拆封退货权益】\n第二十条【已拆封退货权益】\n为补偿会员的试读需求，金卡会员每自然年可享 1 次、钻石会员每自然年可享 2 次\n\"已拆封图书无理由退货\"权益：\n（一）商品须无笔记、无污损、无缺页，随书附件齐全；\n（二）每次最多退回 2 本，单本定价不超过 150 元；\n（三）使用该权益的订单，运费由顾客承担；\n（四）教材、签名版、限量版、二手书与特价商品不适用该权益；\n（五）该权益不可与第七条质量问题退换叠加使用，同一订单只可择一申请；\n（六）权益次数按自然年计算，当年未使用不结转。"}], "source": "policy-rag", "index": {"embedder": "sentence-transformers:BAAI/bge-small-zh-v1.5", "chunks": 26, "fingerprint": "d33a267fb3de84ba"}}
+2026-10-06 17:45:14,005 INFO ebook.guide [REACT] step=3 final: 书目已查过，政策条款已查过，信息已经足够，可以给出最终答复了。答复里要写清书名、价格与库存，政策结论要标出条款号。
+2026-10-06 17:45:14,005 INFO ebook.guide.server 回复（offline:rule-based，3 轮，completed）：关于找书（检索词：微服务）：
+1. 《微服务架构设计模式》Chris Richardson 著，机械工业出版社 2019 年版，售价 129 元，有货，库存 42 本，评分 4.8。从单体到微服务的拆分模式与迁移策略，覆盖服务边界、分布式事务与事件溯源。
+2. 《微服务与容器化实践》张开元 著，电子工业出版社 2022 年版，售价 99 元，暂时缺货，评分 4.3。用容器编排微服务的完整实践手册，包含 CI/CD 流水线与灰度发布案例。
+3. 《微服务设计》Sam Newman 著，人民邮电出版社 2016 年版，售价 79 元，有货，库存 8 本，评分 4.6。讲清服务边界怎么划、集成方式怎么选、部署与监控怎么做，适合作为入门第一本。
+
+关于政策问题「如果我买了不喜欢，拆了塑封还能退吗」：
+· 《退换货与会员政策》第二章  退换货政策 · 第六条【塑封与拆封规则】（相似度 0.7317）：塑封状态是判断图书是否完好的主要标准，按下列情形处理：
+（一）塑封未拆：可直接申请七天无理由退货，无需说明理由。
+（二）塑封已拆：原则上不支持七天无理由退货。图书一旦拆封即视为已使用，
+本店无法再作为新书销售，因此不再适用无理由退货。
+（三）塑封已拆但仍可退换的例外：属于第七条约定的质量问题、或适用第二十条
+"已拆封退货权益"的会员订单，仍可申请退换货。
+（四）线下门店购买、当场拆封后发现问题的，按第七条质量问题流程处理。
+· 《退换货与会员政策》第二章  退换货政策 · 第八条【不支持退换的商品】（相似度 0.6453）：下列商品一经售出，除质量问题外不支持退换货：
+（一）签名版、限量版、编号珍藏版、钤印本；
+（二）已拆封的音像制品、盲盒、拼图等一次性封装商品；
+（三）按需印刷（POD）与个人定制商品；
+（四）二手书、库存书（详情页标注"特价""微瑕"的商品）；
+（五）已激活或已下载的数字内容（电子书、有声书、在线课程激活码）；
+（六）已开具纸质专用发票且未办理红冲的定制教材。
+· 《退换货与会员政策》第四章  会员体系 · 第二十条【已拆封退货权益】（相似度 0.6111）：为补偿会员的试读需求，金卡会员每自然年可享 1 次、钻石会员每自然年可享 2 次
+"已拆封图书无理由退货"权益：
+（一）商品须无笔记、无污损、无缺页，随书附件齐全；
+（二）每次最多退回 2 本，单本定价不超过 150 元；
+（三）使用该权益的订单，运费由顾客承担；
+（四）教材、签名版、限量版、二手书与特价商品不适用该权益；
+（五）该权益不可与第七条质量问题退换叠加使用，同一订单只可择一申请；
+（六）权益次数按自然年计算，当年未使用不结转。
+综合上述条款，与本问题最相关的一句是：（二）塑封已拆：原则上不支持七天无理由退货。图书一旦拆封即视为已使用，
+INFO:     127.0.0.1:60201 - "POST /api/guide/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60203 - "POST /api/guide/policy/search HTTP/1.1" 200 OK
+INFO:     Shutting down
+2026-10-06 17:45:14,109 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/sentence_bert_config.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2Fsentence_bert_config.json=&etag=%22ea85692bff64b0d1917833c31ddbca8ab10f5455%22 "HTTP/1.1 200 OK"
+INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)
+2026-10-06 17:45:14,572 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:15,054 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+2026-10-06 17:45:15,521 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/71 [00:00<?, ?it/s]Loading weights: 100%|██████████| 71/71 [00:00<00:00, 11077.88it/s]
+2026-10-06 17:45:16,029 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+2026-10-06 17:45:16,515 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:16,989 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-06 17:45:17,517 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-06 17:45:17,792 INFO httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/BAAI/bge-small-zh-v1.5/7999e1d3359715c523056ef9478215996d62a620/1_Pooling%2Fconfig.json?%2FBAAI%2Fbge-small-zh-v1.5%2Fresolve%2Fmain%2F1_Pooling%2Fconfig.json=&etag=%22e25f4f3261cf0c6156611f5b5fdba0825859f4f3%22 "HTTP/1.1 200 OK"
+2026-10-06 17:45:18,257 INFO httpx HTTP Request: HEAD https://huggingface.co/BAAI/bge-small-zh-v1.5/resolve/main/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+2026-10-06 17:45:18,738 INFO httpx HTTP Request: GET https://huggingface.co/api/models/BAAI/bge-small-zh-v1.5 "HTTP/1.1 200 OK"
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10955]
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/resource_tracker.py:475: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/loky-10955-br02yf92'}
+  warnings.warn(

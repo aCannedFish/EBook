@@ -1,0 +1,101 @@
+diff --git a/react-ebook/package.json b/react-ebook/package.json
+index ff45ccd..28615d6 100644
+--- a/react-ebook/package.json
++++ b/react-ebook/package.json
+@@ -12,7 +12,9 @@
+     "antd": "^6.3.6",
+     "react": "^18.3.1",
+     "react-dom": "^18.3.1",
+-    "react-router-dom": "^6.30.1"
++    "react-markdown": "^10.1.0",
++    "react-router-dom": "^6.30.1",
++    "remark-gfm": "^4.0.1"
+   },
+   "devDependencies": {
+     "@vitejs/plugin-react": "^4.3.1",
+diff --git a/react-ebook/src/App.jsx b/react-ebook/src/App.jsx
+index 237db6c..98857d0 100644
+--- a/react-ebook/src/App.jsx
++++ b/react-ebook/src/App.jsx
+@@ -15,6 +15,7 @@ import { UserRoute, userAction, userLoader } from "./pages/UserPage";
+ import { AdminUsersRoute, adminUsersAction, adminUsersLoader } from "./pages/AdminUsersPage";
+ import { AdminBooksRoute, adminBooksAction, adminBooksLoader } from "./pages/AdminBooksPage";
+ import { StatsRoute, statsAction, statsLoader } from "./pages/StatsPage";
++import { AssistantRoute, assistantAction, assistantLoader } from "./pages/AssistantPage";
+ import { ProtectedRootRoute } from "./routes/Root";
+ import { authRedirectLoader, logoutAction, requireAuthLoader } from "./routes/authRouteHandlers";
+ import RouteErrorBoundary from "./routes/RouteErrorBoundary";
+@@ -91,6 +92,13 @@ const router = createBrowserRouter([
+             handle: { searchPlaceholder: "按书名搜索图书" },
+             element: <AdminBooksRoute />
+           },
++          {
++            path: "assistant",
++            loader: assistantLoader,
++            action: assistantAction,
++            handle: { searchPlaceholder: "搜索对话内容或函数调用" },
++            element: <AssistantRoute />
++          },
+           {
+             path: "stats",
+             loader: statsLoader,
+diff --git a/react-ebook/src/components/DashboardLayout.jsx b/react-ebook/src/components/DashboardLayout.jsx
+index 46fb7b5..64569cc 100644
+--- a/react-ebook/src/components/DashboardLayout.jsx
++++ b/react-ebook/src/components/DashboardLayout.jsx
+@@ -1,6 +1,7 @@
+ import {
+   BarChartOutlined,
+   BookOutlined,
++  CustomerServiceOutlined,
+   LogoutOutlined,
+   SearchOutlined,
+   ShoppingCartOutlined,
+@@ -29,6 +30,7 @@ function DashboardLayout({
+     { key: "/cart", icon: <ShoppingCartOutlined />, label: "购物车" },
+     { key: "/orders", icon: <SolutionOutlined />, label: "我的订单" },
+     { key: "/stats", icon: <BarChartOutlined />, label: "购书统计" },
++    { key: "/assistant", icon: <CustomerServiceOutlined />, label: "客服助手" },
+     { key: "/user", icon: <UserOutlined />, label: "用户信息" }
+   ];
+ 
+@@ -39,6 +41,7 @@ function DashboardLayout({
+     { key: "/orders", icon: <SolutionOutlined />, label: "我的订单" },
+     { key: "/admin/orders", icon: <SolutionOutlined />, label: "全部订单" },
+     { key: "/stats", icon: <BarChartOutlined />, label: "数据统计" },
++    { key: "/assistant", icon: <CustomerServiceOutlined />, label: "客服助手" },
+     { key: "/user", icon: <UserOutlined />, label: "用户信息" }
+   ];
+ 
+diff --git a/react-ebook/src/data/appStore.js b/react-ebook/src/data/appStore.js
+index ef76a57..375b2cc 100644
+--- a/react-ebook/src/data/appStore.js
++++ b/react-ebook/src/data/appStore.js
+@@ -136,7 +136,8 @@ const state = {
+     adminBooks: "",
+     adminUsers: "",
+     adminOrders: "",
+-    stats: ""
++    stats: "",
++    assistant: ""
+   },
+   isLoggedIn: Boolean(authUsername && Number.isFinite(storedUserId))
+ };
+diff --git a/react-ebook/vite.config.js b/react-ebook/vite.config.js
+index 5d2542f..412c0cb 100644
+--- a/react-ebook/vite.config.js
++++ b/react-ebook/vite.config.js
+@@ -9,6 +9,13 @@ export default defineConfig({
+       "/api": {
+         target: "http://localhost:8080",
+         changeOrigin: true
++      },
++      // 客服助手是独立的 Python 服务。开发时走这里的代理转发，
++      // 前端就用同源请求，不必依赖后端的 CORS 配置。
++      "/assistant-api": {
++        target: "http://localhost:8000",
++        changeOrigin: true,
++        rewrite: (path) => path.replace(/^\/assistant-api/, "")
+       }
+     }
+   }

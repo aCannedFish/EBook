@@ -15,6 +15,8 @@ import { UserRoute, userAction, userLoader } from "./pages/UserPage";
 import { AdminUsersRoute, adminUsersAction, adminUsersLoader } from "./pages/AdminUsersPage";
 import { AdminBooksRoute, adminBooksAction, adminBooksLoader } from "./pages/AdminBooksPage";
 import { StatsRoute, statsAction, statsLoader } from "./pages/StatsPage";
+import { AssistantRoute, assistantAction, assistantLoader } from "./pages/AssistantPage";
+import { GuideRoute, guideAction, guideLoader } from "./pages/GuidePage";
 import { ProtectedRootRoute } from "./routes/Root";
 import { authRedirectLoader, logoutAction, requireAuthLoader } from "./routes/authRouteHandlers";
 import RouteErrorBoundary from "./routes/RouteErrorBoundary";
@@ -90,6 +92,20 @@ const router = createBrowserRouter([
             action: adminBooksAction,
             handle: { searchPlaceholder: "按书名搜索图书" },
             element: <AdminBooksRoute />
+          },
+          {
+            path: "assistant",
+            loader: assistantLoader,
+            action: assistantAction,
+            handle: { searchPlaceholder: "搜索对话内容或函数调用" },
+            element: <AssistantRoute />
+          },
+          {
+            path: "guide",
+            loader: guideLoader,
+            action: guideAction,
+            handle: { searchPlaceholder: "搜索推理过程、工具调用或政策条款" },
+            element: <GuideRoute />
           },
           {
             path: "stats",

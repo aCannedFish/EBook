@@ -1,0 +1,1079 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "E-BookStore 图书管理 API",
+    "description": "电子书城后台图书管理接口。提供书目列表查询（分页 + 分类过滤 + 关键词搜索）、单本图书详情、新增图书与库存更新四项能力。所有写操作需要管理员身份，并通过 operatorId 查询参数传递当前登录用户 ID。",
+    "version": "1.0.0",
+    "contact": {
+      "name": "E-BookStore 后台开发组"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "本地开发环境（Spring Boot 默认端口）"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Books",
+      "description": "图书资源的增删改查，路径前缀 /api/v1"
+    }
+  ],
+  "paths": {
+    "/api/v1/books": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "listBooks",
+        "summary": "获取书目列表",
+        "description": "分页返回图书列表，支持按分类精确过滤、按书名/作者/ISBN 模糊搜索，并可按指定字段排序。分类参数取值为分类全名（如「计算机」），不支持多选；如需多分类请分多次请求。",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "页码，从 1 开始计数。",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "每页条数，取值范围 1~50。",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10
+            },
+            "example": 10
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "description": "分类过滤，精确匹配。省略或传空字符串表示不过滤。",
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "example": "计算机"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "description": "关键词，对 title、author、isbn 三个字段做不区分大小写的模糊匹配。",
+            "schema": {
+              "type": "string",
+              "maxLength": 150
+            },
+            "example": "算法"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "排序字段。id 升序时为默认排序，保证结果稳定可复现。",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "id",
+                "title",
+                "price",
+                "stockQty"
+              ],
+              "default": "id"
+            },
+            "example": "id"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "description": "排序方向，asc 升序 / desc 降序。",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "asc"
+            },
+            "example": "asc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询成功。无匹配数据时返回 items 为空数组，totalElements 为 0，HTTP 状态码仍为 200。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookPage"
+                },
+                "examples": {
+                  "第一页默认查询": {
+                    "summary": "GET /api/v1/books?page=1&size=2",
+                    "value": {
+                      "items": [
+                        {
+                          "id": 1,
+                          "title": "算法导论（第 3 版）",
+                          "author": "Thomas H. Cormen",
+                          "price": 128,
+                          "category": "计算机",
+                          "publisher": "机械工业出版社",
+                          "isbn": "9787111407010",
+                          "format": "电子书 · 立即阅读",
+                          "stockType": "ok",
+                          "stockText": "有货",
+                          "stockQty": 42,
+                          "coverUrl": "/assets/covers/9787111407010.svg",
+                          "description": "算法领域的经典教材，覆盖排序、图算法、动态规划与 NP 完全性。"
+                        },
+                        {
+                          "id": 2,
+                          "title": "深入理解计算机系统",
+                          "author": "Randal E. Bryant",
+                          "price": 139,
+                          "category": "计算机",
+                          "publisher": "机械工业出版社",
+                          "isbn": "9787111544937",
+                          "format": "电子书 · 立即阅读",
+                          "stockType": "warn",
+                          "stockText": "库存紧张",
+                          "stockQty": 3,
+                          "coverUrl": "/assets/covers/9787111544937.svg",
+                          "description": "从程序员视角自底向上讲解计算机系统，涵盖表示、汇编、存储层次与并发。"
+                        }
+                      ],
+                      "page": 1,
+                      "size": 2,
+                      "totalElements": 2,
+                      "totalPages": 1,
+                      "hasNext": false
+                    }
+                  },
+                  "分类过滤无结果": {
+                    "summary": "GET /api/v1/books?category=不存在的分类",
+                    "value": {
+                      "items": [],
+                      "page": 1,
+                      "size": 10,
+                      "totalElements": 0,
+                      "totalPages": 0,
+                      "hasNext": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数非法，例如 page < 1、size > 50 或 sort 取值不在枚举内。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "分页参数越界": {
+                    "value": {
+                      "code": "INVALID_PARAMETER",
+                      "message": "size 必须在 1 到 50 之间",
+                      "path": "/api/v1/books",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": [
+                        {
+                          "field": "size",
+                          "message": "must be less than or equal to 50"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务端内部错误。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "数据库不可用": {
+                    "value": {
+                      "code": "INTERNAL_ERROR",
+                      "message": "服务器内部错误，请稍后重试",
+                      "path": "/api/v1/books",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "createBook",
+        "summary": "添加新书",
+        "description": "新增一本图书。isbn 全局唯一，重复提交返回 409。成功时返回 201 与 Location 头，响应体为新建后的完整图书对象（含服务端分配的 id）。",
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "query",
+            "required": true,
+            "description": "操作人用户 ID，必须是管理员账号。",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "新书信息。省略 stockQty 时按 0 处理；coverUrl 可省略，前端将回退到 ISBN 封面映射。",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCreateRequest"
+              },
+              "examples": {
+                "新增一本计算机类图书": {
+                  "value": {
+                    "title": "设计数据密集型应用",
+                    "author": "Martin Kleppmann",
+                    "price": 119,
+                    "category": "计算机",
+                    "publisher": "中国电力出版社",
+                    "isbn": "9787508672069",
+                    "format": "电子书 · 立即阅读",
+                    "stockQty": 20,
+                    "coverUrl": "/assets/covers/9787508672069.svg",
+                    "description": "系统设计领域的现代经典，讨论可靠性、可扩展性与可维护性。"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功。",
+            "headers": {
+              "Location": {
+                "description": "新建资源的 URI，形如 /api/v1/books/13。",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                },
+                "examples": {
+                  "创建成功": {
+                    "value": {
+                      "id": 13,
+                      "title": "设计数据密集型应用",
+                      "author": "Martin Kleppmann",
+                      "price": 119,
+                      "category": "计算机",
+                      "publisher": "中国电力出版社",
+                      "isbn": "9787508672069",
+                      "format": "电子书 · 立即阅读",
+                      "stockType": "ok",
+                      "stockText": "有货",
+                      "stockQty": 20,
+                      "coverUrl": "/assets/covers/9787508672069.svg",
+                      "description": "系统设计领域的现代经典，讨论可靠性、可扩展性与可维护性。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求体校验失败，例如缺少必填字段或 price 为负数。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "缺少必填字段": {
+                    "value": {
+                      "code": "VALIDATION_FAILED",
+                      "message": "请求体校验失败",
+                      "path": "/api/v1/books",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": [
+                        {
+                          "field": "price",
+                          "message": "price is required"
+                        },
+                        {
+                          "field": "stockQty",
+                          "message": "stockQty must be >= 0"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "operatorId 缺失，或对应账号不是管理员。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "非管理员操作": {
+                    "value": {
+                      "code": "FORBIDDEN",
+                      "message": "当前用户无管理员权限",
+                      "path": "/api/v1/books",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "ISBN 冲突，库中已存在相同 isbn 的图书。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "ISBN 重复": {
+                    "value": {
+                      "code": "ISBN_ALREADY_EXISTS",
+                      "message": "ISBN 9787508672069 已存在",
+                      "path": "/api/v1/books",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": [
+                        {
+                          "field": "isbn",
+                          "message": "duplicated isbn"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务端内部错误。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "getBookById",
+        "summary": "查看单本书详情",
+        "description": "按图书主键查询单本图书的完整信息，包含库存数量与库存状态文案。",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "description": "图书主键，正整数。",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询成功。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                },
+                "examples": {
+                  "查询成功": {
+                    "value": {
+                      "id": 1,
+                      "title": "算法导论（第 3 版）",
+                      "author": "Thomas H. Cormen",
+                      "price": 128,
+                      "category": "计算机",
+                      "publisher": "机械工业出版社",
+                      "isbn": "9787111407010",
+                      "format": "电子书 · 立即阅读",
+                      "stockType": "ok",
+                      "stockText": "有货",
+                      "stockQty": 42,
+                      "coverUrl": "/assets/covers/9787111407010.svg",
+                      "description": "算法领域的经典教材，覆盖排序、图算法、动态规划与 NP 完全性。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bookId 不是合法的正整数。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "路径参数类型错误": {
+                    "value": {
+                      "code": "INVALID_PARAMETER",
+                      "message": "bookId 必须为正整数",
+                      "path": "/api/v1/books/abc",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": [
+                        {
+                          "field": "bookId",
+                          "message": "must be a positive integer"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "指定图书不存在。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "图书不存在": {
+                    "value": {
+                      "code": "BOOK_NOT_FOUND",
+                      "message": "图书 9999 不存在",
+                      "path": "/api/v1/books/9999",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务端内部错误。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/stock": {
+      "patch": {
+        "tags": [
+          "Books"
+        ],
+        "operationId": "updateBookStock",
+        "summary": "更新库存",
+        "description": "更新指定图书的库存数量。mode 为 SET 时直接覆盖为 stockQty，为 INCREASE / DECREASE 时在当前值上加减。减少后库存不得小于 0，否则返回 400。使用 PATCH 是因为该操作只修改库存这一个子字段，且 INCREASE / DECREASE 语义不是幂等的。",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "description": "图书主键，正整数。",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "operatorId",
+            "in": "query",
+            "required": true,
+            "description": "操作人用户 ID，必须是管理员账号。",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1
+            },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockUpdateRequest"
+              },
+              "examples": {
+                "补货 10 本": {
+                  "value": {
+                    "mode": "INCREASE",
+                    "stockQty": 10
+                  }
+                },
+                "盘点后直接设为 5 本": {
+                  "value": {
+                    "mode": "SET",
+                    "stockQty": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功，返回更新后的完整图书对象。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                },
+                "examples": {
+                  "补货后的图书": {
+                    "value": {
+                      "id": 1,
+                      "title": "算法导论（第 3 版）",
+                      "author": "Thomas H. Cormen",
+                      "price": 128,
+                      "category": "计算机",
+                      "publisher": "机械工业出版社",
+                      "isbn": "9787111407010",
+                      "format": "电子书 · 立即阅读",
+                      "stockType": "ok",
+                      "stockText": "有货",
+                      "stockQty": 52,
+                      "coverUrl": "/assets/covers/9787111407010.svg",
+                      "description": "算法领域的经典教材，覆盖排序、图算法、动态规划与 NP 完全性。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求体非法，或 DECREASE 后库存为负数。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "库存不足": {
+                    "value": {
+                      "code": "INSUFFICIENT_STOCK",
+                      "message": "库存不足：当前库存为 3，无法减少 10",
+                      "path": "/api/v1/books/2/stock",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": [
+                        {
+                          "field": "stockQty",
+                          "message": "resulting stockQty must be >= 0"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "operatorId 缺失，或对应账号不是管理员。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "非管理员操作": {
+                    "value": {
+                      "code": "FORBIDDEN",
+                      "message": "当前用户无管理员权限",
+                      "path": "/api/v1/books/1/stock",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "指定图书不存在。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "图书不存在": {
+                    "value": {
+                      "code": "BOOK_NOT_FOUND",
+                      "message": "图书 9999 不存在",
+                      "path": "/api/v1/books/9999/stock",
+                      "timestamp": "2026-09-25T10:00:00Z",
+                      "details": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务端内部错误。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "description": "图书资源。",
+        "required": [
+          "id",
+          "title",
+          "author",
+          "price",
+          "category",
+          "publisher",
+          "isbn",
+          "format",
+          "stockType",
+          "stockText",
+          "stockQty",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "图书主键，服务端生成。",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 150,
+            "description": "书名。",
+            "example": "算法导论（第 3 版）"
+          },
+          "author": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "作者。",
+            "example": "Thomas H. Cormen"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "售价，单位：元，取整数以避免浮点误差。",
+            "example": 128
+          },
+          "category": {
+            "type": "string",
+            "maxLength": 120,
+            "description": "分类标签。",
+            "example": "计算机"
+          },
+          "publisher": {
+            "type": "string",
+            "maxLength": 120,
+            "description": "出版社。",
+            "example": "机械工业出版社"
+          },
+          "isbn": {
+            "type": "string",
+            "maxLength": 30,
+            "description": "国际标准书号，全局唯一。",
+            "example": "9787111407010"
+          },
+          "format": {
+            "type": "string",
+            "maxLength": 60,
+            "description": "售卖形式文案。",
+            "example": "电子书 · 立即阅读"
+          },
+          "stockType": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "warn",
+              "out"
+            ],
+            "description": "库存状态类型，供前端选择标签颜色：ok 充足 / warn 紧张 / out 缺货。",
+            "example": "ok"
+          },
+          "stockText": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "库存状态展示文案，与 stockType 一一对应。",
+            "example": "有货"
+          },
+          "stockQty": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "库存数量，结算时扣减。",
+            "example": 42
+          },
+          "coverUrl": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 512,
+            "description": "封面地址，可为 null；为 null 时前端按 isbn 映射静态资源。",
+            "example": "/assets/covers/9787111407010.svg"
+          },
+          "description": {
+            "type": "string",
+            "description": "内容简介。",
+            "example": "算法领域的经典教材，覆盖排序、图算法、动态规划与 NP 完全性。"
+          }
+        }
+      },
+      "BookCreateRequest": {
+        "type": "object",
+        "description": "新增图书请求体。除 coverUrl 与 stockQty 外均为必填。",
+        "required": [
+          "title",
+          "author",
+          "price",
+          "category",
+          "publisher",
+          "isbn",
+          "format",
+          "description"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150,
+            "description": "书名。",
+            "example": "设计数据密集型应用"
+          },
+          "author": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "作者。",
+            "example": "Martin Kleppmann"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "售价，单位：元。",
+            "example": 119
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "分类标签。",
+            "example": "计算机"
+          },
+          "publisher": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "出版社。",
+            "example": "中国电力出版社"
+          },
+          "isbn": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "description": "国际标准书号，必须全局唯一。",
+            "example": "9787508672069"
+          },
+          "format": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "description": "售卖形式文案。",
+            "example": "电子书 · 立即阅读"
+          },
+          "stockQty": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "default": 0,
+            "description": "初始库存数量，省略时按 0 处理。",
+            "example": 20
+          },
+          "coverUrl": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 512,
+            "description": "封面地址，可省略。",
+            "example": "/assets/covers/9787508672069.svg"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "内容简介。",
+            "example": "系统设计领域的现代经典，讨论可靠性、可扩展性与可维护性。"
+          }
+        }
+      },
+      "StockUpdateRequest": {
+        "type": "object",
+        "description": "库存更新请求体。",
+        "required": [
+          "stockQty"
+        ],
+        "properties": {
+          "stockQty": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "库存数量，含义由 mode 决定：SET 为目标值，INCREASE / DECREASE 为增减量。",
+            "example": 10
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "SET",
+              "INCREASE",
+              "DECREASE"
+            ],
+            "default": "SET",
+            "description": "更新方式：SET 覆盖、INCREASE 增加、DECREASE 减少。",
+            "example": "INCREASE"
+          }
+        }
+      },
+      "BookPage": {
+        "type": "object",
+        "description": "分页结果包装体。列表接口统一返回该结构，便于前端直接计算翻页控件。",
+        "required": [
+          "items",
+          "page",
+          "size",
+          "totalElements",
+          "totalPages",
+          "hasNext"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "当前页的图书列表。",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "description": "当前页码，从 1 开始。",
+            "example": 1
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "每页条数。",
+            "example": 10
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "description": "满足过滤条件的总记录数。",
+            "example": 42
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "description": "总页数，等于 ceil(totalElements / size)；无数据时为 0。",
+            "example": 5
+          },
+          "hasNext": {
+            "type": "boolean",
+            "description": "是否存在下一页，等价于 page < totalPages。",
+            "example": true
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "description": "统一错误响应体。所有 4xx / 5xx 均返回该结构，前端只需实现一套错误处理。",
+        "required": [
+          "code",
+          "message",
+          "path",
+          "timestamp",
+          "details"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "机器可读的错误码，使用大写下划线命名。",
+            "enum": [
+              "INVALID_PARAMETER",
+              "VALIDATION_FAILED",
+              "FORBIDDEN",
+              "BOOK_NOT_FOUND",
+              "ISBN_ALREADY_EXISTS",
+              "INSUFFICIENT_STOCK",
+              "INTERNAL_ERROR"
+            ],
+            "example": "BOOK_NOT_FOUND"
+          },
+          "message": {
+            "type": "string",
+            "description": "面向用户的错误描述，可直接展示。",
+            "example": "图书 9999 不存在"
+          },
+          "path": {
+            "type": "string",
+            "description": "触发错误的请求路径。",
+            "example": "/api/v1/books/9999"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "错误发生时间，UTC，ISO 8601 格式。",
+            "example": "2026-09-25T10:00:00Z"
+          },
+          "details": {
+            "type": "array",
+            "description": "字段级错误明细；无明细时为空数组，不返回 null。",
+            "items": {
+              "$ref": "#/components/schemas/FieldError"
+            }
+          }
+        }
+      },
+      "FieldError": {
+        "type": "object",
+        "description": "单个字段的校验错误。",
+        "required": [
+          "field",
+          "message"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "出错字段名，路径参数与查询参数同样适用。",
+            "example": "isbn"
+          },
+          "message": {
+            "type": "string",
+            "description": "该字段的错误说明。",
+            "example": "duplicated isbn"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "请求参数非法。",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "无管理员权限。",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "资源不存在。",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "服务端内部错误。",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            }
+          }
+        }
+      }
+    }
+  }
+}

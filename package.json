@@ -4,8 +4,11 @@
   "description": "EBook 电子书城 — 根目录便捷脚本，实际前端工程在 react-ebook/",
   "scripts": {
     "dev": "npm run dev --prefix react-ebook",
+    "dev:assistant": "./python-assistant/run-local.sh",
+    "dev:backend": "./springboot-ebook/run-local.sh",
     "build": "npm run build --prefix react-ebook",
     "preview": "npm run preview --prefix react-ebook",
-    "install:frontend": "npm install --prefix react-ebook"
+    "install:frontend": "npm install --prefix react-ebook",
+    "test:assistant": "python3 -m pytest python-assistant/backend/tests -q"
   }
 }

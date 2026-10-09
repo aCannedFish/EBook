@@ -136,7 +136,9 @@ const state = {
     adminBooks: "",
     adminUsers: "",
     adminOrders: "",
-    stats: ""
+    stats: "",
+    assistant: "",
+    guide: ""
   },
   isLoggedIn: Boolean(authUsername && Number.isFinite(storedUserId))
 };

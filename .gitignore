@@ -53,3 +53,21 @@ out/
 .env
 .env.local
 .env.*.local
+
+# =========================
+# Python (assistant backend)
+# =========================
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.logs/
+
+# 作业3的复现输入与正式提交说明需要随源码保留。
+!/作业3/requirements.txt
+!/作业3/data/policy.txt
+!/作业3/*-作业3.md
+!/作业3/docs/logs/*.txt
+!/作业3/docs/logs/server.log
+/作业3/.index/

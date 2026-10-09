@@ -1,0 +1,339 @@
+/* 客服助手页面的样式。命名沿用站内 BEM 约定：块 __ 元素 -- 修饰符。 */
+
+.assistant {
+  display: flex;
+  justify-content: center;
+}
+
+.assistant__panel {
+  width: 100%;
+  max-width: 960px;
+}
+
+.assistant__alert {
+  margin-bottom: 16px;
+}
+
+.assistant__thread {
+  min-height: 260px;
+  max-height: 58vh;
+  overflow-y: auto;
+  padding: 4px 4px 8px;
+}
+
+.assistant__empty {
+  margin: 64px 0;
+}
+
+.assistant__pending {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #656d76;
+  font-size: 13px;
+  padding: 8px 4px;
+}
+
+/* 消息 */
+
+.assistant-msg {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.assistant-msg--user {
+  flex-direction: row-reverse;
+}
+
+.assistant-msg__avatar {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eaf3ff;
+  color: #1677ff;
+}
+
+.assistant-msg--bot .assistant-msg__avatar {
+  background: #f6f8fa;
+  color: #1f2328;
+}
+
+.assistant-msg__body {
+  max-width: 78%;
+  min-width: 0;
+}
+
+/* 助手回复常带表格，比用户那侧留宽一点，少横向滚动。 */
+.assistant-msg--bot .assistant-msg__body {
+  max-width: 88%;
+}
+
+.assistant-msg--user .assistant-msg__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.assistant-msg__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #656d76;
+  margin-bottom: 6px;
+}
+
+.assistant-msg__text {
+  background: #f6f8fa;
+  border: 1px solid #d8dee4;
+  border-radius: 10px;
+  padding: 10px 14px;
+  line-height: 1.7;
+}
+
+.assistant-msg--user .assistant-msg__text {
+  background: #eaf3ff;
+  border-color: #b6d7ff;
+}
+
+.assistant-msg__text p {
+  margin: 0 0 6px;
+}
+
+.assistant-msg__text p:last-child {
+  margin-bottom: 0;
+}
+
+.assistant-msg__text--error {
+  background: #fff2f0;
+  border-color: #ffccc7;
+  color: #a8071a;
+}
+
+/* 助手回复的 Markdown 渲染结果。
+   模型很爱用表格做价格对比、用列表分点，所以这里的排版按「能在窄气泡里读」来调：
+   段间距收紧、表格可横向滚动、代码换行而不撑破气泡。 */
+
+.assistant-md > :first-child {
+  margin-top: 0;
+}
+
+.assistant-md > :last-child {
+  margin-bottom: 0;
+}
+
+.assistant-md p {
+  margin: 0 0 8px;
+}
+
+.assistant-md h1,
+.assistant-md h2,
+.assistant-md h3,
+.assistant-md h4 {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 14px 0 8px;
+}
+
+.assistant-md h1,
+.assistant-md h2 {
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e3e8ee;
+}
+
+.assistant-md ul,
+.assistant-md ol {
+  margin: 0 0 8px;
+  padding-left: 22px;
+}
+
+.assistant-md li {
+  margin-bottom: 3px;
+}
+
+.assistant-md li > p {
+  margin-bottom: 3px;
+}
+
+.assistant-md strong {
+  font-weight: 600;
+}
+
+.assistant-md code {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  background: rgba(27, 31, 36, 0.07);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.assistant-md pre {
+  background: #0d1117;
+  color: #e6edf3;
+  border-radius: 8px;
+  padding: 11px 13px;
+  margin: 10px 0;
+  overflow-x: auto;
+}
+
+.assistant-md pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+.assistant-md blockquote {
+  margin: 8px 0;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid #d8dee4;
+  color: #57606a;
+}
+
+.assistant-md hr {
+  border: 0;
+  border-top: 1px solid #e3e8ee;
+  margin: 14px 0;
+}
+
+.assistant-md a {
+  color: #1677ff;
+  text-decoration: none;
+}
+
+.assistant-md a:hover {
+  text-decoration: underline;
+}
+
+/* 表格：display:block + overflow-x 让宽表在气泡内横向滚动，而不是把布局撑破。
+   单元格里的文本仍按表格规则换行，不拆散行。 */
+.assistant-md table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.assistant-md th,
+.assistant-md td {
+  border: 1px solid #d8dee4;
+  padding: 5px 10px;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.assistant-md th {
+  background: #f6f8fa;
+  font-weight: 600;
+}
+
+/* 函数调用卡片 */
+
+.assistant-msg__tools {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.assistant-msg__tools-title {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.assistant-tool {
+  border: 1px solid #d8dee4;
+  border-left: 3px solid #52c41a;
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px 12px 4px;
+  margin-bottom: 8px;
+}
+
+.assistant-tool--failed {
+  border-left-color: #ff4d4f;
+}
+
+.assistant-tool__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+
+.assistant-tool__icon {
+  color: #1677ff;
+}
+
+.assistant-tool__row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.assistant-tool__label {
+  flex: none;
+  width: 32px;
+  color: #656d76;
+  font-size: 12px;
+}
+
+.assistant-tool__code {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: rgba(27, 31, 36, 0.06);
+  border-radius: 4px;
+  padding: 2px 6px;
+  overflow-wrap: anywhere;
+}
+
+.assistant-tool__summary {
+  color: #1f2328;
+  overflow-wrap: anywhere;
+}
+
+.assistant-tool__json {
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+  background: #0d1117;
+  color: #e6edf3;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.assistant-tool__hint {
+  margin: 4px 0 8px;
+  font-size: 12px;
+}
+
+/* 输入区 */
+
+.assistant__examples {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.assistant__composer {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}

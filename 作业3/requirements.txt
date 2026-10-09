@@ -1,0 +1,14 @@
+# 运行 HTTP 服务（backend/server.py）
+fastapi>=0.110
+uvicorn>=0.29
+pydantic>=2.6
+
+# 真实模型客户端（未安装时自动退回只用标准库的实现）
+openai>=1.30
+
+# 测试
+pytest>=8.0
+httpx>=0.27
+
+# 本地中文语义 Embedding（模型权重由 Hugging Face 下载，不进入提交包）
+sentence-transformers>=3.0,<6

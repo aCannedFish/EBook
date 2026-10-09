@@ -1,0 +1,252 @@
+[
+  {
+    "title": "正常链路：本店库存 + 竞品比价",
+    "question": "帮我查一下 ISBN为978-3-00-000000-4 的书还有多少本，顺便看看别家卖多少钱",
+    "modelMode": "offline:rule-based",
+    "reply": "《Introduction To Algorithms》（Thomas H. Cormen，ISBN 9783000000004）本店当前库存 30 本，状态「有货」，售价 99 元。\n其他平台报价：博文轩 76 元（有货，2 天到）；云书房 82 元（有货，1 天到）；知微书城 71 元（有货，4 天到）。最低价出现在 知微书城。\n本店比最低价贵 28 元。",
+    "toolCalls": [
+      {
+        "round": 1,
+        "name": "check_inventory",
+        "arguments": {
+          "isbn": "978-3-00-000000-4"
+        },
+        "ok": true,
+        "durationMs": 0,
+        "result": {
+          "ok": true,
+          "isbn": "9783000000004",
+          "title": "Introduction To Algorithms",
+          "author": "Thomas H. Cormen",
+          "price": 99,
+          "category": "算法",
+          "stockQty": 30,
+          "stockText": "有货",
+          "inStock": true,
+          "source": "bookstore-inventory"
+        },
+        "parseError": null
+      },
+      {
+        "round": 2,
+        "name": "get_competitor_price",
+        "arguments": {
+          "isbn": "978-3-00-000000-4"
+        },
+        "ok": true,
+        "durationMs": 405,
+        "result": {
+          "ok": true,
+          "isbn": "9783000000004",
+          "quotes": [
+            {
+              "platform": "博文轩",
+              "price": 76,
+              "currency": "CNY",
+              "inStock": true,
+              "deliveryDays": 2
+            },
+            {
+              "platform": "云书房",
+              "price": 82,
+              "currency": "CNY",
+              "inStock": true,
+              "deliveryDays": 1
+            },
+            {
+              "platform": "知微书城",
+              "price": 71,
+              "currency": "CNY",
+              "inStock": true,
+              "deliveryDays": 4
+            }
+          ],
+          "lowestPrice": 71,
+          "source": "competitor-price-mock"
+        },
+        "parseError": null
+      }
+    ],
+    "rounds": 3,
+    "stoppedReason": "completed"
+  },
+  {
+    "title": "非法入参：ISBN 位数不对，模型应改为向用户确认",
+    "question": "ISBN为12345 的书还有多少本，顺便看看别家卖多少钱",
+    "modelMode": "offline:rule-based",
+    "reply": "本店库存没查到：ISBN '12345' 格式不合法：去掉连字符后应为 10 位或 13 位数字。\n你给的 ISBN 位数不对，麻烦核对一下再发给我。",
+    "toolCalls": [
+      {
+        "round": 1,
+        "name": "check_inventory",
+        "arguments": {
+          "isbn": "12345"
+        },
+        "ok": false,
+        "durationMs": 0,
+        "result": {
+          "ok": false,
+          "error": {
+            "code": "INVALID_ISBN_FORMAT",
+            "message": "ISBN '12345' 格式不合法：去掉连字符后应为 10 位或 13 位数字",
+            "retryable": false,
+            "hint": "不要自行补全或猜测 ISBN。请向用户复述你收到的值并请其确认；若用户给的是书名，先请用户提供 ISBN。"
+          }
+        },
+        "parseError": null
+      }
+    ],
+    "rounds": 2,
+    "stoppedReason": "completed"
+  },
+  {
+    "title": "上游抖动：比价接口第一次超时，重试后成功",
+    "question": "ISBN为978-7-00-000000-8 的书还有几本？另外帮我对比一下其他平台的价格",
+    "modelMode": "offline:rule-based",
+    "reply": "《量子物理》（吕智国，ISBN 9787000000008）本店当前库存 15 本，状态「有货」，售价 72 元。\n其他平台报价：博文轩 84 元（有货，2 天到）；云书房 90 元（有货，1 天到）；知微书城 79 元（缺货，4 天到）。最低价出现在 知微书城。\n本店比最低价便宜 7 元。",
+    "toolCalls": [
+      {
+        "round": 1,
+        "name": "check_inventory",
+        "arguments": {
+          "isbn": "978-7-00-000000-8"
+        },
+        "ok": true,
+        "durationMs": 0,
+        "result": {
+          "ok": true,
+          "isbn": "9787000000008",
+          "title": "量子物理",
+          "author": "吕智国",
+          "price": 72,
+          "category": "物理",
+          "stockQty": 15,
+          "stockText": "有货",
+          "inStock": true,
+          "source": "bookstore-inventory"
+        },
+        "parseError": null
+      },
+      {
+        "round": 2,
+        "name": "get_competitor_price",
+        "arguments": {
+          "isbn": "978-7-00-000000-8"
+        },
+        "ok": false,
+        "durationMs": 404,
+        "result": {
+          "ok": false,
+          "error": {
+            "code": "UPSTREAM_TIMEOUT",
+            "message": "竞品比价接口对 ISBN 9787000000008 响应超时（第 1 次）",
+            "retryable": true,
+            "hint": "上游抖动，原样重试一次即可，不用修改参数。"
+          }
+        },
+        "parseError": null
+      },
+      {
+        "round": 3,
+        "name": "get_competitor_price",
+        "arguments": {
+          "isbn": "978-7-00-000000-8"
+        },
+        "ok": true,
+        "durationMs": 403,
+        "result": {
+          "ok": true,
+          "isbn": "9787000000008",
+          "quotes": [
+            {
+              "platform": "博文轩",
+              "price": 84,
+              "currency": "CNY",
+              "inStock": true,
+              "deliveryDays": 2
+            },
+            {
+              "platform": "云书房",
+              "price": 90,
+              "currency": "CNY",
+              "inStock": true,
+              "deliveryDays": 1
+            },
+            {
+              "platform": "知微书城",
+              "price": 79,
+              "currency": "CNY",
+              "inStock": false,
+              "deliveryDays": 4
+            }
+          ],
+          "lowestPrice": 79,
+          "source": "competitor-price-mock"
+        },
+        "parseError": null
+      }
+    ],
+    "rounds": 4,
+    "stoppedReason": "completed"
+  },
+  {
+    "title": "上游故障：比价渠道整体不可用，重试无意义，应如实告知",
+    "question": "ISBN为978-2-00-000000-3 的库存和竞品价格分别是多少",
+    "modelMode": "offline:rule-based",
+    "reply": "《Intorduction to Computing Systems》（Yale N. Patt，ISBN 9782000000003）本店当前库存 4 本，状态「库存紧张」，售价 79 元。\n库存偏紧，要买的话建议尽快下单。\n比价接口这次没返回结果：竞品比价服务对 ISBN 9782000000003 返回 503。",
+    "toolCalls": [
+      {
+        "round": 1,
+        "name": "check_inventory",
+        "arguments": {
+          "isbn": "978-2-00-000000-3"
+        },
+        "ok": true,
+        "durationMs": 0,
+        "result": {
+          "ok": true,
+          "isbn": "9782000000003",
+          "title": "Intorduction to Computing Systems",
+          "author": "Yale N. Patt",
+          "price": 79,
+          "category": "计算机系统导论",
+          "stockQty": 4,
+          "stockText": "库存紧张",
+          "inStock": true,
+          "source": "bookstore-inventory"
+        },
+        "parseError": null
+      },
+      {
+        "round": 2,
+        "name": "get_competitor_price",
+        "arguments": {
+          "isbn": "978-2-00-000000-3"
+        },
+        "ok": false,
+        "durationMs": 0,
+        "result": {
+          "ok": false,
+          "error": {
+            "code": "UPSTREAM_UNAVAILABLE",
+            "message": "竞品比价服务对 ISBN 9782000000003 返回 503",
+            "retryable": false,
+            "hint": "该渠道暂时不可用，重试没有意义；请告知用户只拿到了本店价格。"
+          }
+        },
+        "parseError": null
+      }
+    ],
+    "rounds": 3,
+    "stoppedReason": "completed"
+  },
+  {
+    "title": "信息不足：用户只给书名没给 ISBN，模型应先索要",
+    "question": "《量子物理》还有货吗？",
+    "modelMode": "offline:rule-based",
+    "reply": "我需要 ISBN 才能查。请把书的 ISBN 发给我，10 位或 13 位都可以。",
+    "toolCalls": [],
+    "rounds": 1,
+    "stoppedReason": "completed"
+  }
+]
