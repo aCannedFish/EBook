@@ -1,8 +1,11 @@
-"""E-BookStore 客服 AI 助手：Function Calling 后端。
+"""E-BookStore 客服 AI 助手：合并后的 Agent 后端。
 
-对外只有两个 Skill：
-    check_inventory(isbn)       查询书店实时库存
-    get_competitor_price(isbn)  查询竞品（模拟）价格
+一个客服助手，四个工具：
+
+    check_inventory(isbn)               本店实时库存
+    get_competitor_price(isbn)          竞品（模拟）价格
+    search_book_catalog(query, ...)     按主题检索书目
+    query_store_policy(question, ...)   政策库 RAG 检索
 
 这里用模块级 __getattr__ 做惰性再导出，而不是在包导入时就把子模块拉进来。
 原因：``backend.config`` 在导入时会把 ``.env`` 读进环境变量，
@@ -16,11 +19,16 @@ import importlib
 from typing import Any
 
 _LAZY_EXPORTS = {
-    "BookstoreAssistant": "backend.agent",
-    "ChatResult": "backend.agent",
-    "ToolEvent": "backend.agent",
+    "UnifiedAssistant": "backend.assistant.agent",
+    "AssistantResult": "backend.assistant.agent",
+    "AssistantStep": "backend.assistant.agent",
+    "LocalUnifiedLLM": "backend.assistant.offline",
+    "TOOL_SCHEMAS": "backend.assistant.tools",
+    "TOOL_NAMES": "backend.assistant.tools",
+    "UnifiedRegistry": "backend.assistant.tools",
+    "UnifiedToolOutcome": "backend.assistant.tools",
+    "describe_tools": "backend.assistant.tools",
     "BookstoreTools": "backend.tools",
-    "TOOL_SCHEMAS": "backend.tools",
     "ToolRegistry": "backend.tools",
     "build_registry": "backend.tools",
 }

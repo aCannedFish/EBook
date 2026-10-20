@@ -164,6 +164,29 @@ class MockInventoryBackend:
     def all_isbns(self) -> list[str]:
         return list(self._index)
 
+    def fetch_books(self, *, isbn: str | None = None) -> list[dict]:
+        """按书城 DTO 的形状导出书目，供书目检索工具映射。
+
+        字段名与 ``HttpInventoryBackend.fetch_books`` 保持一致，
+        换数据源时上层不用改；模拟数据缺出版年与简介，就用空串占位，不编造。
+        """
+        target = normalize_isbn(isbn) if isbn else None
+        return [
+            {
+                "isbn": normalize_isbn(item["isbn"]),
+                "title": item["title"],
+                "author": item["author"],
+                "publisher": item.get("publisher", ""),
+                "price": item["price"],
+                "category": item.get("category", ""),
+                "description": item.get("description", ""),
+                "stockQty": item["stock_qty"],
+                "stockText": item["stock_text"],
+            }
+            for item in self._index.values()
+            if target is None or normalize_isbn(item["isbn"]) == target
+        ]
+
 
 class BookstoreOutOfReach(RuntimeError):
     """无法访问电子书城后端。"""

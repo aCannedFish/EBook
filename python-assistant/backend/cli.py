@@ -3,7 +3,7 @@
     # 交互式对话（有 API Key 走真实模型，没有则用离线替身模型）
     python -m backend.cli
 
-    # 跑一遍内置的五个场景，打印完整链路
+    # 跑一遍内置的演示场景，打印完整链路
     python -m backend.cli --demo
 
     # 顺带把链路导出成 JSON，供生成文档使用
@@ -20,19 +20,25 @@ import json
 import sys
 from pathlib import Path
 
-from .agent import BookstoreAssistant, ChatResult, ToolEvent
+from .assistant.agent import AssistantStep, UnifiedAssistant
+from .assistant.offline import LocalUnifiedLLM
+from .assistant.tools import UnifiedRegistry
+from .catalog import build_inventory_backend
 from .config import LLM
-from .llm import LocalRuleBasedLLM, build_client
-from .tools import build_registry
+from .guide.catalog import DEFAULT_CATALOG
+from .guide.tools import BookstoreTools as GuideBookstoreTools
+from .llm import build_client
+from .tools import BookstoreTools as InventoryToolset
 
-#: 五个演示场景覆盖了作业要求里「异常处理」的全部形态。
+#: 演示场景覆盖作业2 与作业3 要求的全部形态：正常库存、非法 ISBN 自纠、
+#: 上游瞬时故障重试、上游整体不可用、找书 + 政策两跳。
 DEMO_SCENARIOS: tuple[tuple[str, str], ...] = (
     (
         "正常链路：本店库存 + 竞品比价",
         "帮我查一下 ISBN为978-3-00-000000-4 的书还有多少本，顺便看看别家卖多少钱",
     ),
     (
-        "非法入参：ISBN 位数不对，模型应改为向用户确认",
+        "非法入参：ISBN 位数不对，模型按错误提示向用户确认",
         "ISBN为12345 的书还有多少本，顺便看看别家卖多少钱",
     ),
     (
@@ -44,31 +50,35 @@ DEMO_SCENARIOS: tuple[tuple[str, str], ...] = (
         "ISBN为978-2-00-000000-3 的库存和竞品价格分别是多少",
     ),
     (
-        "信息不足：用户只给书名没给 ISBN，模型应先索要",
-        "《量子物理》还有货吗？",
+        "找书 + 政策：先查书目，再检索退换货政策",
+        "我想买一本关于微服务的书，另外如果我买了不喜欢，拆了塑封还能退吗？",
     ),
 )
 
 
 def make_assistant(
     use_remote: bool | None = None,
-    on_tool_call=None,
-) -> tuple[BookstoreAssistant, str]:
-    """构造助手。返回 (助手, 模型模式)。"""
+    on_step=None,
+) -> tuple[UnifiedAssistant, str]:
+    """构造合并后的助手。返回 (助手, 模型模式)。"""
     if use_remote is None:
         use_remote = LLM.configured
 
-    client = build_client() if use_remote else LocalRuleBasedLLM()
+    registry = UnifiedRegistry(
+        inventory_tools=InventoryToolset(inventory=build_inventory_backend()),
+        guide_tools=GuideBookstoreTools(catalog=DEFAULT_CATALOG),
+    )
+    client = build_client() if use_remote else LocalUnifiedLLM()
     mode = f"remote:{LLM.model}" if use_remote else "offline:rule-based"
-    return BookstoreAssistant(client=client, registry=build_registry(), on_tool_call=on_tool_call), mode
+    return UnifiedAssistant(client=client, registry=registry, on_step=on_step), mode
 
 
-def print_trace(event: ToolEvent) -> None:
-    """打印一次被拦截下来的函数调用。"""
-    args = json.dumps(event.arguments, ensure_ascii=False)
-    print(f"  │ 拦截到函数调用 → {event.name}({args})")
-    print(f"  │ 执行结果 → {json.dumps(event.payload, ensure_ascii=False)}")
-    print(f"  │ 耗时 {event.duration_ms} ms")
+def print_trace(step: AssistantStep) -> None:
+    """打印一步 ReAct 链路：Thought / Action / Observation。"""
+    print(f"  │ Thought: {step.thought or '（模型未给出推理）'}")
+    print(f"  │ Action: {step.action}({json.dumps(step.arguments, ensure_ascii=False)})")
+    print(f"  │ Observation: {step.observation}")
+    print(f"  │ 耗时 {step.duration_ms} ms")
 
 
 def run_scenario(title: str, question: str, use_remote: bool | None = None) -> dict:
@@ -80,15 +90,15 @@ def run_scenario(title: str, question: str, use_remote: bool | None = None) -> d
     assistant, mode = make_assistant(use_remote=use_remote)
     result = assistant.chat(question)
 
-    for event in result.tool_events:
-        print_trace(event)
+    for step in result.steps:
+        print_trace(step)
 
     print(f"助手（{mode}，共 {result.rounds} 轮，结束原因 {result.stopped_reason}）：")
     for line in result.reply.splitlines():
         print(f"  {line}")
     print()
 
-    return {"title": title, "question": question, "modelMode": mode, **result.to_dict()}
+    return {"title": title, "modelMode": mode, **result.to_dict()}
 
 
 def run_demo(json_out: Path | None, use_remote: bool | None = None) -> int:
@@ -120,12 +130,17 @@ def run_repl() -> int:
         if not question:
             continue
 
-        result: ChatResult = assistant.chat(question, history=history)
-        for event in result.tool_events:
-            print_trace(event)
+        result = assistant.chat(question, history=history)
+        for step in result.steps:
+            print_trace(step)
         print(f"助手：{result.reply}")
-        # 把本轮问答追加进历史，让替身模型与真实模型都能用上多轮上下文。
-        history.extend(result.messages[1:])
+        # 只把问答文本带进下一轮；工具轨迹由服务端按每次请求重新执行。
+        history.extend(
+            [
+                {"role": "user", "content": question},
+                {"role": "assistant", "content": result.reply},
+            ]
+        )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -147,7 +162,7 @@ def main(argv: list[str] | None = None) -> int:
         return run_demo(args.json_out, use_remote=use_remote)
 
     if args.question:
-        assistant, mode = make_assistant(use_remote=use_remote, on_tool_call=print_trace)
+        assistant, mode = make_assistant(use_remote=use_remote, on_step=print_trace)
         result = assistant.chat(args.question)
         print(f"助手（{mode}）：{result.reply}")
         return 0

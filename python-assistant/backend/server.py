@@ -1,11 +1,20 @@
-"""书城共用 AI 服务：Function Calling、ReAct 导购与接口设计共用一套登录身份。
+"""书城 AI 服务：合并后的客服助手、接口设计与登录身份共用一套后端。
 
-数据边界：库存与书目通过当前顾客的 JWT 读取 Spring Boot 书城，政策来自
-本项目的文本知识库。竞争对手报价按课程要求模拟，所有工具观测由实际执行产生。
+合并后的助手把四次作业里的三条链路收在一个入口：
+
+- 作业2 的 Function Calling：模型拿到 ``tools`` 列表，返回 ``tool_calls``，
+  本地执行后以 ``tool`` 消息回填；
+- 作业3 的 RAG 与 ReAct：政策库分块 + 向量检索，执行过程按
+  Thought → Action → Observation 逐步记录；
+- 两侧共用的登录身份：先由原书城校验 JWT，再用同一身份读取书目与库存。
+
+数据边界：库存与书目通过当前顾客的 JWT 读取 Spring Boot 书城，政策来自本项目的
+知识库。竞争对手报价按课程要求模拟，所有工具观测都由实际执行产生。
 """
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import urllib.error
@@ -16,11 +25,16 @@ from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from .agent import BookstoreAssistant, ToolEvent
+from .assistant.agent import AssistantStep, UnifiedAssistant
+from .assistant.offline import LocalUnifiedLLM
+from .assistant.prompt import SYSTEM_PROMPT
+from .assistant.tools import TOOL_NAMES, TOOL_SCHEMAS, UnifiedRegistry
 from .catalog import BookstoreOutOfReach, HttpInventoryBackend, InventoryBackend
 from .config import LLM, TOOLS
-from .llm import LocalRuleBasedLLM, ModelAPIError, build_client
-from .tools import TOOL_SCHEMAS, build_registry
+from .guide.catalog import Book, Catalog
+from .guide.tools import BookstoreTools as GuideBookstoreTools
+from .llm import ModelAPIError, build_client
+from .tools import BookstoreTools as InventoryToolset
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s")
 logger = logging.getLogger("ebook.assistant.server")
@@ -36,7 +50,7 @@ def _allowed_origins() -> list[str]:
 
 
 ALLOWED_ORIGINS = _allowed_origins()
-app = FastAPI(title="EBook 书城 AI 服务", version="2.0.0")
+app = FastAPI(title="EBook 书城 AI 服务", version="3.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_credentials=False,
                    allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 # 测试可显式注入注册表；正常请求均使用各自身份创建工具，避免跨用户共享可变状态。
@@ -65,37 +79,83 @@ class ChatRequest(BaseModel):
     history: list[dict] = Field(default_factory=list)
 
 
-class ToolCallView(BaseModel):
-    round: int
-    name: str
+class StepView(BaseModel):
+    """一步执行记录：模型的理由、动作、参数与真实观测。"""
+    index: int
+    thought: str
+    action: str
     arguments: dict
     ok: bool
     durationMs: int
-    result: dict
+    observation: str
+    result: dict | None = None
     parseError: str | None = None
 
 
 class ChatResponse(BaseModel):
     requestId: str
     reply: str
-    toolCalls: list[ToolCallView]
+    steps: list[StepView]
     rounds: int
     stoppedReason: str
     modelMode: str
 
 
-def _build_assistant(inventory: InventoryBackend, on_tool_call=None):
+@lru_cache(maxsize=1)
+def policy_index():
+    """知识库仅构建一次；书目每请求现取，政策索引不随登录身份变化。"""
+    from .guide.rag import RagPipeline
+
+    return RagPipeline().build()
+
+
+def live_catalog(inventory: InventoryBackend) -> Catalog:
+    """把现有书城 DTO 映射为可检索条目，不为缺少的出版年、评分编造数值。"""
+    books = [
+        Book(
+            isbn=book["isbn"],
+            title=book["title"],
+            author=book["author"],
+            publisher=book.get("publisher") or "",
+            year=0,
+            price=book["price"],
+            category=book.get("category") or "",
+            tags=(),
+            summary=book.get("description") or book.get("category") or "",
+            stock_qty=book["stockQty"],
+            rating=0.0,
+            sales=0,
+        )
+        for book in inventory.fetch_books()
+    ]
+    return Catalog(books, source="bookstore-api")
+
+
+def build_registry(inventory: InventoryBackend) -> UnifiedRegistry:
+    """四个工具共用当前登录身份：库存/比价直连书城，书目与政策走本地索引。"""
+    guide_tools = GuideBookstoreTools(catalog=live_catalog(inventory), index=policy_index())
+    return UnifiedRegistry(
+        inventory_tools=InventoryToolset(inventory=inventory),
+        guide_tools=guide_tools,
+    )
+
+
+def _build_assistant(inventory: InventoryBackend, on_step=None):
     """每个请求独立创建模型与工具状态；库存始终使用当前顾客的实时数据源。"""
     registry = app.state.registry or build_registry(inventory)
-    client = build_client() if LLM.configured else LocalRuleBasedLLM()
+    client = build_client() if LLM.configured else LocalUnifiedLLM()
     mode = f"remote:{LLM.model}" if LLM.configured else "offline:rule-based"
-    return BookstoreAssistant(client=client, registry=registry, on_tool_call=on_tool_call), mode
+    return UnifiedAssistant(client=client, registry=registry, on_step=on_step), mode
 
 
 @app.get("/api/assistant/health")
 def health() -> dict:
-    return {"status": "ok", "modelMode": f"remote:{LLM.model}" if LLM.configured else "offline:rule-based",
-            "inventorySource": "springboot-ebook", "guideInSameService": True}
+    return {
+        "status": "ok",
+        "modelMode": f"remote:{LLM.model}" if LLM.configured else "offline:rule-based",
+        "inventorySource": "springboot-ebook",
+        "tools": list(TOOL_NAMES),
+    }
 
 
 @app.get("/api/assistant/tools")
@@ -108,10 +168,10 @@ def chat(payload: ChatRequest, inventory: InventoryBackend = Depends(require_inv
     request_id = uuid.uuid4().hex[:12]
     logger.info("[%s] 用户提问：%s", request_id, payload.message)
 
-    def record(event: ToolEvent) -> None:
-        logger.info("[%s] %s", request_id, event.log_line())
+    def record(step: AssistantStep) -> None:
+        logger.info("[%s] %s", request_id, step.log_trace())
 
-    assistant, mode = _build_assistant(inventory, on_tool_call=record)
+    assistant, mode = _build_assistant(inventory, on_step=record)
     history = [entry for entry in payload.history[-12:]
                if entry.get("role") in {"user", "assistant"} and isinstance(entry.get("content"), str)]
     try:
@@ -122,97 +182,28 @@ def chat(payload: ChatRequest, inventory: InventoryBackend = Depends(require_inv
     return ChatResponse(requestId=request_id, modelMode=mode, **result.to_dict())
 
 
-@lru_cache(maxsize=1)
-def policy_index():
-    """知识库仅构建一次，文档与查询使用相同的编码器和向量空间。"""
-    from .guide.rag import RagPipeline
-    return RagPipeline().build()
-
-
-def live_catalog(inventory: HttpInventoryBackend):
-    """把现有书城 DTO 映射为可检索条目，不为缺少的出版年、评分编造数值。"""
-    from .guide.catalog import Book, Catalog
-    books = [Book(isbn=book["isbn"], title=book["title"], author=book["author"],
-                  publisher=book["publisher"], year=0, price=book["price"],
-                  category=book["category"], tags=(), summary=book["description"],
-                  stock_qty=book["stockQty"], rating=0.0, sales=0)
-             for book in inventory.fetch_books()]
-    return Catalog(books, source="bookstore-api")
-
-
-class GuideRequest(BaseModel):
-    message: str = Field(..., min_length=1, max_length=2000)
-    useRemoteModel: bool | None = None
-
-
-class PolicySearchRequest(BaseModel):
-    question: str = Field(..., min_length=1)
-    topK: int = Field(3, ge=1, le=6)
-
-
-@app.get("/api/guide/health")
-def guide_health(inventory: HttpInventoryBackend = Depends(require_inventory)):
-    index = policy_index()
-    return {"status": "ok", "rag": "ready", "ragStats": index.stats(),
-            "llmConfigured": LLM.configured, "catalogSize": len(inventory.fetch_books()),
-            "catalogSource": "springboot-ebook"}
-
-
-@app.get("/api/guide/tools")
-def guide_tools():
-    from .guide.tools import TOOL_SCHEMAS
-    return {"tools": TOOL_SCHEMAS}
-
-
-@app.post("/api/guide/policy/search")
-def policy_search(payload: PolicySearchRequest, inventory=Depends(require_inventory)):
-    index = policy_index()
-    hits = index.retrieve(payload.question, top_k=payload.topK)
-    return {"question": payload.question, "passages": [hit.to_dict() for hit in hits],
-            "count": len(hits), "index": index.stats()}
-
-
-@app.post("/api/guide/chat")
-def guide_chat(payload: GuideRequest, inventory=Depends(require_inventory)):
-    from .guide.agent import ReActAgent
-    from .guide.llm import LocalReActLLM, build_client as guide_client, ModelAPIError as GuideModelError
-    from .guide.tools import BookstoreTools, build_registry as guide_registry
-    remote = LLM.configured if payload.useRemoteModel is None else payload.useRemoteModel
-    if remote and not LLM.configured:
-        raise HTTPException(400, "未配置真实模型 API")
-    tools = BookstoreTools(catalog=live_catalog(inventory), index=policy_index())
-    agent = ReActAgent(client=guide_client() if remote else LocalReActLLM(),
-                      registry=guide_registry(tools), on_step=lambda step: logger.info(step.log_trace()))
-    try:
-        result = agent.run(payload.message)
-    except GuideModelError as error:
-        raise HTTPException(502, error.report) from error
-    return {"modelMode": f"remote:{LLM.model}" if remote else "offline:rule-based", **result.to_dict()}
-
-
 def main() -> None:
     import uvicorn
     uvicorn.run("backend.server:app", host="127.0.0.1", port=8000)
 
 
-
-
 @app.get("/api/design/conversation")
 def design_conversation(inventory=Depends(require_inventory)):
     """供书城中的接口设计页展示真实模型调用记录，刷新页面后仍可复核。"""
-    import json
-    from .api_design import OUTPUT, SYSTEM_PROMPT
+    from .api_design import OUTPUT, SYSTEM_PROMPT as DESIGN_SYSTEM_PROMPT
+
     user = inventory.get_json("/api/v1/users/me")
     if not user.get("admin"):
         raise HTTPException(403, "仅管理员可生成接口文档")
     path = OUTPUT / "conversation.json"
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {
-        "messages": [{"role": "system", "content": SYSTEM_PROMPT}], "model": LLM.model}
+        "messages": [{"role": "system", "content": DESIGN_SYSTEM_PROMPT}], "model": LLM.model}
 
 
 @app.post("/api/design/chat")
 def design_chat(payload: ChatRequest, inventory=Depends(require_inventory)):
     from .api_design import generate
+
     user = inventory.get_json("/api/v1/users/me")
     if not user.get("admin"):
         raise HTTPException(403, "仅管理员可生成接口文档")

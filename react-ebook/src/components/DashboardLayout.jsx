@@ -2,7 +2,6 @@ import {
   BarChartOutlined,
   BookOutlined,
   CustomerServiceOutlined,
-  ExperimentOutlined,
   LogoutOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
@@ -32,7 +31,6 @@ function DashboardLayout({
     { key: "/orders", icon: <SolutionOutlined />, label: "我的订单" },
     { key: "/stats", icon: <BarChartOutlined />, label: "购书统计" },
     { key: "/assistant", icon: <CustomerServiceOutlined />, label: "客服助手" },
-    { key: "/guide", icon: <ExperimentOutlined />, label: "导购助手" },
     { key: "/user", icon: <UserOutlined />, label: "用户信息" }
   ];
 
@@ -45,7 +43,6 @@ function DashboardLayout({
     { key: "/admin/orders", icon: <SolutionOutlined />, label: "全部订单" },
     { key: "/stats", icon: <BarChartOutlined />, label: "数据统计" },
     { key: "/assistant", icon: <CustomerServiceOutlined />, label: "客服助手" },
-    { key: "/guide", icon: <ExperimentOutlined />, label: "导购助手" },
     { key: "/user", icon: <UserOutlined />, label: "用户信息" }
   ];
 

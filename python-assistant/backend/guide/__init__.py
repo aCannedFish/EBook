@@ -1,7 +1,7 @@
-"""E-BookStore 导购助手：RAG（政策库检索）+ ReAct Agent。
+"""政策知识库与书目检索：合并后的客服助手在此之上提供 RAG 工具。
 
 两个工具：
-    search_book_catalog(query, ...)   模拟查书
+    search_book_catalog(query, ...)   按主题检索书目
     query_store_policy(question, ...) 调用 RAG 检索政策库
 
 这里用模块级 ``__getattr__`` 做惰性再导出，而不是在包导入时把子模块全拉进来：
@@ -16,19 +16,15 @@ import importlib
 from typing import Any
 
 _LAZY_EXPORTS = {
-    "ReActAgent": "backend.agent",
-    "AgentResult": "backend.agent",
-    "ReActStep": "backend.agent",
-    "REACT_SYSTEM_PROMPT": "backend.agent",
-    "RagPipeline": "backend.rag",
-    "RagIndex": "backend.rag",
-    "load_policy_document": "backend.corpus",
-    "split_into_chunks": "backend.chunking",
-    "BookstoreTools": "backend.tools",
-    "ToolRegistry": "backend.tools",
-    "TOOL_SCHEMAS": "backend.tools",
-    "build_registry": "backend.tools",
-    "LocalReActLLM": "backend.llm",
+    "RagPipeline": "backend.guide.rag",
+    "RagIndex": "backend.guide.rag",
+    "load_policy_document": "backend.guide.corpus",
+    "split_into_chunks": "backend.guide.chunking",
+    "BookstoreTools": "backend.guide.tools",
+    "ToolRegistry": "backend.guide.tools",
+    "TOOL_SCHEMAS": "backend.guide.tools",
+    "build_registry": "backend.guide.tools",
+    "LocalReActLLM": "backend.guide.llm",
 }
 
 __all__ = sorted(_LAZY_EXPORTS)

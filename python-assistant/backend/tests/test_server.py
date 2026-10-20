@@ -1,7 +1,8 @@
 """HTTP 接口测试。
 
 前端实际调用的就是这几个接口，所以它们的返回结构必须稳定：
-toolCalls 是前端展示「函数调用卡片」的唯一数据来源。
+``steps`` 同时承载函数调用（作业2）与 Thought -> Action -> Observation（作业3），
+是界面展示执行过程的唯一数据来源。
 """
 
 from __future__ import annotations
@@ -9,31 +10,60 @@ from __future__ import annotations
 import pytest
 from fastapi.testclient import TestClient
 
-from backend.server import app, require_inventory
+from backend.assistant.tools import UnifiedRegistry
 from backend.catalog import MockInventoryBackend
+from backend.guide.catalog import DEFAULT_CATALOG
+from backend.guide.tools import BookstoreTools as GuideBookstoreTools
+from backend.server import app, require_inventory
+from backend.tools import BookstoreTools as InventoryToolset
 
 
 @pytest.fixture
-def client():
+def client(policy_index):
+    """注入一份固定的工具注册表：库存用模拟数据，书目用课程演示目录。
+
+    政策索引由会话级夹具提供（离线 TF-IDF），不依赖网络与模型下载。
+    """
+    app.state.registry = UnifiedRegistry(
+        inventory_tools=InventoryToolset(inventory=MockInventoryBackend()),
+        guide_tools=GuideBookstoreTools(catalog=DEFAULT_CATALOG, index=policy_index),
+    )
     app.dependency_overrides[require_inventory] = lambda: MockInventoryBackend()
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+    app.state.registry = None
 
 
-def test_health_reports_offline_mode(client):
+def test_health_reports_offline_mode_and_merged_tools(client):
     body = client.get("/api/assistant/health").json()
     assert body["status"] == "ok"
     assert body["modelMode"] == "offline:rule-based"
+    assert body["inventorySource"] == "springboot-ebook"
+    assert body["tools"] == [
+        "check_inventory",
+        "get_competitor_price",
+        "search_book_catalog",
+        "query_store_policy",
+    ]
 
 
 def test_tools_endpoint_exposes_model_visible_schemas(client):
     tools = client.get("/api/assistant/tools").json()["tools"]
-    names = [tool["function"]["name"] for tool in tools]
-    assert names == ["check_inventory", "get_competitor_price"]
+    assert [tool["function"]["name"] for tool in tools] == [
+        "check_inventory",
+        "get_competitor_price",
+        "search_book_catalog",
+        "query_store_policy",
+    ]
+    # 每个 Schema 都要有描述与参数定义，否则模型无法判断何时调用。
+    for tool in tools:
+        function = tool["function"]
+        assert function["description"]
+        assert function["parameters"]["type"] == "object"
 
 
-def test_chat_returns_reply_and_tool_calls(client):
+def test_chat_returns_reply_and_steps(client):
     response = client.post(
         "/api/assistant/chat",
         json={
@@ -44,13 +74,14 @@ def test_chat_returns_reply_and_tool_calls(client):
     body = response.json()
 
     assert body["requestId"]
-    assert [call["name"] for call in body["toolCalls"]] == [
+    assert [step["action"] for step in body["steps"]] == [
         "check_inventory",
         "get_competitor_price",
     ]
-    assert all(call["ok"] for call in body["toolCalls"])
-    assert body["toolCalls"][0]["arguments"] == {"isbn": "978-3-00-000000-4"}
-    assert body["toolCalls"][0]["result"]["stockQty"] == 30
+    assert all(step["ok"] for step in body["steps"])
+    assert all(step["thought"] for step in body["steps"])
+    assert body["steps"][0]["arguments"] == {"isbn": "978-3-00-000000-4"}
+    assert body["steps"][0]["result"]["stockQty"] == 30
     assert "30 本" in body["reply"]
     assert body["stoppedReason"] == "completed"
 
@@ -61,10 +92,11 @@ def test_chat_surfaces_tool_failure_to_the_client(client):
         "/api/assistant/chat", json={"message": "ISBN为12345 的书还有多少本"}
     ).json()
 
-    [call] = body["toolCalls"]
-    assert call["ok"] is False
-    assert call["result"]["error"]["code"] == "INVALID_ISBN_FORMAT"
-    assert call["result"]["error"]["retryable"] is False
+    [step] = body["steps"]
+    assert step["ok"] is False
+    assert step["result"]["error"]["code"] == "INVALID_ISBN_FORMAT"
+    assert step["result"]["error"]["retryable"] is False
+    assert "核对" in body["reply"]
 
 
 def test_chat_retries_transient_upstream_timeout(client):
@@ -73,11 +105,24 @@ def test_chat_retries_transient_upstream_timeout(client):
         json={"message": "ISBN为978-7-00-000000-8 的书还有几本？另外帮我对比一下其他平台的价格"},
     ).json()
 
-    price_calls = [call for call in body["toolCalls"] if call["name"] == "get_competitor_price"]
-    assert len(price_calls) == 2
-    assert price_calls[0]["ok"] is False
-    assert price_calls[0]["result"]["error"]["code"] == "UPSTREAM_TIMEOUT"
-    assert price_calls[1]["ok"] is True
+    price_steps = [step for step in body["steps"] if step["action"] == "get_competitor_price"]
+    assert len(price_steps) == 2
+    assert price_steps[0]["ok"] is False
+    assert price_steps[0]["result"]["error"]["code"] == "UPSTREAM_TIMEOUT"
+    assert price_steps[1]["ok"] is True
+
+
+def test_chat_routes_catalog_then_policy(client):
+    body = client.post(
+        "/api/assistant/chat",
+        json={"message": "我想买一本关于微服务的书，另外如果我买了不喜欢，拆了塑封还能退吗？"},
+    ).json()
+
+    assert [step["action"] for step in body["steps"]] == [
+        "search_book_catalog",
+        "query_store_policy",
+    ]
+    assert all(step["ok"] for step in body["steps"])
 
 
 def test_chat_accepts_history(client):

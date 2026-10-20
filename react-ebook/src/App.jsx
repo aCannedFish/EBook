@@ -17,7 +17,6 @@ import { AdminUsersRoute, adminUsersAction, adminUsersLoader } from "./pages/Adm
 import { AdminBooksRoute, adminBooksAction, adminBooksLoader } from "./pages/AdminBooksPage";
 import { StatsRoute, statsAction, statsLoader } from "./pages/StatsPage";
 import { AssistantRoute, assistantAction, assistantLoader } from "./pages/AssistantPage";
-import { GuideRoute, guideAction, guideLoader } from "./pages/GuidePage";
 import { ProtectedRootRoute } from "./routes/Root";
 import { authRedirectLoader, logoutAction, requireAuthLoader } from "./routes/authRouteHandlers";
 import RouteErrorBoundary from "./routes/RouteErrorBoundary";
@@ -103,15 +102,8 @@ const router = createBrowserRouter([
             path: "assistant",
             loader: assistantLoader,
             action: assistantAction,
-            handle: { searchPlaceholder: "搜索对话内容或函数调用" },
+            handle: { searchPlaceholder: "搜索对话、工具调用或政策条款" },
             element: <AssistantRoute />
-          },
-          {
-            path: "guide",
-            loader: guideLoader,
-            action: guideAction,
-            handle: { searchPlaceholder: "搜索推理过程、工具调用或政策条款" },
-            element: <GuideRoute />
           },
           {
             path: "stats",

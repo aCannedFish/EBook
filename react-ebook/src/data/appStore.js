@@ -132,8 +132,7 @@ const state = {
     adminUsers: "",
     adminOrders: "",
     stats: "",
-    assistant: "",
-    guide: ""
+    assistant: ""
   },
   isLoggedIn: Boolean(authUsername && Number.isFinite(storedUserId) && hasValidToken())
 };
