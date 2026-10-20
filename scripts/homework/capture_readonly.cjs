@@ -39,6 +39,9 @@ async function main() {
     await page.locator("#password").fill("admin123");
     await page.locator("button[type='submit']").first().click();
     await page.waitForURL("**/books");
+    await page.goto("http://127.0.0.1:5173/books", { waitUntil: "domcontentloaded" });
+    await page.getByText("微服务设计", { exact: false }).first().waitFor({ timeout: 20000 });
+    await save(page, null, "docs/assignments/hw4/screenshots/integrated-bookstore.png", { fullPage: true });
     await page.goto("http://127.0.0.1:5173/contract", { waitUntil: "domcontentloaded" });
     await page.getByText("契约校验通过", { exact: true }).waitFor();
     await save(page, page.locator(".antd-shell"), "docs/assignments/hw1/screenshots/contract-conversation.png");

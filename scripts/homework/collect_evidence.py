@@ -1,4 +1,4 @@
-"""验证集成书城的真实 API 和 AI 链路，只使用仓库中的课程演示书目与虚构政策。"""
+"""采集合并后单一客服助手的真实 API 证据，只使用课程模拟书目与政策。"""
 
 from __future__ import annotations
 
@@ -54,7 +54,11 @@ def main() -> None:
     assert admin_login["status"] == user_login["status"] == 200
     admin, reader = admin_login["body"]["accessToken"], user_login["body"]["accessToken"]
     books = request("GET", store, "/api/v1/books?size=100", token=reader)["body"]["items"]
-    assert {book["isbn"].replace("-", "") for book in books} == SEED_ISBNS
+    # 允许原始演示书目以及项目中已登记的新增课程书目，仍拒绝未登记的数据。
+    imported = json.loads((ROOT / "scripts/book_import/books.json").read_text(encoding="utf-8"))
+    course_isbns = SEED_ISBNS | {book["isbn"].replace("-", "") for book in imported}
+    current_isbns = {book["isbn"].replace("-", "") for book in books}
+    assert SEED_ISBNS <= current_isbns <= course_isbns
     assert "虚构" in (ROOT / "python-assistant/data/policy.txt").read_text()
     auth = [request("GET", store, "/api/v1/books/1"),
             request("GET", store, "/api/v1/books/1", token="bad-token"),
@@ -80,9 +84,9 @@ def main() -> None:
         }, reader)
         assert stock["status"] == 200, stock
         assert stock["body"]["modelMode"].startswith("remote:")
-        calls = stock["body"]["toolCalls"]
-        assert {c["name"] for c in calls} >= {"check_inventory", "get_competitor_price"}
-        inventory = next(c for c in calls if c["name"] == "check_inventory" and c["ok"])
+        steps = stock["body"]["steps"]
+        assert {step["action"] for step in steps} >= {"check_inventory", "get_competitor_price"}
+        inventory = next(step for step in steps if step["action"] == "check_inventory" and step["ok"])
         assert inventory["result"]["stockQty"] == 37
         save(2, "inventory-live.json", stock)
     finally:
@@ -91,28 +95,32 @@ def main() -> None:
         "message": "ISBN为978-7-00-000000-8 的书还有几本？请比较其他平台价格，如果查询超时，请按工具提示重试一次。"
     }, reader)
     assert correction["status"] == 200, correction
-    price_calls = [c for c in correction["body"]["toolCalls"] if c["name"] == "get_competitor_price"]
-    assert len(price_calls) >= 2 and not price_calls[0]["ok"] and price_calls[-1]["ok"]
+    price_steps = [step for step in correction["body"]["steps"] if step["action"] == "get_competitor_price"]
+    assert len(price_steps) >= 2 and not price_steps[0]["ok"] and price_steps[-1]["ok"]
     save(2, "self-correction.json", correction)
     invalid = request("POST", ai, "/api/assistant/chat", {"message": "ISBN为12345的书还有多少本"}, reader)
+    assert invalid["status"] == 200, invalid
+    assert any(
+        step["result"].get("error", {}).get("code") == "INVALID_ISBN_FORMAT"
+        for step in invalid["body"]["steps"]
+    ), invalid
     save(2, "invalid-isbn.json", invalid)
-    health = request("GET", ai, "/api/guide/health", token=reader)
-    assert health["status"] == 200, health
-    assert health["body"]["ragStats"]["dimensions"] == 512
-    save(3, "rag-index.json", health)
-    guide = request("POST", ai, "/api/guide/chat", {
-        "message": "我想买一本关于微服务的书，另外如果我买了不喜欢，拆了塑封还能退吗？",
-        "useRemoteModel": True,
+    schemas = request("GET", ai, "/api/assistant/tools", token=reader)
+    names = [item["function"]["name"] for item in schemas["body"]["tools"]]
+    assert names == ["check_inventory", "get_competitor_price", "search_book_catalog", "query_store_policy"]
+    save(2, "tool-schemas.json", schemas)
+    assistant = request("POST", ai, "/api/assistant/chat", {
+        "message": "我想买一本关于微服务的书，另外如果我买了不喜欢，拆了塑封还能退吗？"
     }, reader)
-    assert guide["status"] == 200, guide
-    assert guide["body"]["stoppedReason"] == "completed"
-    steps = guide["body"]["steps"]
+    assert assistant["status"] == 200, assistant
+    assert assistant["body"]["stoppedReason"] == "completed"
+    steps = assistant["body"]["steps"]
     assert steps[0]["action"] == "search_book_catalog"
     assert steps[0]["result"]["source"] == "bookstore-api"
     assert any(step["action"] == "query_store_policy" and step["ok"] for step in steps)
     assert all(step["thought"] and step["observation"] for step in steps)
-    save(3, "react-case.json", guide)
-    print("同一书城的认证、实时库存、真实工具调用与语义 RAG 均已验证。", flush=True)
+    save(3, "react-case.json", assistant)
+    print("同一客服助手中的 Function Calling、政策 RAG 和 Thought → Action → Observation 过程已采集。", flush=True)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # 书城 Agent
 
-本目录是 EBook 的统一 Python 服务，默认监听 http://127.0.0.1:8000，同时提供库存客服和政策导购。React 书城的 `/assistant` 和 `/guide` 页面调用该服务，并使用同一份登录 JWT 读取 Spring Boot 书目，数据库由原书城维护。
+本目录是 EBook 的统一 Python 服务，默认监听 http://127.0.0.1:8000。React 书城只有一个客服助手入口 `/assistant`；用户可以在同一对话里查询库存、比较价格、寻找图书和询问政策。助手使用当前用户的 JWT 读取 Spring Boot 书目，数据库由原书城维护。
 
 ## 启停
 
@@ -18,12 +18,14 @@
 
 | 模块 | 作用 |
 |---|---|
-| `backend/agent.py` | 配置 Function Schema，解析 tool_calls，执行工具并回填 role=tool |
-| `backend/tools.py` | `check_inventory` 和模拟 `get_competitor_price`，统一异常及重试提示 |
+| `backend/assistant/agent.py` | 在 ReAct 循环中解析 Function Calling；把模型理由记为 Thought、函数调用记为 Action、工具结果记为 Observation |
+| `backend/assistant/tools.py` | 合并四种 Function Schema 与统一工具注册、派发 |
+| `backend/assistant/prompt.py`、`offline.py` | 统一模型提示词与离线替身 |
+| `backend/tools.py` | `check_inventory`、模拟 `get_competitor_price`，统一异常及重试提示 |
 | `backend/catalog.py` | 转发当前用户 JWT，从原书城读取书目和实时库存 |
 | `backend/guide/corpus.py` | 加载、清洗政策并按条款和长度切分 |
 | `backend/guide/embedding.py`、`rag.py` | 文档与查询向量化、余弦相似度和 Top-K 政策检索 |
-| `backend/guide/agent.py`、`react_format.py` | 解析 Thought、Action、Action Input，执行工具并追加 Observation |
+| `backend/guide/react_format.py` | ReAct 文本格式工具；统一 Agent 复用其中的观测截断函数 |
 | `backend/api_design.py` | 真实模型生成 OpenAPI JSON，验证格式与现有书城接口是否一致 |
 | `backend/server.py` | 同一个 FastAPI 应用承载上述接口，验证调用者身份并建立请求范围的工具 |
 
@@ -33,15 +35,13 @@
 
 | 方法与路径 | 用途 |
 |---|---|
-| GET `/api/assistant/health` | 模型及服务状态 |
-| POST `/api/assistant/chat` | 库存客服，返回自然语言答复与实际 toolCalls |
-| GET `/api/guide/health` | 政策分块、向量维数和书目状态 |
-| POST `/api/guide/policy/search` | 直接测试政策检索 |
-| POST `/api/guide/chat` | ReAct 导购，返回完整 steps 和最终答复 |
+| GET `/api/assistant/health` | 模型状态与四个可用工具 |
+| GET `/api/assistant/tools` | 四个 Function Schema |
+| POST `/api/assistant/chat` | 统一对话，返回自然语言答复及 Thought、Action、Action Input、Observation 步骤 |
 | GET `/api/design/conversation` | 管理员读取已保存的真实接口设计对话 |
 | POST `/api/design/chat` | 管理员调用真实模型生成契约 |
 
-对话、导购和接口设计操作需要 `Authorization: Bearer <JWT>`；JWT 来自原书城 `/api/v1/users/login`。凭证只用于本机书城鉴权，不进入模型消息。对话上下文只接受用户和助手消息，库存和政策工具由服务端执行。
+客服对话和接口设计操作需要 `Authorization: Bearer <JWT>`；JWT 来自原书城 `/api/v1/users/login`。凭证只用于本机书城鉴权，不进入模型消息。对话上下文只接受用户和助手消息，库存、书目和政策工具由服务端执行。助手每次将四个工具 Schema 一起交给模型；用户同时问库存、荐书和政策时，Agent 根据模型工具调用逐步处理，并把每次工具结果回填上下文。
 
 ## 测试
 

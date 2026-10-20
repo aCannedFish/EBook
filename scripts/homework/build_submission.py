@@ -70,7 +70,7 @@ def validate_images() -> None:
     for number in range(1, 5):
         with ZipFile(OUTPUT / f"{STUDENT}-作业{number}.docx") as report:
             media = [name for name in report.namelist() if name.startswith("word/media/")]
-            assert len(media) == (2 if number == 1 else 3)
+            assert len(media) == {1: 2, 2: 3, 3: 2, 4: 3}[number]
             assert all(hashlib.sha256(report.read(name)).hexdigest() in hashes for name in media)
 
 
@@ -79,7 +79,7 @@ def main() -> None:
     OUTPUT.mkdir(exist_ok=True)
     validate_images()
     shared = collect(["README.md", ".gitignore", "requirements-docs.txt", *COMMON, *JAVA, *PYTHON, *FRONTEND,
-                      "scripts/homework", "docs/assignments"])
+                      "scripts/homework", "scripts/book_import", "docs/assignments"])
     shared_name = f"{STUDENT}-书城集成源码.zip"
     write_archive(OUTPUT / shared_name, {"bookstore/" + name: source for name, source in shared.items()})
     selected = {
@@ -88,8 +88,8 @@ def main() -> None:
             "scripts/homework/generate_contract.py", "scripts/homework/validate_openapi.py"],
         2: [*PYTHON, "react-ebook/src/pages/AssistantPage.jsx", "react-ebook/src/pages/AssistantPage.css",
             "react-ebook/src/api/assistantApi.js", "scripts/homework/collect_evidence.py"],
-        3: [*PYTHON, "react-ebook/src/pages/GuidePage.jsx", "react-ebook/src/pages/GuidePage.css",
-            "react-ebook/src/api/guideApi.js", "scripts/homework/collect_evidence.py"],
+        3: [*PYTHON, "react-ebook/src/pages/AssistantPage.jsx", "react-ebook/src/pages/AssistantPage.css",
+            "react-ebook/src/api/assistantApi.js", "scripts/homework/collect_evidence.py"],
         4: [*JAVA, "react-ebook/src/api/auth.js", "react-ebook/src/api/backendApi.js",
             "scripts/homework/collect_evidence.py"],
     }
@@ -104,13 +104,15 @@ def main() -> None:
         files = {"source/" + name: source for name, source in sources.items()}
         files[f"{STUDENT}-作业{number}.docx"] = OUTPUT / f"{STUDENT}-作业{number}.docx"
         evidence = collect([f"docs/assignments/hw{number}", "docs/assignments/browser-captures.json",
-                            "docs/assignments/browser-regression.json", "docs/assignments/service-lifecycle.json"])
+                            "docs/assignments/service-lifecycle.json"])
         files.update(evidence)
         if number == 1:
             files["openapi.json"] = ROOT / "docs/assignments/hw1/openapi.json"
         readme = (f"# 作业{number}\n\n"
                   "本包包含模板报告、对应实现的自编源码、运行脚本与真实证据。source/ 下保留原书城的文件路径，"
                   "用于审阅本次作业的实现，所有作业共用同一个书城。\n\n"
+                  "客服查询、书目推荐与政策问答现在使用同一个 /assistant 页面和 /api/assistant/chat 接口。"
+                  "库存与比价函数、查书与政策 RAG 工具由同一个 Agent 通过 Function Calling + ReAct 循环调用。\n\n"
                   f"完整运行请解压同交付目录中的 `{shared_name}`，进入 bookstore/，执行 `./run-all.sh`。"
                   "该源码包仅包含自编源文件、必要静态资源、脚本和文档；依赖与编译产物由启动脚本安装或构建。"
                   "各次作业包不含第三方 Jar、node_modules、Python 虚拟环境、本机密钥或模型权重。\n\n"
@@ -120,6 +122,8 @@ def main() -> None:
     readme = ("# 四次作业\n\n"
               "四份按作业命名的压缩包用于对应作业提交，各包含模板报告、对应自编源码、脚本和真实运行证据。"
               f"作业1另附最终 openapi.json。`{shared_name}` 保存四次功能整合后的唯一书城源码，供完整运行。\n\n"
+              "作业2的库存/比价和作业3的书目/政策功能统一运行在 React 的 /assistant 页面；"
+              "四个工具使用同一套 Function Calling 与 ReAct 循环，页面保留 Thought、Action 和 Observation。\n\n"
               "解压集成源码，进入 bookstore/ 后执行 `./run-all.sh`；停止使用 `./stop-all.sh`，状态使用 `./status-all.sh`。"
               "需要单独管理时使用 `--frontend`、`--backend` 或 `--agent`。默认端口 5173、8080、8000；启动前清理选定端口，停止后保留数据库数据。\n\n"
               "需要 JDK21、Maven、Node18+、Python3.10+、Docker Desktop 和 lsof。首次使用会下载依赖和本地向量模型。"

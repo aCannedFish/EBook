@@ -1,6 +1,6 @@
 ## 一、接口设计
 
-高并发与鉴权改造直接加入原 springboot-ebook，不另建作业后端。原有 MySQL、JPA、图书管理、购物车、订单和统计功能继续使用。GET /api/v1/books 提供分页列表，GET /api/v1/books/{id} 返回图书 JSON，POST 新增返回201与Location，PATCH /books/{id}/stock 更新库存，资源不存在返回404。
+高并发与鉴权改造直接加入原 springboot-ebook，不另建作业后端。原有 MySQL、JPA、图书管理、购物车、订单和统计功能继续使用。GET /api/v1/books 提供分页列表，GET /api/v1/books/{id} 返回图书 JSON，POST 新增返回201与Location，PATCH /api/v1/books/{id}/stock 更新库存，资源不存在返回404。
 
 ## 二、虚拟线程
 

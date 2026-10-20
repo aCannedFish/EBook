@@ -1,28 +1,22 @@
 {
   "method": "POST",
-  "path": "/api/assistant/chat",
+  "path": "/assistant-api/api/assistant/chat",
   "authorizationPresent": true,
   "status": 200,
-  "headers": {
-    "date": "Tue, 20 Oct 2026 08:34:01 GMT",
-    "server": "uvicorn",
-    "content-length": "1913",
-    "content-type": "application/json",
-    "vary": "Origin",
-    "Connection": "close"
-  },
   "body": {
-    "requestId": "f9bfa9fadd6f",
-    "reply": "好的，查询结果如下：\n\n**《量子物理》（吕智国 著）ISBN 978-7-00-000000-8**\n\n**本店库存与售价：**\n- 本店目前有 **15本** 库存，有货\n- 本店售价：**72元**\n\n**其他平台价格对比：**\n- **博文轩**：84元（有货，2天送达）\n- **云书房**：90元（有货，1天送达）\n- **知微书城**：79元（无货，4天送达）\n\n**结论：** 本店售价72元，是各平台中最低的，比最便宜的竞品（知微书城79元）还便宜7元，而且本店有现货。如果您想购买，本店是最划算的选择。需要帮您下单吗？",
-    "toolCalls": [
+    "requestId": "2ae8d463f290",
+    "reply": "查询完成，为您汇总如下：\n\n**库存情况**\n《量子物理》（吕智国 著，ISBN 978-7-00-000000-8）本店**有货，库存 15 本**，本店售价 **72 元**。\n\n**竞品比价**\n- 博文轩：84 元（有货，2 天送达）\n- 云书房：90 元（有货，1 天送达）\n- 知微书城：79 元（**无货**，4 天送达）\n\n**结论**：本店 72 元是当前最低价，比竞品最低报价（知微书城 79 元，但无货）还便宜 7 元；在有货的平台中，本店价格也明显低于博文轩和云书房。综合价格和现货来看，本店是最划算的选择。\n\n需要我帮您进一步了解这本书的内容或相关主题推荐吗？",
+    "steps": [
       {
-        "round": 1,
-        "name": "check_inventory",
+        "index": 1,
+        "thought": "我来帮您查询这本书的库存和比价。先查本店库存和竞品价格。\n\n让我先调用工具查询这本书的库存和竞品价格。",
+        "action": "check_inventory",
         "arguments": {
           "isbn": "978-7-00-000000-8"
         },
         "ok": true,
-        "durationMs": 76,
+        "durationMs": 68,
+        "observation": "{\"ok\": true, \"isbn\": \"9787000000008\", \"title\": \"量子物理\", \"author\": \"吕智国\", \"price\": 72, \"category\": \"物理\", \"stockQty\": 15, \"stockText\": \"有货\", \"inStock\": true, \"source\": \"bookstore-inventory\"}",
         "result": {
           "ok": true,
           "isbn": "9787000000008",
@@ -38,13 +32,15 @@
         "parseError": null
       },
       {
-        "round": 1,
-        "name": "get_competitor_price",
+        "index": 2,
+        "thought": "我来帮您查询这本书的库存和比价。先查本店库存和竞品价格。\n\n让我先调用工具查询这本书的库存和竞品价格。",
+        "action": "get_competitor_price",
         "arguments": {
           "isbn": "978-7-00-000000-8"
         },
         "ok": false,
-        "durationMs": 405,
+        "durationMs": 404,
+        "observation": "{\"ok\": false, \"error\": {\"code\": \"UPSTREAM_TIMEOUT\", \"message\": \"竞品比价接口对 ISBN 9787000000008 响应超时（第 1 次）\", \"retryable\": true, \"hint\": \"上游抖动，原样重试一次即可，不用修改参数。\"}}",
         "result": {
           "ok": false,
           "error": {
@@ -57,13 +53,15 @@
         "parseError": null
       },
       {
-        "round": 2,
-        "name": "get_competitor_price",
+        "index": 3,
+        "thought": "本店库存已查到，但竞品比价接口超时了，提示可以原样重试一次。我按提示重试竞品价格查询。",
+        "action": "get_competitor_price",
         "arguments": {
           "isbn": "978-7-00-000000-8"
         },
         "ok": true,
         "durationMs": 401,
+        "observation": "{\"ok\": true, \"isbn\": \"9787000000008\", \"quotes\": [{\"platform\": \"博文轩\", \"price\": 84, \"currency\": \"CNY\", \"inStock\": true, \"deliveryDays\": 2}, {\"platform\": \"云书房\", \"price\": 90, \"currency\": \"CNY\", \"inStock\": true, \"deliveryDays\": 1}, {\"platform\": \"知微书城\", \"price\": 79, \"currency\": \"CNY\", \"inStock\": false, \"deliveryDays\": 4}], \"lowestPrice\": 79, \"source\": \"competitor-price-mock\"}",
         "result": {
           "ok": true,
           "isbn": "9787000000008",

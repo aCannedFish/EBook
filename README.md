@@ -1,6 +1,6 @@
 # EBook 书城
 
-四次课程作业均集成在原书城中。React 页面访问 Spring Boot 的图书、购物车、订单和用户接口；统一 Python Agent 通过当前用户的 JWT 读取同一份书目与库存，并提供 Function Calling、政策 RAG 和 ReAct 导购。
+四次课程作业均集成在原书城中。React 页面访问 Spring Boot 的图书、购物车、订单和用户接口；一个 Python 客服助手通过当前用户的 JWT 读取同一份书目与库存，并在同一对话中处理库存、比价、荐书和门店政策。
 
 ## 启停
 
@@ -48,28 +48,29 @@
 | 作业 | 实现位置 | 运行入口 |
 |---|---|---|
 | 1 | `python-assistant/backend/api_design.py`、`ApiDesignPage.jsx`、原书城 `BookController` | 管理员登录后打开 `/contract` |
-| 2 | `python-assistant/backend/agent.py`、`tools.py`、`catalog.py` | `/assistant` |
-| 3 | `python-assistant/backend/guide/`、`data/policy.txt` | `/guide` |
+| 2 | `python-assistant/backend/assistant/`、`backend/tools.py`、`backend/catalog.py` | `/assistant` |
+| 3 | `python-assistant/backend/assistant/`、`backend/guide/`、`data/policy.txt` | `/assistant` |
 | 4 | `springboot-ebook` 中 JWT 过滤器、安全配置和虚拟线程配置 | 书城业务接口及 Swagger UI |
 
-库存客服的 `check_inventory` 查询实际 MySQL 库存；竞品报价按作业要求模拟。导购的 `search_book_catalog` 读取相同的书目，`query_store_policy` 对政策文档进行分块、512 维 Embedding 和余弦 Top-K 检索，再由 ReAct 循环决定下一步操作。书目中没有的年份、评分和销量不会补造。
+助手页面与接口分别为 `/assistant` 和 `/api/assistant/chat`。每次模型请求都注册四个 Function Schema；Function Calling 解析动作、执行工具并回填结果，ReAct 循环记录 Thought、Action 和 Observation，直到模型给出最终答复。`check_inventory` 查询实际 MySQL 库存，竞品报价按作业要求模拟；`search_book_catalog` 查询同一份书目，`query_store_policy` 对政策文档进行分块、512 维 Embedding 和余弦 Top-K 检索。书目中没有的年份、评分和销量不会补造。
 
 书目接口使用 `/api/v1/books`：GET 支持 `page=0`、`size=20`、`category`、`keyword`、`isbn`；GET `/{id}` 查询详情；管理员 POST 创建返回 201 和 Location，PATCH `/{id}/stock` 更新库存。原购物车、下单、订单与统计继续使用现有业务层和数据库。
 
 ## 模型配置
 
-将 `python-assistant/.env.example` 复制为 `.env`，填写 OpenAI 兼容模型接口的 `LLM_BASE_URL`、`LLM_API_KEY` 和 `LLM_MODEL`，重启 Agent 即可。密钥仅用于模型网关鉴权，不会出现在报告、截图或提交包中。未配置密钥时，客服与导购可明确切换为离线演示；接口契约生成要求真实模型。
+将 `python-assistant/.env.example` 复制为 `.env`，填写 OpenAI 兼容模型接口的 `LLM_BASE_URL`、`LLM_API_KEY` 和 `LLM_MODEL`，重启 Agent 即可。密钥仅用于模型网关鉴权，不会出现在报告、截图或提交包中。未配置密钥时，统一客服助手可明确切换为离线演示；接口契约生成要求真实模型。
 
 Agent 将书目字段、工具结果和检索到的课程模拟政策发送给模型。顾客 JWT 仅转发给本机书城以校验身份、读取书目，不进入模型提示词。订单、购物车、用户资料和密码不作为模型工具数据。
 
 ## 代码结构
 
 ```text
-react-ebook/          原 React 书城及三个作业页面
+react-ebook/          原 React 书城及统一客服助手页面
 springboot-ebook/     原 Spring Boot 书城、JWT、Java 21 虚拟线程
 python-assistant/    统一 Agent，包含 Function Calling 与 RAG/ReAct
 scripts/services.py  端口清理、进程组管理、就绪检查
 scripts/homework/    真实联调、截图、OpenAPI 校验与报告生成脚本
+scripts/book_import/ 新增课程书目的来源记录、封面下载和种子数据导入
 docs/assignments/    四次作业的正文、实际响应和浏览器截图
 deliverables/        模板填写的四份报告和提交压缩包
 ```

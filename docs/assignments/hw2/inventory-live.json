@@ -1,28 +1,22 @@
 {
   "method": "POST",
-  "path": "/api/assistant/chat",
+  "path": "/assistant-api/api/assistant/chat",
   "authorizationPresent": true,
   "status": 200,
-  "headers": {
-    "date": "Tue, 20 Oct 2026 08:33:45 GMT",
-    "server": "uvicorn",
-    "content-length": "1497",
-    "content-type": "application/json",
-    "vary": "Origin",
-    "Connection": "close"
-  },
   "body": {
-    "requestId": "d22acce0e6e2",
-    "reply": "为您查询到以下信息：\n\n**《Introduction To Algorithms》（Thomas H. Cormen 著）**\n\n- **本店库存**：目前有 **37 本**，有货。\n- **本店售价**：**99 元**\n\n**其他平台报价对比：**\n- **知微书城**：71 元（4 天送达）\n- **博文轩**：76 元（2 天送达）\n- **云书房**：82 元（1 天送达）\n\n其他平台最低价为 **71 元**（知微书城），比本店便宜一些。不过本店库存充足，您可以按需选择。需要我帮您做进一步比较或下单吗？",
-    "toolCalls": [
+    "requestId": "38bf61051f64",
+    "reply": "查询结果已经出来了，为您整理如下：\n\n**《Introduction To Algorithms》（Thomas H. Cormen 著，算法类）**\n\n**本店库存与售价**\n- 本店售价：**99 元**\n- 库存：**30 本**，有货，可正常购买\n\n**其他平台报价（比价）**\n| 平台 | 价格 | 发货时间 |\n|------|------|---------|\n| 博文轩 | 76 元 | 2 天 |\n| 云书房 | 82 元 | 1 天 |\n| 知微书城 | 71 元 | 4 天 |\n\n**比价结论**：其他平台最低报价为知微书城的 **71 元**，比本店的 99 元便宜约 28 元。如果您更看重价格，可以考虑别家；如果看重发货速度，云书房 82 元且 1 天发货也是个选择。\n\n需要我帮您进一步了解这本书的内容简介，或者有其他需要吗？",
+    "steps": [
       {
-        "round": 1,
-        "name": "check_inventory",
+        "index": 1,
+        "thought": "我来帮您查询这本书的库存和竞品价格。先查本店库存和售价，同时查一下其他平台的报价。\n\n让我同时调用两个工具来查询。",
+        "action": "check_inventory",
         "arguments": {
           "isbn": "978-3-00-000000-4"
         },
         "ok": true,
-        "durationMs": 78,
+        "durationMs": 76,
+        "observation": "{\"ok\": true, \"isbn\": \"9783000000004\", \"title\": \"Introduction To Algorithms\", \"author\": \"Thomas H. Cormen\", \"price\": 99, \"category\": \"算法\", \"stockQty\": 30, \"stockText\": \"有货\", \"inStock\": true, \"source\": \"bookstore-inventory\"}",
         "result": {
           "ok": true,
           "isbn": "9783000000004",
@@ -30,7 +24,7 @@
           "author": "Thomas H. Cormen",
           "price": 99,
           "category": "算法",
-          "stockQty": 37,
+          "stockQty": 30,
           "stockText": "有货",
           "inStock": true,
           "source": "bookstore-inventory"
@@ -38,13 +32,15 @@
         "parseError": null
       },
       {
-        "round": 1,
-        "name": "get_competitor_price",
+        "index": 2,
+        "thought": "我来帮您查询这本书的库存和竞品价格。先查本店库存和售价，同时查一下其他平台的报价。\n\n让我同时调用两个工具来查询。",
+        "action": "get_competitor_price",
         "arguments": {
           "isbn": "978-3-00-000000-4"
         },
         "ok": true,
-        "durationMs": 404,
+        "durationMs": 402,
+        "observation": "{\"ok\": true, \"isbn\": \"9783000000004\", \"quotes\": [{\"platform\": \"博文轩\", \"price\": 76, \"currency\": \"CNY\", \"inStock\": true, \"deliveryDays\": 2}, {\"platform\": \"云书房\", \"price\": 82, \"currency\": \"CNY\", \"inStock\": true, \"deliveryDays\": 1}, {\"platform\": \"知微书城\", \"price\": 71, \"currency\": \"CNY\", \"inStock\": true, \"deliveryDays\": 4}], \"lowestPrice\": 71, \"source\": \"competitor-price-mock\"}",
         "result": {
           "ok": true,
           "isbn": "9783000000004",

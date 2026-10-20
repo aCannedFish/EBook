@@ -1,139 +1,181 @@
 "use strict";
 
-/** 只截取真实浏览器页面，不生成终端外观、不伪造 API 响应、不注入对话文本。 */
+/**
+ * 在合并后的单一 /assistant 页面采集作业2、作业3真实对话和截图。
+ *
+ * 浏览器直接请求本地书城和 Agent。截图不拼接、不重绘；落盘的 API 证据
+ * 只包含用户已授权的课程演示书目、模拟竞品报价和课程虚构政策。
+ */
 const { createRequire } = require("node:module");
+const crypto = require("node:crypto");
 const fs = require("node:fs/promises");
 const path = require("node:path");
-const crypto = require("node:crypto");
-const requireRuntime = createRequire(process.env.CODEX_NODE_PACKAGES + "/package.json");
-const { chromium } = requireRuntime("playwright-core");
-const base = "http://127.0.0.1:5173";
-const evidence = [];
+const runtime = createRequire(process.env.CODEX_NODE_PACKAGES + "/package.json");
+const { chromium } = runtime("playwright-core");
 
-async function capture(page, hw, name, options = {}) {
-  const file = path.join(process.cwd(), `docs/assignments/hw${hw}/screenshots/${name}.png`);
-  await page.screenshot({ path: file, ...options });
-  const bytes = await fs.readFile(file);
-  evidence.push({
-    file: path.relative(process.cwd(), file), url: page.url(),
-    capturedAt: new Date().toISOString(), sha256: crypto.createHash("sha256").update(bytes).digest("hex")
+const root = process.cwd();
+const front = "http://127.0.0.1:5173";
+const ai = "http://127.0.0.1:8000";
+
+async function saveCapture(page, homework, filename) {
+  const relativePath = `docs/assignments/hw${homework}/screenshots/${filename}.png`;
+  const absolutePath = path.join(root, relativePath);
+  await page.screenshot({ path: absolutePath, fullPage: true });
+
+  const bytes = await fs.readFile(absolutePath);
+  const manifestPath = path.join(root, "docs/assignments/browser-captures.json");
+  const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
+  manifest.captureMethod = "Playwright Chromium page.screenshot";
+  manifest.processing = "none";
+  manifest.screenshots = manifest.screenshots.filter((item) => item.file !== relativePath);
+  manifest.screenshots.push({
+    file: relativePath,
+    url: page.url(),
+    capturedAt: new Date().toISOString(),
+    sha256: crypto.createHash("sha256").update(bytes).digest("hex")
   });
-  await fs.writeFile("docs/assignments/browser-captures.json", JSON.stringify({ captureMethod: "Playwright Chromium page.screenshot", processing: "none", screenshots: evidence }, null, 2));
-  console.log("原始浏览器截图：", file);
+  await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+  console.log("真实页面截图：", relativePath);
 }
 
-async function captureSwagger(page, block, name) {
-  await page.setViewportSize({ width: 1280, height: 1800 });
-  await block.getByText("Response headers", { exact: true }).waitFor();
-  await block.locator(".responses-inner").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(350);
-  const start = await block.locator(".curl-command").boundingBox();
-  const end = await block.locator(".live-responses-table").boundingBox();
-  const height = end.y + end.height - start.y + 12;
-  if (start.y < 0 || start.y + height > 1800) throw new Error("实际响应超出截图视口");
-  await capture(page, 4, name, {
-    clip: { x: start.x, y: start.y, width: start.width, height }
-  });
+function saveResponse(homework, filename, response, body) {
+  const evidence = {
+    method: response.request().method(),
+    path: new URL(response.url()).pathname,
+    authorizationPresent: true,
+    status: response.status(),
+    body
+  };
+  const target = path.join(root, `docs/assignments/hw${homework}/${filename}.json`);
+  return fs.writeFile(target, JSON.stringify(evidence, null, 2));
+}
+
+function writeReactTrace(steps) {
+  const trace = [];
+  for (const step of steps) {
+    trace.push(
+      `Thought: ${step.thought}`,
+      `Action: ${step.action}`,
+      `Action Input: ${JSON.stringify(step.arguments)}`,
+      `Observation: ${JSON.stringify(step.result, null, 2)}`,
+      ""
+    );
+  }
+  return fs.writeFile(
+    path.join(root, "docs/assignments/hw3/logs/react-trace.txt"),
+    trace.join("\n"),
+    "utf8"
+  );
+}
+
+async function writeAssistantLog(requestId) {
+  const logPath = path.join(root, ".logs/ai-server.log");
+  const runtimeLog = (await fs.readFile(logPath, "utf8"))
+    .split("\n")
+    .filter((line) => line.includes(`[${requestId}]`))
+    .join("\n");
+  if (!runtimeLog.includes("最终答复")) {
+    throw new Error("统一 Agent 尚未写入该请求的完整服务端运行日志");
+  }
+  return fs.writeFile(path.join(root, "docs/assignments/hw3/logs/ai-runtime.log"),
+                      runtimeLog + "\n", "utf8");
+}
+
+async function ask(page, question) {
+  const composer = page.locator(".assistant__composer textarea");
+  await composer.fill(question);
+  const responsePromise = page.waitForResponse((response) =>
+    response.url().endsWith("/api/assistant/chat") && response.request().method() === "POST",
+    { timeout: 180000 });
+  await composer.press("Enter");
+  const response = await responsePromise;
+  if (response.status() !== 200) {
+    throw new Error(`统一助手返回 HTTP ${response.status()}`);
+  }
+  const body = await response.json();
+  await page.waitForFunction(() => !document.querySelector(".assistant__pending"));
+  return { response, body };
 }
 
 async function main() {
-  const browser = await chromium.launch({ executablePath: process.env.BOOKSTORE_CHROMIUM, headless: true, chromiumSandbox: true });
+  const browser = await chromium.launch({
+    executablePath: process.env.BOOKSTORE_CHROMIUM,
+    headless: true,
+    chromiumSandbox: true
+  });
+
   try {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    page.on("pageerror", (error) => console.log("PAGE_ERROR", error.message));
-    await page.goto(base + "/login", { waitUntil: "domcontentloaded" });
-    await page.locator("#username").fill("admin");
-    await page.locator("#password").fill("admin123");
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
+    page.on("pageerror", (error) => console.error("PAGE_ERROR", error.message));
+    await page.goto(front + "/login", { waitUntil: "domcontentloaded" });
+    await page.locator("#username").fill("DefaultUser");
+    await page.locator("#password").fill("123456");
     await page.locator("button[type='submit']").first().click();
     await page.waitForURL("**/books");
-    await page.getByText("微服务设计", { exact: false }).first().waitFor();
-    await capture(page, 4, "integrated-bookstore", { fullPage: true });
+    await page.goto(front + "/assistant", { waitUntil: "domcontentloaded" });
+    await page.getByText("客服助手", { exact: true }).first().waitFor();
 
-    // 页面读取真实模型 API 已保存的两轮对话，截图保留模型、时间和每轮输入。
-    await page.goto(base + "/contract", { waitUntil: "domcontentloaded" });
-    await page.getByText("契约校验通过", { exact: true }).waitFor();
-    await page.getByText("User Prompt", { exact: true }).first().waitFor();
-    await capture(page, 1, "contract-conversation", { fullPage: true });
-
-    const login = await context.request.post("http://127.0.0.1:8080/api/v1/users/login", { data: { username: "admin", password: "admin123" } });
-    const jwt = (await login.json()).accessToken;
-    const auth = { Authorization: "Bearer " + jwt };
-    const originalResponse = await context.request.get("http://127.0.0.1:8080/api/v1/books/4", { headers: auth });
-    const original = (await originalResponse.json()).stockQty;
-    try {
-      await context.request.patch("http://127.0.0.1:8080/api/v1/books/4/stock", { headers: auth, data: { stockQty: 37 } });
-      await page.goto(base + "/assistant", { waitUntil: "domcontentloaded" });
-      await page.locator(".assistant__composer textarea").fill("帮我查一下 ISBN为978-3-00-000000-4 的书还有多少本，顺便看看别家卖多少钱。");
-      const responsePromise = page.waitForResponse((response) => response.url().includes("/api/assistant/chat") && response.request().method() === "POST", { timeout: 150000 });
-      await page.locator(".assistant__composer textarea").press("Enter");
-      const response = await responsePromise;
-      const result = await response.json();
-      if (response.status() !== 200 || !result.toolCalls.some((call) => call.name === "check_inventory" && call.result.stockQty === 37)) {
-        throw new Error("前端库存对话未读取实际库存37");
-      }
-      await page.getByText("check_inventory", { exact: true }).first().waitFor();
-      await capture(page, 2, "inventory-function-calling", { fullPage: true });
-      await page.locator(".assistant-msg__text").last().scrollIntoViewIfNeeded();
-      await capture(page, 2, "inventory-reply", { fullPage: true });
-    } finally {
-      await context.request.patch("http://127.0.0.1:8080/api/v1/books/4/stock", { headers: auth, data: { stockQty: original } });
+    const inventory = await ask(
+      page,
+      "帮我查一下 ISBN为978-3-00-000000-4 的书还有多少本，顺便看看别家卖多少钱。"
+    );
+    const inventoryNames = inventory.body.steps.map((step) => step.action);
+    if (!inventoryNames.includes("check_inventory") || !inventoryNames.includes("get_competitor_price")) {
+      throw new Error("统一助手未完成库存和模拟竞品两个 Function Calling 动作");
     }
-    // 同一前端页面继续验证超时后的模型自纠错。
-    await page.locator(".assistant__composer textarea").fill("ISBN为978-7-00-000000-8 的书还有几本？比较一下其他平台价格，如果超时请按提示重试。");
-    const correctionPromise = page.waitForResponse((response) => response.url().includes("/api/assistant/chat") && response.request().method() === "POST", { timeout: 150000 });
-    await page.locator(".assistant__composer textarea").press("Enter");
-    const correction = await (await correctionPromise).json();
-    if (!correction.toolCalls.some((call) => call.result.error?.code === "UPSTREAM_TIMEOUT")) {
-      throw new Error("本次未触发指定的课程模拟超时");
-    }
-    await page.getByText(/UPSTREAM_TIMEOUT/).first().waitFor();
-    await page.getByText(/UPSTREAM_TIMEOUT/).first().scrollIntoViewIfNeeded();
-    await capture(page, 2, "timeout-self-correction", { fullPage: true });
+    await saveResponse(2, "inventory-live", inventory.response, inventory.body);
+    await page.getByText("get_competitor_price", { exact: true }).waitFor();
+    await saveCapture(page, 2, "inventory-function-calling");
+    await page.locator(".assistant-msg__text").last().scrollIntoViewIfNeeded();
+    await saveCapture(page, 2, "inventory-reply");
 
-    await page.goto(base + "/guide", { waitUntil: "domcontentloaded" });
-    await page.locator(".guide__composer textarea").fill("我想买一本关于微服务的书，另外如果我买了不喜欢，拆了塑封还能退吗？");
-    const guidePromise = page.waitForResponse((response) => response.url().includes("/api/guide/chat") && response.request().method() === "POST", { timeout: 150000 });
-    await page.locator(".guide__composer textarea").press("Enter");
-    const guide = await (await guidePromise).json();
-    if (guide.stoppedReason !== "completed" || guide.steps[0].action !== "search_book_catalog") {
-      throw new Error("导购前端未完成指定 ReAct 链路");
+    await page.getByRole("button", { name: "清空对话", exact: true }).click();
+    const correction = await ask(
+      page,
+      "ISBN为978-7-00-000000-8 的书还有几本？比较一下其他平台价格，如果超时请按工具提示重试。"
+    );
+    const priceSteps = correction.body.steps.filter((step) => step.action === "get_competitor_price");
+    if (priceSteps.length < 2 || priceSteps[0].ok || !priceSteps.at(-1).ok) {
+      throw new Error("统一助手未展示模拟竞品超时后的 Tool Call 重试");
     }
-    await page.getByText("query_store_policy", { exact: true }).first().waitFor();
-    await capture(page, 3, "react-bookstore", { fullPage: true });
-    await page.getByText("query_store_policy", { exact: true }).first().scrollIntoViewIfNeeded();
-    await capture(page, 3, "react-policy", { fullPage: true });
-    await page.locator(".guide-msg__text").last().scrollIntoViewIfNeeded();
-    await capture(page, 3, "react-reply", { fullPage: true });
+    await saveResponse(2, "self-correction", correction.response, correction.body);
+    await page.locator(".assistant-step--failed").waitFor();
+    await saveCapture(page, 2, "timeout-self-correction");
 
-    const swagger = await context.newPage();
-    await swagger.goto("http://127.0.0.1:8080/swagger-ui/index.html", { waitUntil: "domcontentloaded" });
-    const detail = swagger.locator(".opblock-get").filter({ has: swagger.getByRole("link", { name: "/api/v1/books/{id}", exact: true }) });
-    await detail.locator(".opblock-summary").click();
-    await detail.getByRole("button", { name: "Try it out", exact: true }).click();
-    await detail.locator("input").first().fill("1");
-    await detail.getByRole("button", { name: "Execute", exact: true }).click();
-    await detail.locator(".live-responses-table .response-col_status").filter({ hasText: "401" }).waitFor();
-    await captureSwagger(swagger, detail, "jwt-401");
-    await swagger.getByRole("button", { name: "Authorize", exact: true }).click();
-    await swagger.locator("#auth-bearer-value").fill(jwt);
-    await swagger.getByRole("button", { name: "Apply credentials", exact: true }).click();
-    await swagger.getByRole("button", { name: "Close", exact: true }).click();
-    await detail.getByRole("button", { name: "Execute", exact: true }).click();
-    await detail.locator(".live-responses-table .response-col_status").filter({ hasText: "200" }).waitFor();
-    await captureSwagger(swagger, detail, "jwt-200");
-    const runtime = swagger.locator(".opblock-get").filter({ has: swagger.getByRole("link", { name: "/api/v1/runtime", exact: true }) });
-    await runtime.locator(".opblock-summary").click();
-    await runtime.getByRole("button", { name: "Try it out", exact: true }).click();
-    await runtime.getByRole("button", { name: "Execute", exact: true }).click();
-    await runtime.locator(".live-responses-table").filter({ hasText: "requestThreadVirtual" }).waitFor();
-    await captureSwagger(swagger, runtime, "virtual-thread-runtime");
-    await fs.writeFile("docs/assignments/browser-captures.json", JSON.stringify({ captureMethod: "Playwright Chromium page.screenshot", processing: "none", screenshots: evidence }, null, 2));
-    console.log("真实页面测试与全部原始截图已完成。");
+    await page.getByRole("button", { name: "清空对话", exact: true }).click();
+    const invalid = await ask(page, "ISBN为12345的书还有多少本？");
+    if (!invalid.body.steps.some((step) => step.result?.error?.code === "INVALID_ISBN_FORMAT")) {
+      throw new Error("统一助手未将错误 ISBN 交给库存工具并返回格式错误");
+    }
+    await saveResponse(2, "invalid-isbn", invalid.response, invalid.body);
+
+    await page.getByRole("button", { name: "清空对话", exact: true }).click();
+    const guide = await ask(
+      page,
+      "我想买一本关于微服务的书，另外如果我买了不喜欢，拆了塑封还能退吗？"
+    );
+    const actions = guide.body.steps.map((step) => step.action);
+    const catalogIndex = actions.indexOf("search_book_catalog");
+    const policyIndex = actions.indexOf("query_store_policy");
+    if (catalogIndex < 0 || policyIndex <= catalogIndex) {
+      throw new Error("统一助手未先检索书目、再检索退换货政策");
+    }
+    await saveResponse(3, "react-case", guide.response, guide.body);
+    await writeReactTrace(guide.body.steps);
+    await writeAssistantLog(guide.body.requestId);
+    await page.locator(".assistant-step__name").filter({ hasText: "search_book_catalog" }).waitFor();
+    await saveCapture(page, 3, "react-bookstore");
+    await page.locator(".assistant-step__name").filter({ hasText: "query_store_policy" }).scrollIntoViewIfNeeded();
+    await saveCapture(page, 3, "react-policy");
+    await page.locator(".assistant-msg__text").last().scrollIntoViewIfNeeded();
+    await saveCapture(page, 3, "react-reply");
+
+    console.log("单一 /assistant 页面已采集真实 Function Calling 与 Thought → Action → Observation 记录。");
   } finally {
     await browser.close();
   }
 }
+
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

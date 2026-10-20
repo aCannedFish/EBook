@@ -48,7 +48,9 @@ def check_running() -> None:
     assert all(listening(port) for port in PORTS)
     assert request("/api/v1/runtime")["requestThreadVirtual"] is True
     with urllib.request.urlopen("http://127.0.0.1:8000/api/assistant/health", timeout=5) as response:
-        assert json.load(response)["guideInSameService"] is True
+        tools = json.load(response)["tools"]
+        assert tools == ["check_inventory", "get_competitor_price",
+                         "search_book_catalog", "query_store_policy"]
     with urllib.request.urlopen("http://127.0.0.1:5173", timeout=5) as response:
         assert response.status == 200
 

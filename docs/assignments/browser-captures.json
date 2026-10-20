@@ -3,76 +3,76 @@
   "processing": "none",
   "screenshots": [
     {
-      "file": "docs/assignments/hw4/screenshots/integrated-bookstore.png",
-      "url": "http://127.0.0.1:5173/books",
-      "capturedAt": "2026-10-20T08:55:54.349Z",
-      "sha256": "4b8a54b958603fcc29e7b2921a124893a1c01ca9f6d43f33edc48ce49a3de7c9"
-    },
-    {
       "file": "docs/assignments/hw2/screenshots/inventory-function-calling.png",
       "url": "http://127.0.0.1:5173/assistant",
-      "capturedAt": "2026-10-20T08:56:11.892Z",
-      "sha256": "c79e8046d779aaa8144697cfd61725db66b972eb40caab30308a2fa8b3164cd9"
+      "capturedAt": "2026-10-20T11:22:31.762Z",
+      "sha256": "e6210352cd86246acd8a4cda7df6b541e2795d56abb16eeb9bce058fbae3a25d"
     },
     {
       "file": "docs/assignments/hw2/screenshots/inventory-reply.png",
       "url": "http://127.0.0.1:5173/assistant",
-      "capturedAt": "2026-10-20T08:56:12.005Z",
-      "sha256": "7712d7c6b503e46b11c121b459a6efa64fffaf84c870433977a3655ac8dd0dac"
+      "capturedAt": "2026-10-20T11:22:31.895Z",
+      "sha256": "7e92e21b60f1f6690a709c2b0cc7a1b8a1795c0fa8dcffc911975e5fe236960d"
     },
     {
       "file": "docs/assignments/hw2/screenshots/timeout-self-correction.png",
       "url": "http://127.0.0.1:5173/assistant",
-      "capturedAt": "2026-10-20T08:56:24.358Z",
-      "sha256": "68587a3d67ab952d96e7a113d9fc1e8c342e95bfb808e11b2c11903159f23b89"
+      "capturedAt": "2026-10-20T11:22:51.327Z",
+      "sha256": "5a2cbef561a788ebe995df990977919b9828255edbdcf8971fe483280741cf76"
     },
     {
       "file": "docs/assignments/hw3/screenshots/react-bookstore.png",
-      "url": "http://127.0.0.1:5173/guide",
-      "capturedAt": "2026-10-20T08:56:50.099Z",
-      "sha256": "8a3b510c51c8f9735db0e94cadd5017467e924c35c81ffde62cd39d1d7092cab"
+      "url": "http://127.0.0.1:5173/assistant",
+      "capturedAt": "2026-10-20T11:23:11.616Z",
+      "sha256": "692049fc3de390d607818ac1c52e5e34b9e0d6a695093be6cf67fb9f2fe74034"
     },
     {
       "file": "docs/assignments/hw3/screenshots/react-policy.png",
-      "url": "http://127.0.0.1:5173/guide",
-      "capturedAt": "2026-10-20T08:56:50.197Z",
-      "sha256": "108a225b38e689be5c78e77d5d09a00e79194d659e7a08c268eb87f9496a65fb"
+      "url": "http://127.0.0.1:5173/assistant",
+      "capturedAt": "2026-10-20T11:23:11.729Z",
+      "sha256": "0cba977447304c0db0266f457984b5fd9511ed2afd0deaff899e5bbe47bbe5dc"
     },
     {
       "file": "docs/assignments/hw3/screenshots/react-reply.png",
-      "url": "http://127.0.0.1:5173/guide",
-      "capturedAt": "2026-10-20T08:56:50.302Z",
-      "sha256": "3f131c730fbf73b2532a7a2aa8c6b4c6cdf4657c58dd3e628f5e5c46b0cc42e8"
+      "url": "http://127.0.0.1:5173/assistant",
+      "capturedAt": "2026-10-20T11:23:11.827Z",
+      "sha256": "d2576728b895e39c92c451229b7bdce994e875082b3271d6d6082e74bdb896bd"
+    },
+    {
+      "file": "docs/assignments/hw4/screenshots/integrated-bookstore.png",
+      "url": "http://127.0.0.1:5173/books",
+      "capturedAt": "2026-10-20T11:38:24.384Z",
+      "sha256": "b402de67b502ac5f2b8957567298384ebad34b6ea5eb5f67fa5bbce72cdc4764"
     },
     {
       "file": "docs/assignments/hw1/screenshots/contract-conversation.png",
       "url": "http://127.0.0.1:5173/contract",
-      "capturedAt": "2026-10-20T09:30:18.152Z",
-      "sha256": "bbf804a091320c0c983bc0bbe1e784a089769a544730b82db7965e12b21c3b17"
+      "capturedAt": "2026-10-20T11:38:24.637Z",
+      "sha256": "a36a2892d6dd7404b0628da9aa211ba93ba3c39053687f3030229d24653c4aac"
     },
     {
       "file": "docs/assignments/hw1/screenshots/contract-json.png",
       "url": "http://127.0.0.1:5173/contract",
-      "capturedAt": "2026-10-20T09:30:18.997Z",
+      "capturedAt": "2026-10-20T11:38:25.466Z",
       "sha256": "307a9096d8a5cc8b2d4c83a259141bc3b3ac865ec6293a777e4eadadff676def"
     },
     {
       "file": "docs/assignments/hw4/screenshots/jwt-401.png",
       "url": "http://127.0.0.1:8080/swagger-ui/index.html#/book-controller/detail",
-      "capturedAt": "2026-10-20T09:30:20.414Z",
-      "sha256": "901399a56296cb7c2f1a4695358b7a00d63190b2af54a271e9e8a158f7c61fe8"
+      "capturedAt": "2026-10-20T11:38:27.253Z",
+      "sha256": "c31d6989f360132b94b05e9a90da92ab26f54bfefeffb8eb209e93346caf04ac"
     },
     {
       "file": "docs/assignments/hw4/screenshots/jwt-200.png",
       "url": "http://127.0.0.1:8080/swagger-ui/index.html#/book-controller/detail",
-      "capturedAt": "2026-10-20T09:30:21.536Z",
-      "sha256": "0016dc354bef78d470a3ede0b09038d8a9be1d0ebfdf229c6eff6030785975ff"
+      "capturedAt": "2026-10-20T11:38:28.502Z",
+      "sha256": "6405498c98fb1af2bd0be1ec9ac354fd760671d16a3351a2b8726e284cfb9c0b"
     },
     {
       "file": "docs/assignments/hw4/screenshots/virtual-thread-runtime.png",
       "url": "http://127.0.0.1:8080/swagger-ui/index.html#/runtime-controller/runtime",
-      "capturedAt": "2026-10-20T09:30:22.598Z",
-      "sha256": "38fb5f4500378ea6c672da00c866e4d28f6ce4b394808e3a38cd4b3b14f20645"
+      "capturedAt": "2026-10-20T11:38:29.536Z",
+      "sha256": "d66f9266f6074faabf1d60193b035ab722e5b9105f324144befa9aa9bfa6afcb"
     }
   ]
 }
