@@ -1,0 +1,520 @@
+{
+  "source": "Open Library",
+  "api": "https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data",
+  "books": [
+    {
+      "isbn": "9780262510875",
+      "title": "Structure and Interpretation of Computer Programs",
+      "openLibraryTitle": "Structure and Interpretation of Computer Programs",
+      "openLibraryUrl": "http://openlibrary.org/books/OL15495574M/Structure_and_Interpretation_of_Computer_Programs",
+      "openLibraryAuthors": [
+        "Harold Abelson",
+        "Gerald Jay Sussman",
+        "Julie Sussman"
+      ],
+      "publisher": "MIT Press Ltd",
+      "publishDate": "July 25th 1996",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780262510875-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780262510875.jpg",
+      "coverSha256": "0571112fde218914f7ff05523ea3c3c4ebd68c94a3311d6a7d93702cf6b166b4"
+    },
+    {
+      "isbn": "9780134092669",
+      "title": "Computer Systems: A Programmer's Perspective",
+      "openLibraryTitle": "Computer Systems: A Programmer's Perspective (3rd Edition)",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26835960M/Computer_Systems_A_Programmer's_Perspective_(3rd_Edition)",
+      "openLibraryAuthors": [
+        "Randal E. Bryant",
+        "David R. O'Hallaron"
+      ],
+      "publisher": "Pearson",
+      "publishDate": "Mar 12, 2015",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134092669-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780134092669.jpg",
+      "coverSha256": "e1b25a7ec0b6ac88a522aef0c6bba3eeb543362bee48821c23a71f84bc4f472b"
+    },
+    {
+      "isbn": "9780201896831",
+      "title": "The Art of Computer Programming, Volume 2",
+      "openLibraryTitle": "The  art of computer programming",
+      "openLibraryUrl": "http://openlibrary.org/books/OL657041M/The_art_of_computer_programming",
+      "openLibraryAuthors": [
+        "Donald Knuth"
+      ],
+      "publisher": "Addison-Wesley",
+      "publishDate": "1997",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780201896831-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780201896831.jpg",
+      "coverSha256": "d1e853e21bc3ece56e0a82970ef20741273672a009241c99e1661544adfc241d"
+    },
+    {
+      "isbn": "9780735619678",
+      "title": "Code Complete",
+      "openLibraryTitle": "Code complete",
+      "openLibraryUrl": "http://openlibrary.org/books/OL17628528M/Code_complete",
+      "openLibraryAuthors": [
+        "Steve McConnell"
+      ],
+      "publisher": "Microsoft Press",
+      "publishDate": "2004",
+      "coverUrl": "https://covers.openlibrary.org/b/id/13270592-L.jpg",
+      "coverFile": "react-ebook/public/assets/covers/9780735619678.jpg",
+      "coverSha256": "e106fb57eca4f8f22712d3930b71f206b3656aaf93a2b40ba2ead88d21835aa6"
+    },
+    {
+      "isbn": "9780134757599",
+      "title": "Refactoring: Improving the Design of Existing Code",
+      "openLibraryTitle": "Refactoring",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26629721M/Refactoring",
+      "openLibraryAuthors": [
+        "Martin Fowler"
+      ],
+      "publisher": "Addision-Wesley",
+      "publishDate": "2018",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134757599-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780134757599.jpg",
+      "coverSha256": "e93712c1978faf85219b909f05e92ec2f52aaf702415f8acf2a8dc7b9f1143f9"
+    },
+    {
+      "isbn": "9780201633610",
+      "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+      "openLibraryTitle": "Design Patterns",
+      "openLibraryUrl": "http://openlibrary.org/books/OL7408317M/Design_Patterns",
+      "openLibraryAuthors": [
+        "Erich Gamma",
+        "John Vlissides",
+        "Richard Helm",
+        "Ralph Johnson",
+        "Johnson, Ralph"
+      ],
+      "publisher": "Addison-Wesley Professional",
+      "publishDate": "January 15, 1995",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780201633610-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780201633610.jpg",
+      "coverSha256": "c4be0ac94321a78424815740f6e98073793975bab528c2e5f50882cbff192dc6"
+    },
+    {
+      "isbn": "9780201835953",
+      "title": "The Mythical Man-Month",
+      "openLibraryTitle": "The Mythical Man-Month",
+      "openLibraryUrl": "http://openlibrary.org/books/OL1110870M/The_Mythical_Man-Month",
+      "openLibraryAuthors": [
+        "Frederick P. Brooks"
+      ],
+      "publisher": "Addison-Wesley Professional",
+      "publishDate": "1995",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780201835953-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780201835953.jpg",
+      "coverSha256": "f69ef92cce9e0ba56f14311a6fad691ee26f7ca2373cd8fe9049efc8accbb9c4"
+    },
+    {
+      "isbn": "9780321486813",
+      "title": "Compilers: Principles, Techniques, and Tools",
+      "openLibraryTitle": "Compilers",
+      "openLibraryUrl": "http://openlibrary.org/books/OL9586675M/Compilers",
+      "openLibraryAuthors": [
+        "Alfred V. Aho",
+        "Monica S. Lam",
+        "Ravi Sethi",
+        "Jeffrey D. Ullman"
+      ],
+      "publisher": "Addison Wesley",
+      "publishDate": "August 31, 2006",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321486813-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780321486813.jpg",
+      "coverSha256": "7fbe27632a7843a8150024011115e92dad96aff764188411279cb5f6df7c94ff"
+    },
+    {
+      "isbn": "9780133591620",
+      "title": "Modern Operating Systems",
+      "openLibraryTitle": "Modern Operating Systems",
+      "openLibraryUrl": "http://openlibrary.org/books/OL25620855M/Modern_Operating_Systems",
+      "openLibraryAuthors": [
+        "Andrew S. Tanenbaum",
+        "Herbert Bos"
+      ],
+      "publisher": "Pearson",
+      "publishDate": "2015",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780133591620-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780133591620.jpg",
+      "coverSha256": "65f677e558fdb83620a3bb14db3473867005bda08260a9bd0ce027ba9ef59566"
+    },
+    {
+      "isbn": "9781118063330",
+      "title": "Operating System Concepts",
+      "openLibraryTitle": "Operating system concepts",
+      "openLibraryUrl": "http://openlibrary.org/books/OL25624511M/Operating_system_concepts",
+      "openLibraryAuthors": [
+        "Abraham Silberschatz"
+      ],
+      "publisher": "Wiley",
+      "publishDate": "2013",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9781118063330-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9781118063330.jpg",
+      "coverSha256": "530b3259d13e16fc60435f74b9e76a32dec6af1a1182bc0b56f3c128c5cc6d0a"
+    },
+    {
+      "isbn": "9780132856201",
+      "title": "Computer Networking: A Top-Down Approach",
+      "openLibraryTitle": "Computer networking",
+      "openLibraryUrl": "http://openlibrary.org/books/OL25617855M/Computer_networking",
+      "openLibraryAuthors": [
+        "James F. Kurose",
+        "Keith W. Ross"
+      ],
+      "publisher": "Pearson",
+      "publishDate": "2012",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780132856201-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780132856201.jpg",
+      "coverSha256": "c964d64ed8942268e3211244ca9625cb5d556bee6eaeb5fb1c909e9425e73213"
+    },
+    {
+      "isbn": "9780321336316",
+      "title": "TCP/IP Illustrated, Volume 1",
+      "openLibraryTitle": "TCP/IP illustrated, Volume 1",
+      "openLibraryUrl": "http://openlibrary.org/books/OL25162208M/TCP_IP_illustrated_Volume_1",
+      "openLibraryAuthors": [
+        "W. Richard Stevens",
+        "Kevin R. Fall",
+        "Gary R. Wright"
+      ],
+      "publisher": "Addison-Wesley",
+      "publishDate": "2012",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321336316-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780321336316.jpg",
+      "coverSha256": "c1ed8360afa97d3fa49b2fab4e9cb380fa673771335c0e2f1de376384b3e8f6c"
+    },
+    {
+      "isbn": "9780073523323",
+      "title": "Database System Concepts",
+      "openLibraryTitle": "Database system concepts",
+      "openLibraryUrl": "http://openlibrary.org/books/OL23736232M/Database_system_concepts",
+      "openLibraryAuthors": [
+        "Abraham Silberschatz"
+      ],
+      "publisher": "McGraw-Hill Companies",
+      "publishDate": "2011",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780073523323-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780073523323.jpg",
+      "coverSha256": "4c34efa16376884020267da54455ed593f988d7c7b659caead23c19b32c1a6d0"
+    },
+    {
+      "isbn": "9781449314286",
+      "title": "High Performance MySQL",
+      "openLibraryTitle": "High performance MySQL",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27043508M/High_performance_MySQL",
+      "openLibraryAuthors": [
+        "Jeremy D. Zawodny",
+        "Derek J. Balling",
+        "Baron Schwartz",
+        "Peter Zaitsev",
+        "Baron Schwartz. Peter Zaitsev. Vadim Tkachenko. Jeremy D. Zawodny. Arjen Lentz. Derek J. Balling"
+      ],
+      "publisher": "O'Reilly Media",
+      "publishDate": "2012",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9781449314286-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9781449314286.jpg",
+      "coverSha256": "7f63b4675499dbc140064f8a4652eef83658d4191f6c011e5ac63eabf9ed963e"
+    },
+    {
+      "isbn": "9781617290855",
+      "title": "Redis in Action",
+      "openLibraryTitle": "Redis in Action",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26838823M/Redis_in_Action",
+      "openLibraryAuthors": [
+        "Josiah L. Carlson"
+      ],
+      "publisher": "Manning",
+      "publishDate": "2013",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9781617290855-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9781617290855.jpg",
+      "coverSha256": "05f7877ad6ea6f536ce3382207e2f6582c6bcaabd655a989c2d173740c6a3aa2"
+    },
+    {
+      "isbn": "9780134685991",
+      "title": "Effective Java",
+      "openLibraryTitle": "Effective Java",
+      "openLibraryUrl": "http://openlibrary.org/books/OL31838212M/Effective_Java",
+      "openLibraryAuthors": [
+        "Joshua Bloch"
+      ],
+      "publisher": "Addison-Wesley Professional",
+      "publishDate": "December 27, 2017",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134685991-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780134685991.jpg",
+      "coverSha256": "37cc2fc25f1096224fca4af120d2c0a411c7f57d00139ae3d31c86595ec889e5"
+    },
+    {
+      "isbn": "9780321349606",
+      "title": "Java Concurrency in Practice",
+      "openLibraryTitle": "Java Concurrency in Practice",
+      "openLibraryUrl": "http://openlibrary.org/books/OL9513180M/Java_Concurrency_in_Practice",
+      "openLibraryAuthors": [
+        "Brian Goetz",
+        "Joshua Bloch",
+        "Joseph Bowbeer",
+        "Doug Lea",
+        "David Holmes",
+        "Tim Peierls"
+      ],
+      "publisher": "Addison-Wesley Professional",
+      "publishDate": "May 9, 2006",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321349606-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780321349606.jpg",
+      "coverSha256": "5609344d69fc8067eae5dc3193fe6a85066f2f10eadf91f094fa33c09885e15d"
+    },
+    {
+      "isbn": "9780132350884",
+      "title": "Clean Code",
+      "openLibraryTitle": "Clean Code",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26222911M/Clean_Code",
+      "openLibraryAuthors": [
+        "Robert C. Martin"
+      ],
+      "publisher": "Prentice Hall",
+      "publishDate": "July 2008",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780132350884.jpg",
+      "coverSha256": "5332e44da7e72d37f983693bf5fddd77d2f217c1425b58383931a0c000f136c5"
+    },
+    {
+      "isbn": "9780135957059",
+      "title": "The Pragmatic Programmer",
+      "openLibraryTitle": "The Pragmatic Programmer",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27533114M/The_Pragmatic_Programmer",
+      "openLibraryAuthors": [
+        "Andy Hunt",
+        "Dave Thomas"
+      ],
+      "publisher": "Pragmatic Programmer",
+      "publishDate": "09/15/2019",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780135957059-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780135957059.jpg",
+      "coverSha256": "2871395e3bf55a13c5fb824749120a499299854deee40e99bc3b092e96669edb"
+    },
+    {
+      "isbn": "9780321125217",
+      "title": "Domain-Driven Design",
+      "openLibraryTitle": "Domain-Driven Design",
+      "openLibraryUrl": "http://openlibrary.org/books/OL51275329M/Domain-Driven_Design",
+      "openLibraryAuthors": [
+        "Eric Evans"
+      ],
+      "publisher": "Addison-Wesley",
+      "publishDate": "2008-10-?",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321125217-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780321125217.jpg",
+      "coverSha256": "281093d4400eb737b4fbb9cf569813d2cfe5e697b8e14fb2359d73ab0500457a"
+    },
+    {
+      "isbn": "9780321127426",
+      "title": "Patterns of Enterprise Application Architecture",
+      "openLibraryTitle": "Patterns of Enterprise Application Architecture",
+      "openLibraryUrl": "http://openlibrary.org/books/OL51275278M/Patterns_of_Enterprise_Application_Architecture",
+      "openLibraryAuthors": [
+        "Martin Fowler"
+      ],
+      "publisher": "Addison-Wesley",
+      "publishDate": "2007-10-?",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321127426-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780321127426.jpg",
+      "coverSha256": "4cf03a64265109201e2ee0743418af72b0b6bc1a6611f7e71cb4fa1be4166968"
+    },
+    {
+      "isbn": "9781491929124",
+      "title": "Site Reliability Engineering",
+      "openLibraryTitle": "Site Reliability Engineering",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27208603M/Site_Reliability_Engineering",
+      "openLibraryAuthors": [
+        "Betsy Beyer",
+        "Jones, Chris (Computer engineer)",
+        "Jennifer Petoff",
+        "Niall Richard Murphy"
+      ],
+      "publisher": "O'Reilly Media, Inc.",
+      "publishDate": "2016",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9781491929124-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9781491929124.jpg",
+      "coverSha256": "e99c314f58c982f1b42f9d0067d3cb69ace529ea9f6996aa8e7f75f02ff9a9b1"
+    },
+    {
+      "isbn": "9781449373320",
+      "title": "Designing Data-Intensive Applications",
+      "openLibraryTitle": "Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26780701M/Designing_Data-Intensive_Applications_The_Big_Ideas_Behind_Reliable_Scalable_and_Maintainable_System",
+      "openLibraryAuthors": [
+        "Martin Kleppmann"
+      ],
+      "publisher": "O'Reilly Media",
+      "publishDate": "Apr 02, 2017",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9781449373320-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9781449373320.jpg",
+      "coverSha256": "40fc727d213fd55d49d97972a247ccea0e81d9d013cfe4540ffc4b27b7a1b713"
+    },
+    {
+      "isbn": "9780262035613",
+      "title": "Deep Learning",
+      "openLibraryTitle": "Deep Learning",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26455783M/Deep_Learning",
+      "openLibraryAuthors": [
+        "Ian Goodfellow",
+        "Yoshua Bengio",
+        "Aaron Courville",
+        "Francis Bach"
+      ],
+      "publisher": "MIT Press",
+      "publishDate": "3 January 2017",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780262035613-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780262035613.jpg",
+      "coverSha256": "91f303ddce116856938c63ccd8cd13f13d8bb78abfe11d9aeeb2abce7e24d783"
+    },
+    {
+      "isbn": "9780387310732",
+      "title": "Pattern Recognition and Machine Learning",
+      "openLibraryTitle": "Pattern Recognition and Machine Learning (Information Science and Statistics)",
+      "openLibraryUrl": "http://openlibrary.org/books/OL7445337M/Pattern_Recognition_and_Machine_Learning_(Information_Science_and_Statistics)",
+      "openLibraryAuthors": [
+        "Christopher M. Bishop"
+      ],
+      "publisher": "Springer",
+      "publishDate": "January 5, 2008",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780387310732-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780387310732.jpg",
+      "coverSha256": "f9782f4605d9406404775e0931429566dc8a6fcf0060442a245169c3f26cf601"
+    },
+    {
+      "isbn": "9780136042594",
+      "title": "Artificial Intelligence: A Modern Approach",
+      "openLibraryTitle": "Artificial Intelligence: A Modern Approach",
+      "openLibraryUrl": "http://openlibrary.org/books/OL24990984M/Artificial_Intelligence_A_Modern_Approach",
+      "openLibraryAuthors": [
+        "Stuart J. Russell",
+        "Peter Norvig"
+      ],
+      "publisher": "Prentice Hall",
+      "publishDate": "2009",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780136042594-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780136042594.jpg",
+      "coverSha256": "5963cd7d54ab16d469ea14ed66e98a047f5a629daf7a836ff24d3ac04c659640"
+    },
+    {
+      "isbn": "9781848829343",
+      "title": "Computer Vision: Algorithms and Applications",
+      "openLibraryTitle": "Computer Vision: Algorithms and Applications",
+      "openLibraryUrl": "http://openlibrary.org/books/OL24611094M/Computer_Vision_Algorithms_and_Applications",
+      "openLibraryAuthors": [
+        "Richard Szeliski"
+      ],
+      "publisher": "Springer",
+      "publishDate": "2010",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9781848829343-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9781848829343.jpg",
+      "coverSha256": "db819911edf8fa60a447a34be5125af3951ebca65d14e0e1aa8d70dd83824932"
+    },
+    {
+      "isbn": "9780123944245",
+      "title": "Digital Design and Computer Architecture",
+      "openLibraryTitle": "Digital design and computer architecture",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27032298M/Digital_design_and_computer_architecture",
+      "openLibraryAuthors": [
+        "David Money Harris"
+      ],
+      "publisher": "Morgan Kaufmann",
+      "publishDate": "2013",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780123944245-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780123944245.jpg",
+      "coverSha256": "174217b2e6bbf775ccab28c076e436cbca7d7fc2b3557ede46e47ed063943a61"
+    },
+    {
+      "isbn": "9780199339136",
+      "title": "Microelectronic Circuits",
+      "openLibraryTitle": "Microelectronic circuits\t",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26367431M/Microelectronic_circuits\t",
+      "openLibraryAuthors": [
+        "Adel S. Sedra",
+        "Kenneth C. Smith"
+      ],
+      "publisher": "Oxford University Press\t",
+      "publishDate": "2014\t",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780199339136-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780199339136.jpg",
+      "coverSha256": "92139693491a86f943fff5e48d2fed142b591ac2a10485bf6ff98f257bf98f5d"
+    },
+    {
+      "isbn": "9780131103627",
+      "title": "The C Programming Language",
+      "openLibraryTitle": "The C Programming Language",
+      "openLibraryUrl": "http://openlibrary.org/books/OL2030445M/The_C_Programming_Language",
+      "openLibraryAuthors": [
+        "Brian W. Kernighan",
+        "Dennis MacAlistair Ritchie"
+      ],
+      "publisher": "Prentice Hall",
+      "publishDate": "1988",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780131103627-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780131103627.jpg",
+      "coverSha256": "dc39cf3a8bbb978b16e50a1e6c3e7daf5600eba7c94ffb734e2fec9588b7c72d"
+    },
+    {
+      "isbn": "9780262039246",
+      "title": "Reinforcement Learning: An Introduction",
+      "openLibraryTitle": "Reinforcement Learning",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27372328M/Reinforcement_Learning",
+      "openLibraryAuthors": [
+        "Richard S. Sutton"
+      ],
+      "publisher": "A Bradford Book",
+      "publishDate": "Nov 13, 2018",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780262039246-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780262039246.jpg",
+      "coverSha256": "993350795951f4e4577e37253b8c68c91174ff2158abc78115ea2bc730d87d6d"
+    },
+    {
+      "isbn": "9780134190440",
+      "title": "The Go Programming Language",
+      "openLibraryTitle": "The Go Programming Language",
+      "openLibraryUrl": "http://openlibrary.org/books/OL25925901M/The_Go_Programming_Language",
+      "openLibraryAuthors": [
+        "Alan A. A. Donovan",
+        "Brian W. Kernighan"
+      ],
+      "publisher": "Addison-Wesley",
+      "publishDate": "2016",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134190440-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780134190440.jpg",
+      "coverSha256": "dddcbd2c0fba5fec22c2551b1aab3d5ef419ed1123644b4357a1926eda2dd772"
+    },
+    {
+      "isbn": "9780128119051",
+      "title": "Computer Architecture: A Quantitative Approach",
+      "openLibraryTitle": "Computer architecture : a quantitative approach",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26489436M/Computer_architecture_a_quantitative_approach",
+      "openLibraryAuthors": [
+        "John L. Hennessy",
+        "David A. Patterson"
+      ],
+      "publisher": "Morgan Kaufmann",
+      "publishDate": "2019",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780128119051-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780128119051.jpg",
+      "coverSha256": "ea941f1dea66b960d4b5765c46e4d9448ad87ea8d681ae9616bd4d5a57aee2b3"
+    },
+    {
+      "isbn": "9780387848570",
+      "title": "The Elements of Statistical Learning",
+      "openLibraryTitle": "The Elements of Statistical Learning",
+      "openLibraryUrl": "http://openlibrary.org/books/OL25536157M/The_Elements_of_Statistical_Learning",
+      "openLibraryAuthors": [
+        "Trevor Hastie",
+        "Robert Tibshirani",
+        "Jerome Friedman"
+      ],
+      "publisher": "Springer-Verlag New York",
+      "publishDate": "2009",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780387848570-L.jpg?default=false",
+      "coverFile": "react-ebook/public/assets/covers/9780387848570.jpg",
+      "coverSha256": "81ed1c76a47c6cb694f8e29e22af3c4de1801499e149d128667551fcd56608ea"
+    }
+  ],
+  "failures": []
+}

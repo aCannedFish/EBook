@@ -1,0 +1,343 @@
+[
+  {
+    "isbn": "9780262510875",
+    "title": "Structure and Interpretation of Computer Programs",
+    "authors": "Harold Abelson / Gerald Jay Sussman",
+    "publisher": "MIT Press",
+    "category": "程序设计基础",
+    "price": 129,
+    "stock": 18,
+    "summary": "以 Scheme 语言讲解程序设计的核心抽象：过程与递归、数据抽象、模块化、状态与元语言，强调建立计算模型。"
+  },
+  {
+    "isbn": "9780134092669",
+    "title": "Computer Systems: A Programmer's Perspective",
+    "authors": "Randal E. Bryant / David R. O'Hallaron",
+    "publisher": "Pearson",
+    "category": "计算机系统",
+    "price": 199,
+    "stock": 22,
+    "summary": "从程序员视角自底向上理解计算机系统：数据表示、汇编、处理器、存储层次、链接、异常控制流、虚拟内存与并发。"
+  },
+  {
+    "isbn": "9780201896831",
+    "title": "The Art of Computer Programming, Volume 2",
+    "authors": "Donald E. Knuth",
+    "publisher": "Addison-Wesley",
+    "category": "算法与数据结构",
+    "price": 299,
+    "stock": 6,
+    "summary": "Knuth 经典巨著的第二卷，讨论随机数与伪随机序列、大整数算术、多项式运算等半数值算法的分析与实现。"
+  },
+  {
+    "isbn": "9780735619678",
+    "title": "Code Complete",
+    "authors": "Steve McConnell",
+    "publisher": "Microsoft Press",
+    "category": "软件工程",
+    "price": 128,
+    "stock": 15,
+    "summary": "从变量、控制结构、函数到调试与重构，系统整理可落地的编码实践与检查清单。",
+    "coverId": 13270592
+  },
+  {
+    "isbn": "9780134757599",
+    "title": "Refactoring: Improving the Design of Existing Code",
+    "authors": "Martin Fowler",
+    "publisher": "Addison-Wesley",
+    "category": "软件工程",
+    "price": 139,
+    "stock": 12,
+    "summary": "以实例驱动总结重构手法，讲清如何在保持外部行为不变的前提下改善代码设计。"
+  },
+  {
+    "isbn": "9780201633610",
+    "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+    "authors": "Erich Gamma / Richard Helm / Ralph Johnson / John Vlissides",
+    "publisher": "Addison-Wesley",
+    "category": "软件架构",
+    "price": 119,
+    "stock": 20,
+    "summary": "GoF 的 23 个经典设计模式，逐一说明意图、结构、协作方式与适用场景。"
+  },
+  {
+    "isbn": "9780201835953",
+    "title": "The Mythical Man-Month",
+    "authors": "Frederick P. Brooks",
+    "publisher": "Addison-Wesley",
+    "category": "软件工程",
+    "price": 79,
+    "stock": 25,
+    "summary": "软件工程随笔经典，讨论人月神话、沟通成本、概念完整性与项目组织。"
+  },
+  {
+    "isbn": "9780321486813",
+    "title": "Compilers: Principles, Techniques, and Tools",
+    "authors": "Alfred V. Aho / Monica S. Lam / Ravi Sethi / Jeffrey D. Ullman",
+    "publisher": "Addison-Wesley",
+    "category": "编译原理",
+    "price": 189,
+    "stock": 14,
+    "summary": "编译原理经典教材（龙书），覆盖词法与语法分析、语义分析、中间表示、代码生成与优化。"
+  },
+  {
+    "isbn": "9780133591620",
+    "title": "Modern Operating Systems",
+    "authors": "Andrew S. Tanenbaum / Herbert Bos",
+    "publisher": "Pearson",
+    "category": "操作系统",
+    "price": 179,
+    "stock": 16,
+    "summary": "操作系统教材，讲解进程与线程、内存管理、文件系统、死锁与虚拟化。"
+  },
+  {
+    "isbn": "9781118063330",
+    "title": "Operating System Concepts",
+    "authors": "Abraham Silberschatz / Peter B. Galvin / Greg Gagne",
+    "publisher": "Wiley",
+    "category": "操作系统",
+    "price": 169,
+    "stock": 10,
+    "summary": "操作系统概念（恐龙书），覆盖进程同步、CPU 调度、内存管理与存储系统。"
+  },
+  {
+    "isbn": "9780132856201",
+    "title": "Computer Networking: A Top-Down Approach",
+    "authors": "James F. Kurose / Keith W. Ross",
+    "publisher": "Pearson",
+    "category": "计算机网络",
+    "price": 159,
+    "stock": 21,
+    "summary": "自顶向下讲解网络：应用层、传输层、网络层、链路层与无线网络。"
+  },
+  {
+    "isbn": "9780321336316",
+    "title": "TCP/IP Illustrated, Volume 1",
+    "authors": "W. Richard Stevens",
+    "publisher": "Addison-Wesley",
+    "category": "计算机网络",
+    "price": 149,
+    "stock": 9,
+    "summary": "结合协议报文与实现细节讲解 TCP/IP，卷一侧重协议栈与网络层、传输层行为。"
+  },
+  {
+    "isbn": "9780073523323",
+    "title": "Database System Concepts",
+    "authors": "Abraham Silberschatz / Henry F. Korth / S. Sudarshan",
+    "publisher": "McGraw-Hill",
+    "category": "数据库",
+    "price": 169,
+    "stock": 13,
+    "summary": "数据库系统原理教材：关系模型、SQL、事务、并发控制与故障恢复。"
+  },
+  {
+    "isbn": "9781449314286",
+    "title": "High Performance MySQL",
+    "authors": "Baron Schwartz / Peter Zaitsev / Vadim Tkachenko",
+    "publisher": "O'Reilly Media",
+    "category": "数据库",
+    "price": 119,
+    "stock": 17,
+    "summary": "MySQL 性能实践：架构与索引、查询优化、复制、备份与高可用方案。"
+  },
+  {
+    "isbn": "9781617290855",
+    "title": "Redis in Action",
+    "authors": "Josiah L. Carlson",
+    "publisher": "Manning",
+    "category": "数据库",
+    "price": 89,
+    "stock": 24,
+    "summary": "用 Redis 构建应用：数据结构与命令、Lua 脚本、持久化、复制与集群。"
+  },
+  {
+    "isbn": "9780134685991",
+    "title": "Effective Java",
+    "authors": "Joshua Bloch",
+    "publisher": "Addison-Wesley",
+    "category": "编程语言",
+    "price": 109,
+    "stock": 19,
+    "summary": "Java 编程实践指南，覆盖对象创建、泛型、枚举、并发与序列化等主题。"
+  },
+  {
+    "isbn": "9780321349606",
+    "title": "Java Concurrency in Practice",
+    "authors": "Brian Goetz / Tim Peierls / Joshua Bloch",
+    "publisher": "Addison-Wesley",
+    "category": "编程语言",
+    "price": 99,
+    "stock": 11,
+    "summary": "系统讲解 Java 并发：线程安全、锁与同步器、并发容器、任务执行与性能。"
+  },
+  {
+    "isbn": "9780132350884",
+    "title": "Clean Code",
+    "authors": "Robert C. Martin",
+    "publisher": "Prentice Hall",
+    "category": "软件工程",
+    "price": 89,
+    "stock": 30,
+    "summary": "代码整洁之道：命名、函数、注释、错误处理、单元测试与重构纪律。"
+  },
+  {
+    "isbn": "9780135957059",
+    "title": "The Pragmatic Programmer",
+    "authors": "David Thomas / Andrew Hunt",
+    "publisher": "Addison-Wesley",
+    "category": "软件工程",
+    "price": 99,
+    "stock": 23,
+    "summary": "程序员修炼之道：务实的方法论、工具使用、沟通与职业习惯。"
+  },
+  {
+    "isbn": "9780321125217",
+    "title": "Domain-Driven Design",
+    "authors": "Eric Evans",
+    "publisher": "Addison-Wesley",
+    "category": "软件架构",
+    "price": 139,
+    "stock": 8,
+    "summary": "领域驱动设计：通用语言、模型驱动设计、限界上下文与战略、战术设计。"
+  },
+  {
+    "isbn": "9780321127426",
+    "title": "Patterns of Enterprise Application Architecture",
+    "authors": "Martin Fowler",
+    "publisher": "Addison-Wesley",
+    "category": "软件架构",
+    "price": 129,
+    "stock": 7,
+    "summary": "企业应用架构模式目录：分层、领域逻辑、对象关系映射、并发与分布式。"
+  },
+  {
+    "isbn": "9781491929124",
+    "title": "Site Reliability Engineering",
+    "authors": "Betsy Beyer / Chris Jones / Jennifer Petoff / Niall Richard Murphy",
+    "publisher": "O'Reilly Media",
+    "category": "运维与可靠性",
+    "price": 119,
+    "stock": 12,
+    "summary": "Google 站点可靠性工程实践：SLO 与错误预算、监控、发布、容量与事故响应。"
+  },
+  {
+    "isbn": "9781449373320",
+    "title": "Designing Data-Intensive Applications",
+    "authors": "Martin Kleppmann",
+    "publisher": "O'Reilly Media",
+    "category": "软件架构",
+    "price": 139,
+    "stock": 26,
+    "summary": "数据密集型应用系统设计：可靠性、可扩展性、存储引擎、复制、分区与流处理。"
+  },
+  {
+    "isbn": "9780262035613",
+    "title": "Deep Learning",
+    "authors": "Ian Goodfellow / Yoshua Bengio / Aaron Courville",
+    "publisher": "MIT Press",
+    "category": "机器学习",
+    "price": 269,
+    "stock": 5,
+    "summary": "深度学习基础（花书）：线性代数、反向传播、正则化、卷积与循环网络、生成模型。"
+  },
+  {
+    "isbn": "9780387310732",
+    "title": "Pattern Recognition and Machine Learning",
+    "authors": "Christopher M. Bishop",
+    "publisher": "Springer",
+    "category": "机器学习",
+    "price": 259,
+    "stock": 4,
+    "summary": "模式识别与机器学习：概率分布、回归与分类、核方法、图模型与近似推断。"
+  },
+  {
+    "isbn": "9780136042594",
+    "title": "Artificial Intelligence: A Modern Approach",
+    "authors": "Stuart Russell / Peter Norvig",
+    "publisher": "Prentice Hall",
+    "category": "人工智能",
+    "price": 239,
+    "stock": 6,
+    "summary": "人工智能经典教材：搜索、博弈、知识表示、概率推理、规划与机器学习。"
+  },
+  {
+    "isbn": "9781848829343",
+    "title": "Computer Vision: Algorithms and Applications",
+    "authors": "Richard Szeliski",
+    "publisher": "Springer",
+    "category": "计算机视觉",
+    "price": 199,
+    "stock": 0,
+    "summary": "计算机视觉：图像形成、特征检测、配准、分割、三维重建与识别。"
+  },
+  {
+    "isbn": "9780123944245",
+    "title": "Digital Design and Computer Architecture",
+    "authors": "David Money Harris / Sarah L. Harris",
+    "publisher": "Morgan Kaufmann",
+    "category": "数字电路",
+    "price": 189,
+    "stock": 9,
+    "summary": "从逻辑门、组合与时序电路讲到处理器微结构与存储层次。"
+  },
+  {
+    "isbn": "9780199339136",
+    "title": "Microelectronic Circuits",
+    "authors": "Adel S. Sedra / Kenneth C. Smith",
+    "publisher": "Oxford University Press",
+    "category": "电子技术",
+    "price": 219,
+    "stock": 4,
+    "summary": "模拟与数字电子电路基础：器件模型、放大器、反馈、运算电路与频率响应。"
+  },
+  {
+    "isbn": "9780131103627",
+    "title": "The C Programming Language",
+    "authors": "Brian W. Kernighan / Dennis M. Ritchie",
+    "publisher": "Prentice Hall",
+    "category": "编程语言",
+    "price": 79,
+    "stock": 28,
+    "summary": "C 语言经典教程（K&R），覆盖语法、指针、结构、输入输出与标准库。"
+  },
+  {
+    "isbn": "9780262039246",
+    "title": "Reinforcement Learning: An Introduction",
+    "authors": "Richard S. Sutton / Andrew G. Barto",
+    "publisher": "MIT Press",
+    "category": "机器学习",
+    "price": 199,
+    "stock": 6,
+    "summary": "强化学习导论：多臂老虎机、动态规划、蒙特卡洛、时序差分与函数逼近。"
+  },
+  {
+    "isbn": "9780134190440",
+    "title": "The Go Programming Language",
+    "authors": "Alan A. A. Donovan / Brian W. Kernighan",
+    "publisher": "Addison-Wesley",
+    "category": "编程语言",
+    "price": 89,
+    "stock": 18,
+    "summary": "Go 语言实践指南：类型、接口、并发原语、测试与工程组织。"
+  },
+  {
+    "isbn": "9780128119051",
+    "title": "Computer Architecture: A Quantitative Approach",
+    "authors": "John L. Hennessy / David A. Patterson",
+    "publisher": "Morgan Kaufmann",
+    "category": "计算机体系结构",
+    "price": 249,
+    "stock": 5,
+    "summary": "计算机体系结构：指令集、流水线、存储层次、并行与领域专用架构。"
+  },
+  {
+    "isbn": "9780387848570",
+    "title": "The Elements of Statistical Learning",
+    "authors": "Trevor Hastie / Robert Tibshirani / Jerome Friedman",
+    "publisher": "Springer",
+    "category": "机器学习",
+    "price": 229,
+    "stock": 3,
+    "summary": "统计学习基础：监督学习、模型评估、正则化、树模型、集成与无监督方法。"
+  }
+]
