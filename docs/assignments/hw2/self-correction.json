@@ -1,0 +1,103 @@
+{
+  "method": "POST",
+  "path": "/api/assistant/chat",
+  "authorizationPresent": true,
+  "status": 200,
+  "headers": {
+    "date": "Tue, 20 Oct 2026 08:34:01 GMT",
+    "server": "uvicorn",
+    "content-length": "1913",
+    "content-type": "application/json",
+    "vary": "Origin",
+    "Connection": "close"
+  },
+  "body": {
+    "requestId": "f9bfa9fadd6f",
+    "reply": "好的，查询结果如下：\n\n**《量子物理》（吕智国 著）ISBN 978-7-00-000000-8**\n\n**本店库存与售价：**\n- 本店目前有 **15本** 库存，有货\n- 本店售价：**72元**\n\n**其他平台价格对比：**\n- **博文轩**：84元（有货，2天送达）\n- **云书房**：90元（有货，1天送达）\n- **知微书城**：79元（无货，4天送达）\n\n**结论：** 本店售价72元，是各平台中最低的，比最便宜的竞品（知微书城79元）还便宜7元，而且本店有现货。如果您想购买，本店是最划算的选择。需要帮您下单吗？",
+    "toolCalls": [
+      {
+        "round": 1,
+        "name": "check_inventory",
+        "arguments": {
+          "isbn": "978-7-00-000000-8"
+        },
+        "ok": true,
+        "durationMs": 76,
+        "result": {
+          "ok": true,
+          "isbn": "9787000000008",
+          "title": "量子物理",
+          "author": "吕智国",
+          "price": 72,
+          "category": "物理",
+          "stockQty": 15,
+          "stockText": "有货",
+          "inStock": true,
+          "source": "bookstore-inventory"
+        },
+        "parseError": null
+      },
+      {
+        "round": 1,
+        "name": "get_competitor_price",
+        "arguments": {
+          "isbn": "978-7-00-000000-8"
+        },
+        "ok": false,
+        "durationMs": 405,
+        "result": {
+          "ok": false,
+          "error": {
+            "code": "UPSTREAM_TIMEOUT",
+            "message": "竞品比价接口对 ISBN 9787000000008 响应超时（第 1 次）",
+            "retryable": true,
+            "hint": "上游抖动，原样重试一次即可，不用修改参数。"
+          }
+        },
+        "parseError": null
+      },
+      {
+        "round": 2,
+        "name": "get_competitor_price",
+        "arguments": {
+          "isbn": "978-7-00-000000-8"
+        },
+        "ok": true,
+        "durationMs": 401,
+        "result": {
+          "ok": true,
+          "isbn": "9787000000008",
+          "quotes": [
+            {
+              "platform": "博文轩",
+              "price": 84,
+              "currency": "CNY",
+              "inStock": true,
+              "deliveryDays": 2
+            },
+            {
+              "platform": "云书房",
+              "price": 90,
+              "currency": "CNY",
+              "inStock": true,
+              "deliveryDays": 1
+            },
+            {
+              "platform": "知微书城",
+              "price": 79,
+              "currency": "CNY",
+              "inStock": false,
+              "deliveryDays": 4
+            }
+          ],
+          "lowestPrice": 79,
+          "source": "competitor-price-mock"
+        },
+        "parseError": null
+      }
+    ],
+    "rounds": 3,
+    "stoppedReason": "completed",
+    "modelMode": "remote:deepseek-chat"
+  }
+}

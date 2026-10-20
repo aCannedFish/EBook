@@ -64,10 +64,17 @@ __pycache__/
 .pytest_cache/
 .logs/
 
-# 作业3的复现输入与正式提交说明需要随源码保留。
-!/作业3/requirements.txt
-!/作业3/data/policy.txt
-!/作业3/*-作业3.md
-!/作业3/docs/logs/*.txt
-!/作业3/docs/logs/server.log
-/作业3/.index/
+# 本地 JDK 与联调产物不进入版本库或提交包。
+.tools/
+.local-data/
+/python-assistant/.index/
+!requirements-docs.txt
+!/docs/assignments/**/*.md
+!/docs/assignments/**/*.txt
+!/scripts/homework/templates/*.docx
+
+# 保留课程提交所需的依赖声明、政策、报告与实际运行日志。
+!python-assistant/requirements.txt
+!python-assistant/data/policy.txt
+!/docs/assignments/**/logs/*.log
+/deliverables/

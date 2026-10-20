@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    /** 将分页范围、路径参数等方法级校验错误作为 400 返回。 */
+    @ExceptionHandler({jakarta.validation.ConstraintViolationException.class,
+            org.springframework.web.method.annotation.HandlerMethodValidationException.class,
+            org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<Map<String, Object>> handleParameters(Exception error) {
+        return ResponseEntity.badRequest().body(Map.of("status", 400, "message", "请求参数不符合接口约束"));
+    }
+
     /**
      * 处理业务参数或规则类错误。
      *

@@ -1,320 +1,95 @@
-# EBook 电子书城
+# EBook 书城
 
-《互联网应用开发技术》课程大作业项目：前后端分离的在线书店，支持顾客购书与管理员运营。
+四次课程作业均集成在原书城中。React 页面访问 Spring Boot 的图书、购物车、订单和用户接口；统一 Python Agent 通过当前用户的 JWT 读取同一份书目与库存，并提供 Function Calling、政策 RAG 和 ReAct 导购。
 
-## 技术栈
+## 启停
 
-| 层级 | 技术 |
-|------|------|
-| 前端 | React 18、React Router 6（Data Router）、Ant Design 6、Vite 5 |
-| 后端 | Spring Boot 3.2、Spring Data JPA、Maven |
-| 数据库 | MySQL 8 |
-| 通信 | Fetch API + REST（`/api/v1/**`） |
-| 客服助手 | Python 3.10+、FastAPI、大模型 Function Calling（`python-assistant/`） |
-| 导购助手 | Python 3.10+、FastAPI、RAG（政策库检索）+ ReAct（`作业3/`） |
-
-## 功能概览
-
-### 顾客
-
-- 登录 / 注册（重复密码、邮箱格式、用户名唯一校验）
-- 浏览书城、搜索、查看书籍详情（含库存）
-- 购物车增删改、勾选结算
-- 我的订单（按日期范围、书名筛选）
-- 个人购书统计
-- 客服助手：用自然语言问某本书还有多少本、别家卖多少钱，由大模型调用后端 Skill 查询
-- 导购助手：按主题荐书并解答退换货与会员政策，页面上完整展示 Thought → Action → Observation 推理链路
-
-### 管理员
-
-- 用户管理：禁用 / 解禁账号
-- 书籍管理：增删改查、库存维护
-- 全部订单查询与筛选
-- 数据统计：热销榜、消费榜
-
-管理员与顾客登录后侧栏菜单不同，由后端返回的 `level` / `admin` 字段驱动。
-
-## 演示账号
-
-| 角色 | 用户名 | 密码 |
-|------|--------|------|
-| 管理员 | `admin` | `admin123` |
-| 顾客 | `DefaultUser` | `123456` |
-
-## 快速启动
-
-### 一键启动（推荐）
+环境需要 JDK 21、Maven 3.8+、Node.js 18+、Python 3.10+、Docker Desktop 和 lsof。启动 Docker Desktop 后，在项目根目录执行：
 
 ```bash
-chmod +x run-all.sh stop-all.sh
-./run-all.sh                 # 起书城后端（8080 + MySQL）与客服助手（8000）
-./run-all.sh --with-frontend # 连前端（5173）一起起
-./run-all.sh --with-guide    # 连导购助手（8010）一起起
-./stop-all.sh                # 停止
+./run-all.sh
+./status-all.sh
+./stop-all.sh
 ```
 
-后端在后台运行，日志写在 `.logs/` 下。脚本会等到各自健康检查通过才返回。
-只想起其中一个用 `--bookstore`、`--assistant` 或 `--guide`。
+默认同时启动三个服务。启动前会清理选定端口上的残留进程，因此 5173、8080、8000 应专用于本项目。脚本等待各服务的 HTTP 接口就绪后显示地址；某个服务启动失败时会回收本次启动的进程，详细信息保存在 `.logs/`。
 
-导购助手（作业3）默认不在 `./run-all.sh` 里启动：它首次运行要装 `sentence-transformers`
-并下载 BGE 中文模型，起得比另外两个慢。要看「导购助手」页面就加 `--with-guide`。
+| 服务 | 地址 | 端口 |
+|---|---|---|
+| React 前端 | http://127.0.0.1:5173 | 5173 |
+| 书城后端 | http://127.0.0.1:8080 | 8080 |
+| Agent | http://127.0.0.1:8000 | 8000 |
+| Swagger UI | http://127.0.0.1:8080/swagger-ui/index.html | 8080 |
+| 开发 MySQL | 127.0.0.1:3307 | 3307 |
 
-下面是分开手动启动的方式。
-
-### 环境要求
-
-- JDK 17+
-- Node.js 18+（含 npm）
-- Python 3.10+（客服助手后端）
-- Docker Desktop（用于一键脚本启动 MySQL）
-- Maven 3.8+（或依赖脚本自动构建）
-
-### 1. 启动后端
+也可单独启动和停止某个服务：
 
 ```bash
-cd springboot-ebook
-chmod +x run-local.sh stop-local.sh
-./run-local.sh
+./run-all.sh --frontend
+./run-all.sh --backend
+./run-all.sh --agent
+./stop-all.sh --frontend
+./stop-all.sh --backend
+./stop-all.sh --agent
 ```
 
-脚本会：
+三个组件各自目录中的 `run-local.sh`、`stop-local.sh` 也会进入同一套管理流程。停止脚本会关闭记录的进程组、检查并释放目标端口；停止后端还会停止本项目管理的 MySQL 容器，保留容器和数据卷。重复启动相当于重启选定服务，重复停止可以安全执行。
 
-1. 若无 jar 则执行 `mvn clean package`
-2. 启动 Docker MySQL 容器（端口 **3307**，库名 `ebook_backend`）
-3. 在 **8080** 端口启动 Spring Boot
+后端脚本优先使用 `JAVA_HOME` 中的 JDK 21，其次查找 `.tools/jdk21/` 或 macOS 已安装的 JDK 21。首次构建会下载 Maven 依赖。前端缺少 `node_modules` 时执行 `npm ci`；Agent 首次建立 `.venv` 并安装 `requirements.txt`。首次加载政策向量模型时需要下载 `BAAI/bge-small-zh-v1.5`，缓存位于 `.tools/huggingface/`，后续复用本地文件。
 
-停止服务：
+未指定 `DB_URL` 时，后端脚本使用专属容器 `ebook-mysql-integrated`、数据卷 `ebook-mysql-integrated-data`，以 UTF-8 初始化空数据库。已有表时不会重复执行建表和演示数据脚本。需要连接自备 MySQL 时可设置 `DB_URL`、`DB_USERNAME`、`DB_PASSWORD`，停止脚本不管理外部数据库。
 
-```bash
-./stop-local.sh
-```
+## 登录
 
-会释放 8080 端口并移除 MySQL 容器。
+演示用户为 `DefaultUser / 123456`，管理员为 `admin / admin123`。登录后，前端保存 JWT，并随业务及 Agent 请求发送 Bearer 凭证；到期或收到 401 后返回登录页。管理员可以维护图书、库存与用户，普通用户只能访问自己的购物车、订单和资料。
 
-### 2. 启动前端
+## 功能
 
-```bash
-cd react-ebook
-npm install
-npm run dev
-```
+| 作业 | 实现位置 | 运行入口 |
+|---|---|---|
+| 1 | `python-assistant/backend/api_design.py`、`ApiDesignPage.jsx`、原书城 `BookController` | 管理员登录后打开 `/contract` |
+| 2 | `python-assistant/backend/agent.py`、`tools.py`、`catalog.py` | `/assistant` |
+| 3 | `python-assistant/backend/guide/`、`data/policy.txt` | `/guide` |
+| 4 | `springboot-ebook` 中 JWT 过滤器、安全配置和虚拟线程配置 | 书城业务接口及 Swagger UI |
 
-浏览器访问 `http://localhost:5173`。前端默认请求 `http://localhost:8080`，可通过环境变量覆盖：
+库存客服的 `check_inventory` 查询实际 MySQL 库存；竞品报价按作业要求模拟。导购的 `search_book_catalog` 读取相同的书目，`query_store_policy` 对政策文档进行分块、512 维 Embedding 和余弦 Top-K 检索，再由 ReAct 循环决定下一步操作。书目中没有的年份、评分和销量不会补造。
 
-```bash
-VITE_API_BASE_URL=http://localhost:8080 npm run dev
-```
+书目接口使用 `/api/v1/books`：GET 支持 `page=0`、`size=20`、`category`、`keyword`、`isbn`；GET `/{id}` 查询详情；管理员 POST 创建返回 201 和 Location，PATCH `/{id}/stock` 更新库存。原购物车、下单、订单与统计继续使用现有业务层和数据库。
 
-### 3. 启动客服助手后端（可选）
+## 模型配置
 
-「客服助手」页面依赖一个独立的 Python 服务。不用这个页面的话可以跳过。
+将 `python-assistant/.env.example` 复制为 `.env`，填写 OpenAI 兼容模型接口的 `LLM_BASE_URL`、`LLM_API_KEY` 和 `LLM_MODEL`，重启 Agent 即可。密钥仅用于模型网关鉴权，不会出现在报告、截图或提交包中。未配置密钥时，客服与导购可明确切换为离线演示；接口契约生成要求真实模型。
 
-```bash
-cd python-assistant
-chmod +x run-local.sh stop-local.sh
-./run-local.sh
-```
+Agent 将书目字段、工具结果和检索到的课程模拟政策发送给模型。顾客 JWT 仅转发给本机书城以校验身份、读取书目，不进入模型提示词。订单、购物车、用户资料和密码不作为模型工具数据。
 
-首次运行会建 `.venv` 并安装依赖，之后监听 **8000**。未配置模型 API 时使用内置的
-离线替身模型，功能完整、不联网。
-
-要接真实模型，把配置写进 `python-assistant/.env`：
-
-```bash
-cd python-assistant && cp .env.example .env   # 填 LLM_BASE_URL / LLM_MODEL / LLM_API_KEY
-```
-
-任何 OpenAI 兼容接口都行（OpenAI / DeepSeek / 通义千问），`.env.example` 里给了三家的现成写法。
-环境变量优先于 `.env`，临时换模型可以 `LLM_MODEL=gpt-4o ./run-local.sh`。
-完整变量表见 [python-assistant/README.md](python-assistant/README.md)。
-
-停止：
-
-```bash
-cd python-assistant && ./stop-local.sh
-```
-
-前端通过 Vite 代理的同源路径 `/assistant-api` 访问它（见 `react-ebook/vite.config.js`），
-所以开发时不涉及跨域。
-
-### 4. 启动导购助手后端（可选）
-
-「导购助手」页面（`/guide`）依赖作业3 的 RAG + ReAct 服务。它单独占一个端口，
-这样能和客服助手同时跑，两个页面也就能同时演示：
-
-```bash
-cd 作业3
-chmod +x run-local.sh stop-local.sh
-PORT=8010 ./run-local.sh          # 监听 8010
-```
-
-首次运行会建 `.venv`、安装依赖并下载 BGE 中文向量模型（约 100 MB）。
-未配置模型 API 时，对话部分使用内置的离线替身模型，ReAct 链路完整、不联网。
-
-要接真实模型，把配置写进 `作业3/.env`（字段说明见 `作业3/.env.example`）：
-
-```bash
-cd 作业3 && cp .env.example .env   # 填 LLM_BASE_URL / LLM_MODEL / LLM_API_KEY
-```
-
-前端通过 Vite 代理的同源路径 `/guide-api` 访问它。停止：
-
-```bash
-cd 作业3 && PORT=8010 ./stop-local.sh
-```
-
-### 手动启动后端（可选）
-
-若已有 MySQL，可设置环境变量后直接运行：
-
-```bash
-cd springboot-ebook
-mvn spring-boot:run
-```
-
-常用变量（见 `application.properties`）：
-
-| 变量 | 默认值 |
-|------|--------|
-| `DB_URL` | `jdbc:mysql://localhost:3306/ebook_backend?...` |
-| `DB_USERNAME` | `root` |
-| `DB_PASSWORD` | （见本地配置） |
-
-> 每次启动会执行 `schema.sql` + `data.sql` 重建演示数据（`spring.sql.init.mode=always`）。
-
-## 仓库结构
+## 代码结构
 
 ```text
-EBook/
-├── react-ebook/                 # 前端
-│   ├── src/
-│   │   ├── pages/               # 页面 + loader/action（View 层）
-│   │   ├── components/          # 可复用 UI 组件
-│   │   ├── api/                 # 后端 API 封装（Service 层）
-│   │   ├── data/                # appStore 状态仓库、Data.json
-│   │   ├── routes/              # 鉴权、布局、错误边界
-│   │   └── utils/               # 角色、校验、封面路径、格式化
-│   └── public/assets/           # 书籍封面等静态资源
-│
-└── springboot-ebook/            # 后端
-    ├── src/main/java/com/ebook/backend/
-    │   ├── controller/          # REST 控制器
-    │   ├── service/             # 业务接口
-    │   ├── service/impl/        # 业务实现（Spring 注入）
-    │   ├── service/support/     # 权限、库存等辅助类
-    │   ├── repository/          # Spring Data JPA
-    │   ├── entity/              # JPA 实体
-    │   └── dto/                 # 请求/响应 DTO
-    ├── src/main/resources/
-    │   ├── schema.sql           # 表结构
-    │   ├── data.sql             # 演示数据
-    │   └── application.properties
-    ├── run-local.sh
-    └── stop-local.sh
-
-└── python-assistant/           # 客服助手后端（Python）
-    ├── backend/
-    │   ├── tools.py            # check_inventory / get_competitor_price 两个 Skill
-    │   ├── catalog.py          # 库存数据源（内置模拟目录 / 真实后端）
-    │   ├── llm.py              # 模型客户端 + 离线替身模型
-    │   ├── agent.py            # Function Calling 循环与异常处理
-    │   ├── server.py           # FastAPI 接口
-    │   ├── cli.py              # 命令行入口与演示场景
-    │   └── tests/              # 单元测试
-    ├── requirements.txt
-    ├── run-local.sh
-    └── stop-local.sh
-
-└── 作业3/                      # 导购助手（RAG + ReAct，独立服务，默认 8010）
-    ├── data/policy.txt         # 退换货与会员政策知识库原文
-    ├── backend/                # 加载 → 分块 → 向量化 → 检索 + ReAct 循环
-    └── run-local.sh
+react-ebook/          原 React 书城及三个作业页面
+springboot-ebook/     原 Spring Boot 书城、JWT、Java 21 虚拟线程
+python-assistant/    统一 Agent，包含 Function Calling 与 RAG/ReAct
+scripts/services.py  端口清理、进程组管理、就绪检查
+scripts/homework/    真实联调、截图、OpenAPI 校验与报告生成脚本
+docs/assignments/    四次作业的正文、实际响应和浏览器截图
+deliverables/        模板填写的四份报告和提交压缩包
 ```
 
-## 主要路由
+实现参考课程提供的 `BookStore_s4` 分层及 Spring Security 组织方式、`course-retrieval-agent` 的检索工具设计，以及 `12 LLM Simple RAG.ipynb` 中 Embedding 列表、余弦相似度和 Top-K 检索流程。代码注释说明这些思路在现有书城中的衔接位置。
 
-| 路径 | 说明 |
-|------|------|
-| `/login` | 登录 / 注册 |
-| `/books` | 书城列表 |
-| `/books/:bookId` | 书籍详情 |
-| `/cart` | 购物车 |
-| `/orders` | 我的订单 |
-| `/stats` | 购书统计 / 数据统计 |
-| `/assistant` | 客服助手（对话式库存与比价查询） |
-| `/guide` | 导购助手（荐书 + 政策问答，展示 ReAct 推理链路） |
-| `/user` | 用户资料 |
-| `/admin/books` | 书籍管理（管理员） |
-| `/admin/users` | 用户管理（管理员） |
-| `/admin/orders` | 全部订单（管理员） |
-
-## API 摘要
-
-前缀：`/api/v1`
-
-| 模块 | 代表接口 |
-|------|----------|
-| 用户 | `POST /users/login`、`POST /users/register`、`PUT /users/admin/{id}/enabled` |
-| 图书 | `GET /books`、`GET /book/{id}`、`POST/PUT/DELETE /books` |
-| 购物车 | `GET/POST/PATCH/DELETE /cart/{userId}/...`、`POST /cart/{userId}/checkout` |
-| 订单 | `GET /orders/{userId}`、`GET /orders/admin/all`、`PATCH /orders/{userId}/{orderNo}` |
-| 统计 | `GET /stats/admin/book-sales`、`GET /stats/admin/user-spending`、`GET /stats/my/{userId}` |
-
-客服助手是独立服务，前缀 `/api/assistant`（默认 `http://localhost:8000`）：
-
-| 接口 | 说明 |
-|---|---|
-| `POST /api/assistant/chat` | 一次问答，返回回复与本次触发的全部函数调用 |
-| `GET /api/assistant/tools` | 当前交给大模型的 Tool 列表 |
-| `GET /api/assistant/health` | 健康检查与当前模型模式 |
-
-导购助手（作业3）也是独立服务，前缀 `/api/guide`（默认 `http://localhost:8010`）：
-
-| 接口 | 说明 |
-|---|---|
-| `POST /api/guide/chat` | 一次 ReAct 问答，返回回复与每一步的 Thought / Action / Observation |
-| `POST /api/guide/policy/search` | 只跑 RAG 检索，返回命中的政策条款、条款号与相似度 |
-| `GET /api/guide/tools` | 当前交给模型的 Tool 列表 |
-| `GET /api/guide/health` | 健康检查、索引规模与向量化实现 |
-
-两个助手页都通过 Vite 代理访问各自服务（`/assistant-api` → 8000，`/guide-api` → 8010），
-所以开发时不涉及跨域。生产构建默认直连本机端口，部署到别的地址时用
-`VITE_ASSISTANT_API_BASE_URL` / `VITE_GUIDE_API_BASE_URL` 覆盖。
-
-管理员写操作需在 Query 中传 `operatorId`（当前登录用户 id）。
-
-## 架构要点
-
-**前端**
-
-- React Router Data API：`loader` 读数据、`action` 写数据，页面组件只负责展示
-- `appStore.js` 作为前端内存仓库，统一对接 `backendApi.js`
-- `DashboardLayout` 在受保护父路由中共享，顶栏搜索通过各页 `handle.searchPlaceholder` 配置
-
-**后端**
-
-- Controller → Service（接口）→ ServiceImpl → Repository → Entity
-- 对外只返回 DTO，不暴露 Entity 与密码字段
-- 订单头 `OrderEntity` 与明细 `OrderItem` 使用 `@OneToMany(cascade = ALL)` 级联保存
-- 结算时 `@Transactional` 扣减 `stock_qty` 并清空购物车已选行
-
-**数据库表**
-
-`users`、`books`、`cart_items`、`orders`、`order_items`
-
-## 构建与测试
+## 验证
 
 ```bash
-# 前端生产构建
-cd react-ebook && npm run build
+# 先启动本项目开发数据库；测试使用单独的 ebook_integration_test 库。
+cd springboot-ebook
+mvn test
 
-# 后端编译与测试
-cd springboot-ebook && mvn test
+cd ../python-assistant
+.venv/bin/python -m pytest
 
-# 客服助手测试
-python3 -m pytest python-assistant/backend/tests -q
-
-# 导购助手（作业3）测试
-cd 作业3 && .venv/bin/python -m pytest backend/tests -q
+cd ../react-ebook
+npm run build
 ```
 
+Java 测试使用 JDK 21，覆盖 JWT 缺失、篡改、过期、越权、201/204 状态、分页与库存修改，并发送 200 个真实并发 HTTP 查询验证虚拟线程。Python 测试覆盖函数调用、异常回填、政策切分、向量检索、ReAct 解析和路由。报告中的截图由真实 Chromium 对正在运行的书城页面直接采集，原图及 SHA-256 记录位于 `docs/assignments/`。
+
+报告生成需安装 `requirements-docs.txt`，再执行 `python scripts/homework/build_reports.py`；模板保存在 `scripts/homework/templates/作业模版.docx`。真实模型重新联调脚本会调用配置的模型 API，执行前应确认仅使用课程模拟数据。

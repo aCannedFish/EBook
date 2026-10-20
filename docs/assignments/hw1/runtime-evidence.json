@@ -1,0 +1,103 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v1/books?page=0&size=2",
+    "authorizationPresent": true,
+    "status": 200,
+    "headers": {
+      "Vary": "Origin",
+      "X-Runtime-Thread": "virtual-thread",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+      "X-Frame-Options": "DENY",
+      "Content-Type": "application/json",
+      "Transfer-Encoding": "chunked",
+      "Date": "Tue, 20 Oct 2026 08:33:45 GMT",
+      "Connection": "close"
+    },
+    "body": {
+      "items": [
+        {
+          "id": 1,
+          "title": "Digital Fundamentals",
+          "author": "Thomas L. Floyd",
+          "price": 59,
+          "category": "电子技术 / 数字电路",
+          "publisher": "Pearson",
+          "isbn": "978-0-00-000000-1",
+          "format": "电子书 · 立即阅读",
+          "stockType": "ok",
+          "stockText": "有货",
+          "stockQty": 50,
+          "coverUrl": "/assets/Digital%20Fundamentals%EF%BC%88Thomas.L.Floyd%EF%BC%89.png",
+          "description": "以数字电子技术为主线，系统介绍逻辑门、组合与时序电路、编码与计数等核心内容，适合作为电子与计算机相关专业的入门教材。"
+        },
+        {
+          "id": 2,
+          "title": "Fundamentals of Computer Graphics",
+          "author": "Steve Marschner",
+          "price": 88,
+          "category": "计算机图形学",
+          "publisher": "A K Peters/CRC Press",
+          "isbn": "978-1-00-000000-2",
+          "format": "电子书 · 立即阅读",
+          "stockType": "ok",
+          "stockText": "有货",
+          "stockQty": 40,
+          "coverUrl": "/assets/Fundamentals%20of%20Computer%20Graphics%EF%BC%88Steve%20Marschner%EF%BC%89.png",
+          "description": "介绍现代计算机图形学基础，从几何变换到光照模型与光线追踪，覆盖课程核心知识。"
+        }
+      ],
+      "page": 0,
+      "size": 2,
+      "totalElements": 10,
+      "totalPages": 5
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/books?category=算法",
+    "authorizationPresent": true,
+    "status": 200,
+    "headers": {
+      "Vary": "Origin",
+      "X-Runtime-Thread": "virtual-thread",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+      "X-Frame-Options": "DENY",
+      "Content-Type": "application/json",
+      "Transfer-Encoding": "chunked",
+      "Date": "Tue, 20 Oct 2026 08:33:45 GMT",
+      "Connection": "close"
+    },
+    "body": {
+      "items": [
+        {
+          "id": 4,
+          "title": "Introduction To Algorithms",
+          "author": "Thomas H. Cormen",
+          "price": 99,
+          "category": "算法",
+          "publisher": "MIT Press",
+          "isbn": "978-3-00-000000-4",
+          "format": "电子书 · 立即阅读",
+          "stockType": "ok",
+          "stockText": "有货",
+          "stockQty": 30,
+          "coverUrl": "/assets/Introduction%20To%20Algorithms%EF%BC%88Thomas.H.Cormen%EF%BC%89.png",
+          "description": "经典算法教材，系统覆盖分治、动态规划、贪心、图算法等高频核心主题。"
+        }
+      ],
+      "page": 0,
+      "size": 20,
+      "totalElements": 1,
+      "totalPages": 1
+    }
+  }
+]

@@ -1,5 +1,7 @@
 package com.ebook.backend.controller;
 
+import com.ebook.backend.security.CurrentUser;
+
 import com.ebook.backend.dto.OrderResponse;
 import com.ebook.backend.dto.OrderStatusRequest;
 import com.ebook.backend.service.OrderService;
@@ -25,9 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     private final OrderService orderService;
+    private final CurrentUser currentUser;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, CurrentUser currentUser) {
         this.orderService = orderService;
+        this.currentUser = currentUser;
     }
 
     @GetMapping("/{userId}")
@@ -37,6 +41,7 @@ public class OrderController {
                                          @RequestParam(required = false)
                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
                                          @RequestParam(required = false) String bookTitle) {
+        currentUser.requireSelf(userId);
         return orderService.getOrders(userId, toStart(from), toEnd(to), bookTitle);
     }
 
@@ -47,13 +52,14 @@ public class OrderController {
                                                     @RequestParam(required = false)
                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
                                                     @RequestParam(required = false) String bookTitle) {
-        return orderService.getAllOrdersForAdmin(operatorId, toStart(from), toEnd(to), bookTitle);
+        return orderService.getAllOrdersForAdmin(currentUser.adminId(operatorId), toStart(from), toEnd(to), bookTitle);
     }
 
     @PatchMapping("/{userId}/{orderNo}")
     public OrderResponse updateStatus(@PathVariable Long userId,
                                       @PathVariable String orderNo,
                                       @Valid @RequestBody OrderStatusRequest request) {
+        currentUser.requireSelf(userId);
         return orderService.updateStatus(userId, orderNo, request.getStatus());
     }
 

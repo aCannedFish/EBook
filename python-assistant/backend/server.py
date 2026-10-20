@@ -1,64 +1,68 @@
-"""HTTP 服务：把 Function Calling 循环暴露给电子书城前端。
+"""书城共用 AI 服务：Function Calling、ReAct 导购与接口设计共用一套登录身份。
 
-接口：
-    POST /api/assistant/chat    一次问答，返回回复与本次触发的全部函数调用
-    GET  /api/assistant/tools   当前交给大模型的 Tool 列表（排查用）
-    GET  /api/assistant/health  健康检查与当前模型模式
-
-启动：
-    uvicorn backend.server:app --port 8000 --reload
-或：
-    python -m backend.server
+数据边界：库存与书目通过当前顾客的 JWT 读取 Spring Boot 书城，政策来自
+本项目的文本知识库。竞争对手报价按课程要求模拟，所有工具观测由实际执行产生。
 """
 
 from __future__ import annotations
 
 import logging
 import os
+import urllib.error
 import uuid
+from functools import lru_cache
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from .agent import BookstoreAssistant, ToolEvent
-from .config import LLM
+from .catalog import BookstoreOutOfReach, HttpInventoryBackend, InventoryBackend
+from .config import LLM, TOOLS
 from .llm import LocalRuleBasedLLM, ModelAPIError, build_client
-from .tools import build_registry
+from .tools import TOOL_SCHEMAS, build_registry
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s | %(message)s",
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s")
 logger = logging.getLogger("ebook.assistant.server")
 
 
 def _allowed_origins() -> list[str]:
-    """前端开发服务器的来源白名单。
-
-    Vite 只监听 localhost 时，在 macOS 上可能只绑到 IPv6 的 ::1，
-    浏览器据此发出的 Origin 就是 http://[::1]:5173 —— 和 127.0.0.1 不是同一个来源，
-    漏掉它会让预检请求直接 400。所以三种回环写法都列上。
-    生产环境用 ASSISTANT_ALLOWED_ORIGINS 覆盖（逗号分隔）。
-    """
+    """开发环境只允许书城前端回环来源；部署时可指定白名单。"""
     configured = os.environ.get("ASSISTANT_ALLOWED_ORIGINS", "").strip()
     if configured:
-        return [origin.strip() for origin in configured.split(",") if origin.strip()]
-
-    hosts = ("localhost", "127.0.0.1", "[::1]")
-    ports = ("5173", "4173")
-    return [f"http://{host}:{port}" for host in hosts for port in ports]
+        return [value.strip() for value in configured.split(",") if value.strip()]
+    return [f"http://{host}:{port}" for host in ("localhost", "127.0.0.1", "[::1]")
+            for port in ("5173", "4173")]
 
 
 ALLOWED_ORIGINS = _allowed_origins()
+app = FastAPI(title="EBook 书城 AI 服务", version="2.0.0")
+app.add_middleware(CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_credentials=False,
+                   allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
+# 测试可显式注入注册表；正常请求均使用各自身份创建工具，避免跨用户共享可变状态。
+app.state.registry = None
+
+
+def require_inventory(authorization: str | None = Header(default=None)) -> HttpInventoryBackend:
+    """先由原书城校验 JWT，再将同一身份用于后续工具查询。"""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(401, "请先登录书城并携带 Bearer Token")
+    inventory = HttpInventoryBackend(TOOLS.bookstore_api_base or "http://127.0.0.1:8080",
+                                     authorization=authorization)
+    try:
+        inventory.get_json("/api/v1/users/me")
+    except BookstoreOutOfReach as error:
+        cause = error.__cause__
+        if isinstance(cause, urllib.error.HTTPError) and cause.code in (401, 403):
+            raise HTTPException(cause.code, "书城登录身份无效，请重新登录") from error
+        raise HTTPException(503, "书城业务后端暂时不可用") from error
+    return inventory
 
 
 class ChatRequest(BaseModel):
-    message: str = Field(..., min_length=1, max_length=2000, description="用户提问")
-    history: list[dict] = Field(
-        default_factory=list,
-        description="之前的对话消息（OpenAI 格式），用于多轮上下文；只保留最近若干条",
-    )
+    """前端对话输入；历史只接受普通消息，不接受覆盖系统提示词。"""
+    message: str = Field(..., min_length=1, max_length=2000)
+    history: list[dict] = Field(default_factory=list)
 
 
 class ToolCallView(BaseModel):
@@ -80,104 +84,142 @@ class ChatResponse(BaseModel):
     modelMode: str
 
 
-def _build_assistant(on_tool_call=None) -> tuple[BookstoreAssistant, str]:
-    """按配置返回助手实例与实际使用的模型模式。
-
-    每次请求都新建客户端：LocalRuleBasedLLM 会记录「哪些错误已经重试过」，
-    这份状态属于一次对话，跨请求复用会让第二次提问不再重试。
-    """
-    registry = app.state.registry
-    if LLM.configured:
-        return (
-            BookstoreAssistant(client=build_client(), registry=registry, on_tool_call=on_tool_call),
-            f"remote:{LLM.model}",
-        )
-    return (
-        BookstoreAssistant(
-            client=LocalRuleBasedLLM(), registry=registry, on_tool_call=on_tool_call
-        ),
-        "offline:rule-based",
-    )
-
-
-app = FastAPI(
-    title="E-BookStore 客服助手 API",
-    description="基于 Function Calling 的图书库存与比价问答服务。",
-    version="1.0.0",
-)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["*"],
-)
-app.state.registry = build_registry()
+def _build_assistant(inventory: InventoryBackend, on_tool_call=None):
+    """每个请求独立创建模型与工具状态；库存始终使用当前顾客的实时数据源。"""
+    registry = app.state.registry or build_registry(inventory)
+    client = build_client() if LLM.configured else LocalRuleBasedLLM()
+    mode = f"remote:{LLM.model}" if LLM.configured else "offline:rule-based"
+    return BookstoreAssistant(client=client, registry=registry, on_tool_call=on_tool_call), mode
 
 
 @app.get("/api/assistant/health")
 def health() -> dict:
-    return {
-        "status": "ok",
-        "modelMode": f"remote:{LLM.model}" if LLM.configured else "offline:rule-based",
-        "llmBaseUrl": LLM.base_url if LLM.configured else None,
-    }
+    return {"status": "ok", "modelMode": f"remote:{LLM.model}" if LLM.configured else "offline:rule-based",
+            "inventorySource": "springboot-ebook", "guideInSameService": True}
 
 
 @app.get("/api/assistant/tools")
 def list_tools() -> dict:
-    """把 Tool 列表原样吐出来，便于确认模型看到的就是这份 schema。"""
-    return {"tools": app.state.registry.schemas}
+    return {"tools": TOOL_SCHEMAS}
 
 
 @app.post("/api/assistant/chat", response_model=ChatResponse)
-def chat(payload: ChatRequest) -> ChatResponse:
+def chat(payload: ChatRequest, inventory: InventoryBackend = Depends(require_inventory)):
     request_id = uuid.uuid4().hex[:12]
     logger.info("[%s] 用户提问：%s", request_id, payload.message)
 
-    def log_tool_call(event: ToolEvent) -> None:
-        # 作业要求：拦截模型输出并打印需要调用的函数名及参数。
+    def record(event: ToolEvent) -> None:
         logger.info("[%s] %s", request_id, event.log_line())
 
-    assistant, model_mode = _build_assistant(on_tool_call=log_tool_call)
-
+    assistant, mode = _build_assistant(inventory, on_tool_call=record)
+    history = [entry for entry in payload.history[-12:]
+               if entry.get("role") in {"user", "assistant"} and isinstance(entry.get("content"), str)]
     try:
-        result = assistant.chat(payload.message, history=payload.history[-12:])
+        result = assistant.chat(payload.message, history=history)
     except ModelAPIError as error:
-        # 配置类错误（URL 写错、密钥无效）不吞掉：把排查方向一并返回，
-        # 否则前端只看到一句「NotFoundError」，看不出是 LLM_BASE_URL 多写了一段。
-        logger.error("[%s] 模型接口调用失败：%s", request_id, error.report)
-        return ChatResponse(
-            requestId=request_id,
-            reply=f"助手暂时不可用：{error}。{error.hint}",
-            toolCalls=[],
-            rounds=0,
-            stoppedReason="model_error",
-            modelMode=model_mode,
-        )
-    except Exception as error:  # noqa: BLE001 - 兜底，保证接口永远返回可展示的内容
-        logger.exception("[%s] 对话失败", request_id)
-        return ChatResponse(
-            requestId=request_id,
-            reply=f"助手暂时不可用（{type(error).__name__}），请稍后重试。",
-            toolCalls=[],
-            rounds=0,
-            stoppedReason="error",
-            modelMode=model_mode,
-        )
+        raise HTTPException(502, error.report) from error
+    logger.info("[%s] 最终答复：%s", request_id, result.reply)
+    return ChatResponse(requestId=request_id, modelMode=mode, **result.to_dict())
 
-    logger.info("[%s] 回复：%s", request_id, result.reply.replace("\n", " "))
-    return ChatResponse(
-        requestId=request_id,
-        modelMode=model_mode,
-        **result.to_dict(),
-    )
+
+@lru_cache(maxsize=1)
+def policy_index():
+    """知识库仅构建一次，文档与查询使用相同的编码器和向量空间。"""
+    from .guide.rag import RagPipeline
+    return RagPipeline().build()
+
+
+def live_catalog(inventory: HttpInventoryBackend):
+    """把现有书城 DTO 映射为可检索条目，不为缺少的出版年、评分编造数值。"""
+    from .guide.catalog import Book, Catalog
+    books = [Book(isbn=book["isbn"], title=book["title"], author=book["author"],
+                  publisher=book["publisher"], year=0, price=book["price"],
+                  category=book["category"], tags=(), summary=book["description"],
+                  stock_qty=book["stockQty"], rating=0.0, sales=0)
+             for book in inventory.fetch_books()]
+    return Catalog(books, source="bookstore-api")
+
+
+class GuideRequest(BaseModel):
+    message: str = Field(..., min_length=1, max_length=2000)
+    useRemoteModel: bool | None = None
+
+
+class PolicySearchRequest(BaseModel):
+    question: str = Field(..., min_length=1)
+    topK: int = Field(3, ge=1, le=6)
+
+
+@app.get("/api/guide/health")
+def guide_health(inventory: HttpInventoryBackend = Depends(require_inventory)):
+    index = policy_index()
+    return {"status": "ok", "rag": "ready", "ragStats": index.stats(),
+            "llmConfigured": LLM.configured, "catalogSize": len(inventory.fetch_books()),
+            "catalogSource": "springboot-ebook"}
+
+
+@app.get("/api/guide/tools")
+def guide_tools():
+    from .guide.tools import TOOL_SCHEMAS
+    return {"tools": TOOL_SCHEMAS}
+
+
+@app.post("/api/guide/policy/search")
+def policy_search(payload: PolicySearchRequest, inventory=Depends(require_inventory)):
+    index = policy_index()
+    hits = index.retrieve(payload.question, top_k=payload.topK)
+    return {"question": payload.question, "passages": [hit.to_dict() for hit in hits],
+            "count": len(hits), "index": index.stats()}
+
+
+@app.post("/api/guide/chat")
+def guide_chat(payload: GuideRequest, inventory=Depends(require_inventory)):
+    from .guide.agent import ReActAgent
+    from .guide.llm import LocalReActLLM, build_client as guide_client, ModelAPIError as GuideModelError
+    from .guide.tools import BookstoreTools, build_registry as guide_registry
+    remote = LLM.configured if payload.useRemoteModel is None else payload.useRemoteModel
+    if remote and not LLM.configured:
+        raise HTTPException(400, "未配置真实模型 API")
+    tools = BookstoreTools(catalog=live_catalog(inventory), index=policy_index())
+    agent = ReActAgent(client=guide_client() if remote else LocalReActLLM(),
+                      registry=guide_registry(tools), on_step=lambda step: logger.info(step.log_trace()))
+    try:
+        result = agent.run(payload.message)
+    except GuideModelError as error:
+        raise HTTPException(502, error.report) from error
+    return {"modelMode": f"remote:{LLM.model}" if remote else "offline:rule-based", **result.to_dict()}
 
 
 def main() -> None:
     import uvicorn
+    uvicorn.run("backend.server:app", host="127.0.0.1", port=8000)
 
-    uvicorn.run("backend.server:app", host="127.0.0.1", port=8000, reload=False)
+
+
+
+@app.get("/api/design/conversation")
+def design_conversation(inventory=Depends(require_inventory)):
+    """供书城中的接口设计页展示真实模型调用记录，刷新页面后仍可复核。"""
+    import json
+    from .api_design import OUTPUT, SYSTEM_PROMPT
+    user = inventory.get_json("/api/v1/users/me")
+    if not user.get("admin"):
+        raise HTTPException(403, "仅管理员可生成接口文档")
+    path = OUTPUT / "conversation.json"
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {
+        "messages": [{"role": "system", "content": SYSTEM_PROMPT}], "model": LLM.model}
+
+
+@app.post("/api/design/chat")
+def design_chat(payload: ChatRequest, inventory=Depends(require_inventory)):
+    from .api_design import generate
+    user = inventory.get_json("/api/v1/users/me")
+    if not user.get("admin"):
+        raise HTTPException(403, "仅管理员可生成接口文档")
+    try:
+        return generate(payload.message, payload.history)
+    except (ValueError, AssertionError, RuntimeError) as error:
+        raise HTTPException(502, str(error)) from error
 
 
 if __name__ == "__main__":

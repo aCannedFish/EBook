@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-10-20T09:32:07.503833+00:00",
+  "checks": [
+    {
+      "case": "完整停止释放三个端口并停止本项目MySQL",
+      "passed": true
+    },
+    {
+      "case": "启动清理三个残留进程并保留数据库书目",
+      "passed": true
+    },
+    {
+      "case": "组件入口单独重启前端，后端和Agent继续运行",
+      "passed": true
+    },
+    {
+      "case": "组件停止入口仅释放前端端口",
+      "passed": true
+    },
+    {
+      "case": "重复完整停止仍正确释放端口",
+      "passed": true
+    },
+    {
+      "case": "最终完整启动且书目和库存保持不变",
+      "passed": true
+    }
+  ],
+  "ports": [
+    8080,
+    8000,
+    5173
+  ],
+  "finalState": "running"
+}

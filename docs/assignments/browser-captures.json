@@ -1,0 +1,78 @@
+{
+  "captureMethod": "Playwright Chromium page.screenshot / locator.screenshot",
+  "processing": "none",
+  "screenshots": [
+    {
+      "file": "docs/assignments/hw4/screenshots/integrated-bookstore.png",
+      "url": "http://127.0.0.1:5173/books",
+      "capturedAt": "2026-10-20T08:55:54.349Z",
+      "sha256": "4b8a54b958603fcc29e7b2921a124893a1c01ca9f6d43f33edc48ce49a3de7c9"
+    },
+    {
+      "file": "docs/assignments/hw2/screenshots/inventory-function-calling.png",
+      "url": "http://127.0.0.1:5173/assistant",
+      "capturedAt": "2026-10-20T08:56:11.892Z",
+      "sha256": "c79e8046d779aaa8144697cfd61725db66b972eb40caab30308a2fa8b3164cd9"
+    },
+    {
+      "file": "docs/assignments/hw2/screenshots/inventory-reply.png",
+      "url": "http://127.0.0.1:5173/assistant",
+      "capturedAt": "2026-10-20T08:56:12.005Z",
+      "sha256": "7712d7c6b503e46b11c121b459a6efa64fffaf84c870433977a3655ac8dd0dac"
+    },
+    {
+      "file": "docs/assignments/hw2/screenshots/timeout-self-correction.png",
+      "url": "http://127.0.0.1:5173/assistant",
+      "capturedAt": "2026-10-20T08:56:24.358Z",
+      "sha256": "68587a3d67ab952d96e7a113d9fc1e8c342e95bfb808e11b2c11903159f23b89"
+    },
+    {
+      "file": "docs/assignments/hw3/screenshots/react-bookstore.png",
+      "url": "http://127.0.0.1:5173/guide",
+      "capturedAt": "2026-10-20T08:56:50.099Z",
+      "sha256": "8a3b510c51c8f9735db0e94cadd5017467e924c35c81ffde62cd39d1d7092cab"
+    },
+    {
+      "file": "docs/assignments/hw3/screenshots/react-policy.png",
+      "url": "http://127.0.0.1:5173/guide",
+      "capturedAt": "2026-10-20T08:56:50.197Z",
+      "sha256": "108a225b38e689be5c78e77d5d09a00e79194d659e7a08c268eb87f9496a65fb"
+    },
+    {
+      "file": "docs/assignments/hw3/screenshots/react-reply.png",
+      "url": "http://127.0.0.1:5173/guide",
+      "capturedAt": "2026-10-20T08:56:50.302Z",
+      "sha256": "3f131c730fbf73b2532a7a2aa8c6b4c6cdf4657c58dd3e628f5e5c46b0cc42e8"
+    },
+    {
+      "file": "docs/assignments/hw1/screenshots/contract-conversation.png",
+      "url": "http://127.0.0.1:5173/contract",
+      "capturedAt": "2026-10-20T09:30:18.152Z",
+      "sha256": "bbf804a091320c0c983bc0bbe1e784a089769a544730b82db7965e12b21c3b17"
+    },
+    {
+      "file": "docs/assignments/hw1/screenshots/contract-json.png",
+      "url": "http://127.0.0.1:5173/contract",
+      "capturedAt": "2026-10-20T09:30:18.997Z",
+      "sha256": "307a9096d8a5cc8b2d4c83a259141bc3b3ac865ec6293a777e4eadadff676def"
+    },
+    {
+      "file": "docs/assignments/hw4/screenshots/jwt-401.png",
+      "url": "http://127.0.0.1:8080/swagger-ui/index.html#/book-controller/detail",
+      "capturedAt": "2026-10-20T09:30:20.414Z",
+      "sha256": "901399a56296cb7c2f1a4695358b7a00d63190b2af54a271e9e8a158f7c61fe8"
+    },
+    {
+      "file": "docs/assignments/hw4/screenshots/jwt-200.png",
+      "url": "http://127.0.0.1:8080/swagger-ui/index.html#/book-controller/detail",
+      "capturedAt": "2026-10-20T09:30:21.536Z",
+      "sha256": "0016dc354bef78d470a3ede0b09038d8a9be1d0ebfdf229c6eff6030785975ff"
+    },
+    {
+      "file": "docs/assignments/hw4/screenshots/virtual-thread-runtime.png",
+      "url": "http://127.0.0.1:8080/swagger-ui/index.html#/runtime-controller/runtime",
+      "capturedAt": "2026-10-20T09:30:22.598Z",
+      "sha256": "38fb5f4500378ea6c672da00c866e4d28f6ce4b394808e3a38cd4b3b14f20645"
+    }
+  ]
+}

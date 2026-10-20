@@ -1,3 +1,4 @@
+import ApiDesignPage, { apiDesignLoader } from "./pages/ApiDesignPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LoginPage, { loginAction, loginLoader } from "./pages/LoginPage";
 import { BooksRoute, booksAction, booksLoader } from "./pages/BooksPage";
@@ -92,6 +93,11 @@ const router = createBrowserRouter([
             action: adminBooksAction,
             handle: { searchPlaceholder: "按书名搜索图书" },
             element: <AdminBooksRoute />
+          },
+          {
+            path: "contract",
+            loader: apiDesignLoader,
+            element: <ApiDesignPage />
           },
           {
             path: "assistant",

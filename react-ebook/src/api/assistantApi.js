@@ -1,3 +1,5 @@
+import { authHeaders, notifyUnauthorized } from "./auth";
+
 // 客服助手后端（python-assistant/ 的 FastAPI 服务）的请求封装。
 // 与 backendApi.js 分开，是因为它指向另一个进程：默认 http://localhost:8000，
 // 而书城业务后端是 http://localhost:8080。
@@ -14,6 +16,7 @@ async function request(path, options = {}) {
     response = await fetch(`${ASSISTANT_BASE_URL}${path}`, {
       headers: {
         "Content-Type": "application/json",
+        ...authHeaders(),
         ...(options.headers || {})
       },
       ...options
@@ -24,6 +27,9 @@ async function request(path, options = {}) {
     );
   }
 
+  if (response.status === 401) {
+    notifyUnauthorized();
+  }
   if (!response.ok) {
     let message = `助手服务返回 ${response.status}`;
     try {

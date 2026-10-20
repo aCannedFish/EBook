@@ -21,7 +21,7 @@ os.environ["LLM_BASE_URL"] = "https://api.openai.com/v1"
 os.environ["LLM_MODEL"] = "gpt-4o-mini"
 os.environ["BOOKSTORE_API_BASE"] = ""
 
-# 让 `pytest` 能在 python-assistant/ 或 作业2/ 目录下直接运行，而不必先 pip install -e .
+# 让 `pytest` 能在 python-assistant/ 目录下直接运行，而不必先 pip install -e .
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 

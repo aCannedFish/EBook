@@ -1,3 +1,5 @@
+import { authHeaders, notifyUnauthorized, saveToken } from "./auth";
+
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ??
   (import.meta.env.DEV ? "" : "http://localhost:8080");
@@ -6,11 +8,12 @@ async function request(path, options = {}) {
   let response;
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
       headers: {
         "Content-Type": "application/json",
+        ...authHeaders(),
         ...(options.headers || {})
-      },
-      ...options
+      }
     });
   } catch {
     throw new Error(
@@ -20,9 +23,12 @@ async function request(path, options = {}) {
 
   if (!response.ok) {
     let message = `request failed: ${response.status}`;
+    if (response.status === 401 && !path.includes("/users/login")) {
+      notifyUnauthorized();
+      message = "登录已过期，请重新登录。";
+    }
     if (response.status === 403) {
-      message =
-        "请求被拒绝 (403)。请重启后端：在 springboot-ebook 目录执行 ./run-local.sh；若前端端口不是 5173，请关闭占用 5173 的旧进程后重新 npm run dev。";
+      message = "当前账号没有访问该资源的权限。";
     }
     try {
       const body = await response.json();
@@ -55,30 +61,37 @@ function buildQuery(params) {
   return query ? `?${query}` : "";
 }
 
-export function fetchBooks() {
-  return request("/api/v1/books");
+/** 保留页面现有的数组接口，在此适配服务端统一的分页响应。 */
+export async function fetchBooks() {
+  const first = await request("/api/v1/books?page=0&size=100");
+  const items = [...first.items];
+  for (let page = 1; page < first.totalPages; page += 1) {
+    const next = await request(`/api/v1/books?page=${page}&size=100`);
+    items.push(...next.items);
+  }
+  return items;
 }
 
 export function fetchBookById(id) {
-  return request(`/api/v1/book/${encodeURIComponent(id)}`);
+  return request(`/api/v1/books/${encodeURIComponent(id)}`);
 }
 
-export function createBook(operatorId, payload) {
-  return request(`/api/v1/books${buildQuery({ operatorId })}`, {
+export function createBook(payload) {
+  return request("/api/v1/books", {
     method: "POST",
     body: JSON.stringify(payload)
   });
 }
 
-export function updateBook(operatorId, id, payload) {
-  return request(`/api/v1/books/${encodeURIComponent(id)}${buildQuery({ operatorId })}`, {
+export function updateBook(id, payload) {
+  return request(`/api/v1/books/${encodeURIComponent(id)}`, {
     method: "PUT",
     body: JSON.stringify(payload)
   });
 }
 
-export function deleteBook(operatorId, id) {
-  return request(`/api/v1/books/${encodeURIComponent(id)}${buildQuery({ operatorId })}`, {
+export function deleteBook(id) {
+  return request(`/api/v1/books/${encodeURIComponent(id)}`, {
     method: "DELETE"
   });
 }
@@ -90,11 +103,13 @@ export function registerUser(payload) {
   });
 }
 
-export function loginUser(payload) {
-  return request("/api/v1/users/login", {
+export async function loginUser(payload) {
+  const result = await request("/api/v1/users/login", {
     method: "POST",
     body: JSON.stringify(payload)
   });
+  saveToken(result.accessToken);
+  return result.user;
 }
 
 export function fetchUserById(id) {

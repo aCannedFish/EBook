@@ -1,5 +1,7 @@
 package com.ebook.backend.controller;
 
+import com.ebook.backend.security.CurrentUser;
+
 import com.ebook.backend.dto.CartItemRequest;
 import com.ebook.backend.dto.CartItemResponse;
 import com.ebook.backend.dto.CartItemUpdateRequest;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 购物车 REST 接口。
  * <p>
- * 路径含 {@code {userId}}，由前端在登录后传入（当前无服务端 Session/JWT 校验）。
+ * 路径中的 {@code userId} 必须与 JWT 身份一致，或由管理员访问。
  * 写操作后多数接口返回**该用户完整购物车列表**（{@link CartItemResponse}），便于前端一次刷新 UI。
  * 结算委托 {@link CartService#checkout}，内部再调用 {@link com.ebook.backend.service.OrderService}。
  * </p>
@@ -30,12 +32,14 @@ public class CartController {
 
     /** 购物车业务服务。 */
     private final CartService cartService;
+    private final CurrentUser currentUser;
 
     /**
      * @param cartService 由 Spring 注入的 {@link CartService}
      */
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, CurrentUser currentUser) {
         this.cartService = cartService;
+        this.currentUser = currentUser;
     }
 
     /**
@@ -46,6 +50,7 @@ public class CartController {
      */
     @GetMapping("/{userId}")
     public List<CartItemResponse> getCart(@PathVariable Long userId) {
+        currentUser.requireSelf(userId);
         return cartService.getCartItems(userId);
     }
 
@@ -59,6 +64,7 @@ public class CartController {
     @PostMapping("/{userId}/items")
     public List<CartItemResponse> addItem(@PathVariable Long userId,
                                           @Valid @RequestBody CartItemRequest request) {
+        currentUser.requireSelf(userId);
         return cartService.addToCart(userId, request);
     }
 
@@ -74,6 +80,7 @@ public class CartController {
     public List<CartItemResponse> updateItem(@PathVariable Long userId,
                                              @PathVariable Long bookId,
                                              @RequestBody CartItemUpdateRequest request) {
+        currentUser.requireSelf(userId);
         return cartService.updateCartItem(userId, bookId, request);
     }
 
@@ -87,6 +94,7 @@ public class CartController {
     @DeleteMapping("/{userId}/items/{bookId}")
     public List<CartItemResponse> removeItem(@PathVariable Long userId,
                                              @PathVariable Long bookId) {
+        currentUser.requireSelf(userId);
         return cartService.removeCartItem(userId, bookId);
     }
 
@@ -98,6 +106,7 @@ public class CartController {
      */
     @PostMapping("/{userId}/checkout")
     public List<OrderResponse> checkout(@PathVariable Long userId) {
+        currentUser.requireSelf(userId);
         return cartService.checkout(userId);
     }
 }

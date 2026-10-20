@@ -141,7 +141,7 @@ class ToolSettings:
     @classmethod
     def from_env(cls) -> "ToolSettings":
         return cls(
-            bookstore_api_base=os.environ.get("BOOKSTORE_API_BASE", "").rstrip("/"),
+            bookstore_api_base=os.environ.get("BOOKSTORE_API_BASE", "http://127.0.0.1:8080").rstrip("/"),
             competitor_latency_seconds=_env_float("COMPETITOR_LATENCY_SECONDS", 0.4),
             competitor_timeout_seconds=_env_float("COMPETITOR_TIMEOUT_SECONDS", 1.0),
             # 量子物理：第一次比价超时，重试成功。

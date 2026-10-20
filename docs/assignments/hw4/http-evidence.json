@@ -1,0 +1,135 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v1/books/1",
+    "authorizationPresent": false,
+    "status": 401,
+    "headers": {
+      "Vary": "Origin",
+      "WWW-Authenticate": "Bearer",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+      "X-Frame-Options": "DENY",
+      "Content-Type": "application/json;charset=UTF-8",
+      "Content-Length": "72",
+      "Date": "Tue, 20 Oct 2026 08:33:45 GMT",
+      "Connection": "close"
+    },
+    "body": {
+      "status": 401,
+      "message": "请携带有效的 Authorization Bearer Token"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/books/1",
+    "authorizationPresent": true,
+    "status": 401,
+    "headers": {
+      "Vary": "Origin",
+      "WWW-Authenticate": "Bearer error=\"invalid_token\"",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+      "X-Frame-Options": "DENY",
+      "Content-Type": "application/json;charset=UTF-8",
+      "Content-Length": "69",
+      "Date": "Tue, 20 Oct 2026 08:33:45 GMT",
+      "Connection": "close"
+    },
+    "body": {
+      "status": 401,
+      "message": "Token 无效、已过期或账号已禁用"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/books/1",
+    "authorizationPresent": true,
+    "status": 200,
+    "headers": {
+      "Vary": "Origin",
+      "X-Runtime-Thread": "virtual-thread",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+      "X-Frame-Options": "DENY",
+      "Content-Type": "application/json",
+      "Transfer-Encoding": "chunked",
+      "Date": "Tue, 20 Oct 2026 08:33:45 GMT",
+      "Connection": "close"
+    },
+    "body": {
+      "id": 1,
+      "title": "Digital Fundamentals",
+      "author": "Thomas L. Floyd",
+      "price": 59,
+      "category": "电子技术 / 数字电路",
+      "publisher": "Pearson",
+      "isbn": "978-0-00-000000-1",
+      "format": "电子书 · 立即阅读",
+      "stockType": "ok",
+      "stockText": "有货",
+      "stockQty": 50,
+      "coverUrl": "/assets/Digital%20Fundamentals%EF%BC%88Thomas.L.Floyd%EF%BC%89.png",
+      "description": "以数字电子技术为主线，系统介绍逻辑门、组合与时序电路、编码与计数等核心内容，适合作为电子与计算机相关专业的入门教材。"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cart/1",
+    "authorizationPresent": true,
+    "status": 403,
+    "headers": {
+      "Vary": "Origin",
+      "X-Runtime-Thread": "virtual-thread",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+      "X-Frame-Options": "DENY",
+      "Content-Type": "application/json;charset=UTF-8",
+      "Content-Length": "57",
+      "Date": "Tue, 20 Oct 2026 08:33:45 GMT",
+      "Connection": "close"
+    },
+    "body": {
+      "status": 403,
+      "message": "没有访问该资源的权限"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/runtime",
+    "authorizationPresent": false,
+    "status": 200,
+    "headers": {
+      "Vary": "Origin",
+      "X-Runtime-Thread": "virtual-thread",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "0",
+      "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+      "X-Frame-Options": "DENY",
+      "Content-Type": "application/json",
+      "Transfer-Encoding": "chunked",
+      "Date": "Tue, 20 Oct 2026 08:33:45 GMT",
+      "Connection": "close"
+    },
+    "body": {
+      "requestThreadVirtual": true,
+      "requestThreadName": "tomcat-handler-53",
+      "javaVersion": "21.0.12.1",
+      "application": "springboot-ebook"
+    }
+  }
+]

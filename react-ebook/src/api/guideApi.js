@@ -1,15 +1,9 @@
-// 导购助手后端（作业3 的 RAG + ReAct 服务，作业3/backend/server.py）的请求封装。
-//
-// 它与客服助手是两个进程，所以端口也不同：
-//   客服助手（python-assistant，Function Calling）  8000
-//   导购助手（作业3，RAG + ReAct）                  8010
-// 两个服务可以同时跑，页面上也就能同时演示两种 Agent 形态。
-//
-// 开发时走 Vite 代理的同源路径 /guide-api（见 vite.config.js）；
-// 生产构建默认直连本机 8010，部署到别的地址时用 VITE_GUIDE_API_BASE_URL 覆盖。
+import { authHeaders, notifyUnauthorized } from "./auth";
+
+// 导购与库存客服共用 python-assistant，通过当前顾客的 JWT 读取原书城目录。
 const GUIDE_BASE_URL =
   import.meta.env.VITE_GUIDE_API_BASE_URL ??
-  (import.meta.env.DEV ? "/guide-api" : "http://localhost:8010");
+  (import.meta.env.DEV ? "/guide-api" : "http://localhost:8000");
 
 async function request(path, options = {}) {
   let response;
@@ -17,17 +11,21 @@ async function request(path, options = {}) {
     response = await fetch(`${GUIDE_BASE_URL}${path}`, {
       headers: {
         "Content-Type": "application/json",
+        ...authHeaders(),
         ...(options.headers || {})
       },
       ...options
     });
   } catch {
     throw new Error(
-      `无法连接导购助手服务（${GUIDE_BASE_URL}）。请在作业3 目录用 PORT=8010 ./run-local.sh 启动，` +
+      `无法连接导购助手服务（${GUIDE_BASE_URL}）。请启动项目的 python-assistant 服务，` +
         "或在仓库根目录执行 ./run-all.sh --guide。"
     );
   }
 
+  if (response.status === 401) {
+    notifyUnauthorized();
+  }
   if (!response.ok) {
     let message = `导购助手服务返回 ${response.status}`;
     try {

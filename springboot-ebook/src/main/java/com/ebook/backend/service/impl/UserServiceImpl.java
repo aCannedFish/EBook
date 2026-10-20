@@ -39,9 +39,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
         user.setSignature(request.getSignature() == null ? "" : request.getSignature());
-        user.setLevel(request.getLevel() == null || request.getLevel().isBlank()
-                ? "普通用户"
-                : request.getLevel());
+        // 注册不接受客户端指定管理员等级，避免伪造权限。
+        user.setLevel("普通用户");
         user.setEnabled(true);
 
         return toResponse(userRepository.save(user));

@@ -1,3 +1,4 @@
+import { logout } from "./data/appStore";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -13,3 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <App />
   </React.StrictMode>
 );
+
+// Token 失效时统一退出，避免多个页面继续使用已经失效的本地资料快照。
+window.addEventListener("ebook:unauthorized", () => {
+  logout();
+  window.location.replace("/login");
+});

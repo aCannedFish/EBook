@@ -172,12 +172,13 @@ class BookstoreOutOfReach(RuntimeError):
 class HttpInventoryBackend:
     """从电子书城真实后端读取库存。"""
 
-    def __init__(self, base_url: str, timeout: float = 5.0) -> None:
+    def __init__(self, base_url: str, timeout: float = 5.0, authorization: str | None = None) -> None:
         self._base_url = base_url.rstrip("/")
         self._timeout = timeout
+        self._authorization = authorization
 
     def find_by_isbn(self, isbn: str) -> BookStock | None:
-        books = self._fetch_books()
+        books = self.fetch_books(isbn=isbn)
         target = normalize_isbn(isbn)
         for book in books:
             if normalize_isbn(book.get("isbn", "")) == target:
@@ -192,14 +193,33 @@ class HttpInventoryBackend:
                 )
         return None
 
-    def _fetch_books(self) -> list[dict]:
-        url = f"{self._base_url}/api/v1/books"
-        request = urllib.request.Request(url, headers={"Accept": "application/json"})
+    def fetch_books(self, *, isbn: str | None = None) -> list[dict]:
+        """完整读取书城分页结果；鉴权与错误保留在真实 HTTP 边界。"""
+        from urllib.parse import urlencode
+        books: list[dict] = []
+        page = 0
+        while True:
+            parameters = {"page": page, "size": 100}
+            if isbn:
+                parameters["isbn"] = normalize_isbn(isbn)
+            payload = self.get_json("/api/v1/books?" + urlencode(parameters))
+            books.extend(payload["items"])
+            if page + 1 >= payload["totalPages"]:
+                return books
+            page += 1
+
+    def get_json(self, path: str) -> dict:
+        """转发当前顾客的 Bearer Token，不保存服务端登录状态或共享用户身份。"""
+        url = self._base_url + path
+        headers = {"Accept": "application/json"}
+        if self._authorization:
+            headers["Authorization"] = self._authorization
+        request = urllib.request.Request(url, headers=headers)
         try:
             with urllib.request.urlopen(request, timeout=self._timeout) as response:
                 return json.loads(response.read().decode("utf-8"))
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
-            raise BookstoreOutOfReach(f"访问 {url} 失败：{error}") from error
+            raise BookstoreOutOfReach(f"访问书城接口失败：{type(error).__name__}") from error
 
 
 def build_inventory_backend() -> InventoryBackend:

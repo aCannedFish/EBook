@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-20T09:27:48.301Z",
+  "browser": "Chromium",
+  "checks": [
+    {
+      "case": "管理员界面新增图书",
+      "status": 201,
+      "id": 12
+    },
+    {
+      "case": "管理员界面编辑图书与库存",
+      "status": 200,
+      "stockQty": 9
+    },
+    {
+      "case": "管理员界面删除临时图书",
+      "status": 204
+    },
+    {
+      "case": "管理员刷新访问/admin/users",
+      "passed": true
+    },
+    {
+      "case": "管理员刷新访问/admin/orders",
+      "passed": true
+    },
+    {
+      "case": "管理员刷新访问/contract",
+      "passed": true
+    },
+    {
+      "case": "顾客刷新访问/books",
+      "passed": true
+    },
+    {
+      "case": "顾客刷新访问/cart",
+      "passed": true
+    },
+    {
+      "case": "顾客刷新访问/orders",
+      "passed": true
+    },
+    {
+      "case": "顾客刷新访问/stats",
+      "passed": true
+    },
+    {
+      "case": "顾客刷新访问/user",
+      "passed": true
+    },
+    {
+      "case": "顾客刷新访问/assistant",
+      "passed": true
+    },
+    {
+      "case": "顾客刷新访问/guide",
+      "passed": true
+    }
+  ],
+  "pageErrors": []
+}

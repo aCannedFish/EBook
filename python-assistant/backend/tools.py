@@ -374,5 +374,5 @@ class ToolRegistry:
         )
 
 
-def build_registry() -> ToolRegistry:
-    return ToolRegistry(BookstoreTools(inventory=build_inventory_backend()))
+def build_registry(inventory: InventoryBackend | None = None) -> ToolRegistry:
+    return ToolRegistry(BookstoreTools(inventory=inventory or build_inventory_backend()))

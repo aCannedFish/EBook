@@ -1,0 +1,42 @@
+{
+  "method": "POST",
+  "path": "/api/assistant/chat",
+  "authorizationPresent": true,
+  "status": 200,
+  "headers": {
+    "date": "Tue, 20 Oct 2026 08:34:33 GMT",
+    "server": "uvicorn",
+    "content-length": "819",
+    "content-type": "application/json",
+    "vary": "Origin",
+    "Connection": "close"
+  },
+  "body": {
+    "requestId": "9f25021ebe74",
+    "reply": "您提供的 ISBN「12345」格式不合法。本店的书号去掉连字符后应为 10 位或 13 位数字，而您给的是 5 位数字。\n\n麻烦您确认一下正确的 ISBN 号码，或者提供完整的 10 位 / 13 位书号，我再帮您查询库存。",
+    "toolCalls": [
+      {
+        "round": 1,
+        "name": "check_inventory",
+        "arguments": {
+          "isbn": "12345"
+        },
+        "ok": false,
+        "durationMs": 0,
+        "result": {
+          "ok": false,
+          "error": {
+            "code": "INVALID_ISBN_FORMAT",
+            "message": "ISBN '12345' 格式不合法：去掉连字符后应为 10 位或 13 位数字",
+            "retryable": false,
+            "hint": "不要自行补全或猜测 ISBN。请向用户复述你收到的值并请其确认；若用户给的是书名，先请用户提供 ISBN。"
+          }
+        },
+        "parseError": null
+      }
+    ],
+    "rounds": 2,
+    "stoppedReason": "completed",
+    "modelMode": "remote:deepseek-chat"
+  }
+}

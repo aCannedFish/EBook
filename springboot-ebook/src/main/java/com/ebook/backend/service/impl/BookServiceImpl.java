@@ -10,6 +10,13 @@ import com.ebook.backend.service.BookService;
 import com.ebook.backend.service.support.AdminGuard;
 import com.ebook.backend.service.support.StockHelper;
 import java.util.List;
+import java.util.Locale;
+import com.ebook.backend.dto.BookPageResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +27,9 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+
+    @Value("${app.books.query-delay-ms:0}")
+    private long queryDelayMillis;
 
     public BookServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
@@ -34,8 +44,59 @@ public class BookServiceImpl implements BookService {
                 .toList();
     }
 
+    /** 将分页和过滤交给数据库，前端、库存 Skill 与导购共用同一数据源。 */
+    @Override
+    public BookPageResponse search(int page, int size, String category, String keyword, String isbn) {
+        simulateSlowQuery();
+        Specification<Book> filters = (book, query, cb) -> cb.conjunction();
+        if (category != null && !category.isBlank()) {
+            filters = filters.and((book, query, cb) -> cb.equal(book.get("category"), category));
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            String pattern = "%" + keyword.trim().toLowerCase(Locale.ROOT) + "%";
+            filters = filters.and((book, query, cb) -> cb.or(
+                    cb.like(cb.lower(book.get("title")), pattern),
+                    cb.like(cb.lower(book.get("author")), pattern),
+                    cb.like(cb.lower(book.get("category")), pattern)));
+        }
+        if (isbn != null && !isbn.isBlank()) {
+            String normalized = isbn.replace("-", "").replace(" ", "");
+            filters = filters.and((book, query, cb) -> cb.equal(
+                    cb.function("replace", String.class, book.get("isbn"), cb.literal("-"), cb.literal("")),
+                    normalized));
+        }
+        var results = bookRepository.findAll(filters, PageRequest.of(page, size, Sort.by("id")));
+        return new BookPageResponse(results.getContent().stream().map(this::toResponse).toList(),
+                page, size, results.getTotalElements(), results.getTotalPages());
+    }
+
+    /** 在真实书城库存记录上执行部分更新，随后库存查询工具立即读取到新值。 */
+    @Override
+    @Transactional
+    public BookResponse updateStock(Long operatorId, Long id, int stockQty) {
+        AdminGuard.ensureAdmin(userRepository, operatorId);
+        Book book = findEntityById(id);
+        book.setStockQty(stockQty);
+        StockHelper.syncStockDisplay(book);
+        return toResponse(bookRepository.save(book));
+    }
+
+    /** 仅模拟可配置的数据库等待，不持有 synchronized 锁阻塞虚拟线程载体。 */
+    private void simulateSlowQuery() {
+        if (queryDelayMillis <= 0) {
+            return;
+        }
+        try {
+            Thread.sleep(queryDelayMillis);
+        } catch (InterruptedException error) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("查询被中断", error);
+        }
+    }
+
     @Override
     public BookResponse getById(Long id) {
+        simulateSlowQuery();
         return toResponse(findEntityById(id));
     }
 

@@ -1,0 +1,14 @@
+{
+  "updates": [
+    {
+      "id": 9,
+      "title": "微服务架构设计模式",
+      "coverUrl": "/assets/microservices-patterns-zh.png"
+    },
+    {
+      "id": 10,
+      "title": "微服务设计",
+      "coverUrl": "/assets/microservices-design-2e-zh.jpg"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 package com.ebook.backend.controller;
 
+import com.ebook.backend.security.CurrentUser;
+
 import com.ebook.backend.dto.BookSalesStatResponse;
 import com.ebook.backend.dto.MyPurchaseStatResponse;
 import com.ebook.backend.dto.UserSpendingStatResponse;
@@ -23,9 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatsController {
 
     private final StatsService statsService;
+    private final CurrentUser currentUser;
 
-    public StatsController(StatsService statsService) {
+    public StatsController(StatsService statsService, CurrentUser currentUser) {
         this.statsService = statsService;
+        this.currentUser = currentUser;
     }
 
     @GetMapping("/admin/book-sales")
@@ -34,7 +38,7 @@ public class StatsController {
                                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                         @RequestParam(required = false)
                                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        return statsService.bookSalesRanking(operatorId, toStart(from), toEnd(to));
+        return statsService.bookSalesRanking(currentUser.adminId(operatorId), toStart(from), toEnd(to));
     }
 
     @GetMapping("/admin/user-spending")
@@ -43,7 +47,7 @@ public class StatsController {
                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                               @RequestParam(required = false)
                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        return statsService.userSpendingRanking(operatorId, toStart(from), toEnd(to));
+        return statsService.userSpendingRanking(currentUser.adminId(operatorId), toStart(from), toEnd(to));
     }
 
     @GetMapping("/my/{userId}")
@@ -52,6 +56,7 @@ public class StatsController {
                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
                                                   @RequestParam(required = false)
                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        currentUser.requireSelf(userId);
         return statsService.myPurchaseStats(userId, toStart(from), toEnd(to));
     }
 

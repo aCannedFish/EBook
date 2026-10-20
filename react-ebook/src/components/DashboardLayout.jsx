@@ -37,6 +37,7 @@ function DashboardLayout({
   ];
 
   const adminItems = [
+    { key: "/contract", icon: <BookOutlined />, label: "接口设计" },
     { key: "/books", icon: <BookOutlined />, label: "书城浏览" },
     { key: "/admin/books", icon: <BookOutlined />, label: "书籍管理" },
     { key: "/admin/users", icon: <TeamOutlined />, label: "用户管理" },

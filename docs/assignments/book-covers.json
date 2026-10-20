@@ -1,0 +1,26 @@
+{
+  "covers": [
+    {
+      "book": "微服务架构设计模式",
+      "author": "Chris Richardson",
+      "edition": "简体中文版，机械工业出版社，2019",
+      "editionIsbn": "9787111624127",
+      "asset": "react-ebook/public/assets/microservices-patterns-zh.png",
+      "source": "https://img-blog.csdnimg.cn/3779475a25ef4e4ba013fd50085f88b2.png",
+      "sourcePage": "https://bbs.huaweicloud.com/blogs/375970",
+      "sha256": "be7ab2d1ff2c6bad775d3a79dfd4ff00aa184962a4c66e368ff48d80d710f11c",
+      "editionPage": "https://books.google.com/books/about/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html?id=CYK0zQEACAAJ"
+    },
+    {
+      "book": "微服务设计",
+      "author": "Sam Newman",
+      "edition": "简体中文版，第2版，人民邮电出版社，2024",
+      "editionIsbn": "9787115638762",
+      "asset": "react-ebook/public/assets/microservices-design-2e-zh.jpg",
+      "source": "https://file.ituring.com.cn/LargeCover/2404b09e85a1043f1fad",
+      "sourcePage": "https://www.ituring.com.cn/book/2642",
+      "sha256": "c964d5c51cc58b08db2b78a50252793e5f3039be35d7934995d758358e618fd2",
+      "editionPage": "https://detail.youzan.com/show/goods?alias=277mtyml10d9tpr"
+    }
+  ]
+}

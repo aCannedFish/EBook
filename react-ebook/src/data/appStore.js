@@ -1,3 +1,4 @@
+import { clearToken, hasValidToken, tokenIsAdmin } from "../api/auth";
 import data from "./Data.json";
 import { resolveBookCover } from "../utils/cover";
 import {
@@ -22,17 +23,9 @@ import {
   updateUserProfile as updateUserProfileApi
 } from "../api/backendApi";
 
-// =========================
-// 前端内存数据仓库（data-router 版本）
-// =========================
-// 角色定位：
-// - 这里是“业务数据的唯一写入入口”；
-// - loader 从这里读快照，action 调这里改数据；
-// - 页面组件本身不直接持久化全局业务状态。
-//
-// 设计原因：
-// - 保留课堂项目“纯前端读 Data.json”的前提；
-// - 同时让数据式路由完整接管读写流程（loader/action）。
+// 书城业务状态的统一入口：loader 读取快照，action 通过后端 API 修改数据。
+// Data.json 仅提供初始展示文案和封面映射；运行中的书目、库存、购物车和订单来自书城 API。
+// 用户资料用于界面展示，服务端始终用 JWT 核对身份及资源所有权。
 
 // AUTH_USER_KEY：当前登录用户名（会话态）存储键。
 const AUTH_USER_KEY = "ebook-auth-username";
@@ -95,7 +88,7 @@ function normalizeBook(rawBook) {
 }
 
 // 内部可变状态对象：
-// - books：书籍主数据（只读来源于 Data.json）；
+// - books：书城 API 返回的书目缓存；
 // - user：当前展示的用户信息；
 // - cartItems：购物车条目；
 // - orders：订单条目；
@@ -109,6 +102,8 @@ const state = {
     ...initialUser,
     id: Number.isFinite(storedUserId) ? storedUserId : null,
     username: authUsername || initialUser.username,
+    admin: tokenIsAdmin(),
+    level: tokenIsAdmin() ? "管理员" : initialUser.level,
     email: storedEmail || initialUser.email,
     signature: storedSignature || initialUser.signature
   },
@@ -140,7 +135,7 @@ const state = {
     assistant: "",
     guide: ""
   },
-  isLoggedIn: Boolean(authUsername && Number.isFinite(storedUserId))
+  isLoggedIn: Boolean(authUsername && Number.isFinite(storedUserId) && hasValidToken())
 };
 
 let booksLoaded = false;
@@ -282,9 +277,9 @@ export async function saveBook(bookPayload, bookId) {
     return;
   }
   if (bookId) {
-    await updateBookApi(state.user.id, bookId, bookPayload);
+    await updateBookApi(bookId, bookPayload);
   } else {
-    await createBookApi(state.user.id, bookPayload);
+    await createBookApi(bookPayload);
   }
   await ensureBooksLoaded(true);
 }
@@ -293,7 +288,7 @@ export async function removeBook(bookId) {
   if (!state.user.admin || !state.user.id) {
     return;
   }
-  await deleteBookApi(state.user.id, bookId);
+  await deleteBookApi(bookId);
   await ensureBooksLoaded(true);
 }
 
@@ -368,6 +363,7 @@ export function setAuthenticatedUser(user, remember) {
 
 // 退出行为：仅清理会话登录态，不清理“记住我”用户名。
 export function logout() {
+  clearToken();
   state.isLoggedIn = false;
   state.user = {
     ...initialUser,

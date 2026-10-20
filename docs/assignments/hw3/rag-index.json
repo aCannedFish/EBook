@@ -1,0 +1,43 @@
+{
+  "method": "GET",
+  "path": "/api/guide/health",
+  "authorizationPresent": true,
+  "status": 200,
+  "headers": {
+    "date": "Tue, 20 Oct 2026 08:34:42 GMT",
+    "server": "uvicorn",
+    "content-length": "787",
+    "content-type": "application/json",
+    "vary": "Origin",
+    "Connection": "close"
+  },
+  "body": {
+    "status": "ok",
+    "rag": "ready",
+    "ragStats": {
+      "document": {
+        "title": "E-BookStore 电子书城 退换货与会员政策（知识库原文）",
+        "label": "退换货与会员政策",
+        "source": "/Users/yuguanting/Documents/EBook/python-assistant/data/policy.txt",
+        "chars": 3480,
+        "lines": 156,
+        "文档编号": "EB-POLICY-2026-V3.2",
+        "生效日期": "2026-03-01",
+        "适用范围": "E-BookStore 线上商城（含小程序、APP）与线下直营门店"
+      },
+      "embedder": "sentence-transformers:BAAI/bge-small-zh-v1.5",
+      "embedderNote": "local:sentence-transformers:BAAI/bge-small-zh-v1.5（CPU 语义 Embedding）",
+      "dimensions": 512,
+      "fingerprint": "d33a267fb3de84ba",
+      "fromCache": false,
+      "count": 26,
+      "avgChars": 162,
+      "minChars": 98,
+      "maxChars": 270,
+      "sections": 5
+    },
+    "llmConfigured": true,
+    "catalogSize": 10,
+    "catalogSource": "springboot-ebook"
+  }
+}

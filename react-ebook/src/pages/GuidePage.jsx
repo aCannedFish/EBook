@@ -242,7 +242,7 @@ function GuidePage({ health, healthError, search }) {
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
-  const [useRemote, setUseRemote] = useState(false);
+  const [useRemote, setUseRemote] = useState(Boolean(health?.llmConfigured));
 
   const keyword = search.trim().toLowerCase();
   const visibleMessages = useMemo(() => {

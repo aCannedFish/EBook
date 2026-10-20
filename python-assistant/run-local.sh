@@ -4,29 +4,25 @@
 # 与 springboot-ebook/run-local.sh 保持一致的使用方式：
 #   首次运行会建虚拟环境并装依赖，之后直接启动。
 #
-#   PORT=8001 ./run-local.sh     # 换端口
 
 set -euo pipefail
+# 直接调用组件脚本时也走同一套端口清理和进程管理。
+if [[ "${EBOOK_SERVICE_CHILD:-0}" != "1" ]]; then
+  SERVICE_PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+  exec "$SERVICE_PROJECT_DIR/run-all.sh" --agent
+fi
 
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV_DIR="$ROOT_DIR/.venv"
-PORT="${PORT:-8000}"
-HOST="${HOST:-127.0.0.1}"
+PORT=8000
+HOST=127.0.0.1
 
 if ! command -v python3 >/dev/null 2>&1; then
   echo "Error: python3 not found. Please install Python 3.10+."
   exit 1
 fi
 
-# 端口被占用时直接退出。否则 uvicorn 会在后台 bind 失败，
-# 而 curl 仍然打得通那个残留的旧进程，排查起来很绕。
-existing="$(lsof -tiTCP:"$PORT" -sTCP:LISTEN 2>/dev/null || true)"
-if [ -n "$existing" ]; then
-  echo "Error: port $PORT is already in use by PID $existing."
-  echo "请先停止它：./stop-local.sh   或换端口：PORT=8001 ./run-local.sh"
-  exit 1
-fi
-
+# 指定端口的旧进程由 scripts/services.py 在启动前清理。
 if [ ! -d "$VENV_DIR" ]; then
   echo "Creating virtual environment (.venv)..."
   python3 -m venv "$VENV_DIR"
@@ -36,8 +32,7 @@ fi
 source "$VENV_DIR/bin/activate"
 
 echo "Installing dependencies..."
-pip install -q --upgrade pip
-pip install -q -r "$ROOT_DIR/requirements.txt"
+python -m pip install --disable-pip-version-check -q -r "$ROOT_DIR/requirements.txt"
 
 # 从 .env 里读一个键，仅用于启动时把配置打印出来。
 # 真正生效的是 backend/config.py 里的 load_dotenv，这里不参与配置加载。
@@ -48,7 +43,7 @@ env_value() {
 }
 
 echo
-echo "Assistant backend: http://${HOST}:${PORT}"
+echo "Bookstore AI backend: http://${HOST}:${PORT}"
 echo "健康检查：curl http://${HOST}:${PORT}/api/assistant/health"
 
 api_key="${LLM_API_KEY:-$(env_value LLM_API_KEY)}"
@@ -61,5 +56,9 @@ fi
 echo "按 Ctrl+C 停止。"
 echo
 
+export BOOKSTORE_API_BASE="${BOOKSTORE_API_BASE:-http://127.0.0.1:8080}"
+export HF_HOME="${HF_HOME:-$ROOT_DIR/../.tools/huggingface}"
+export EMBEDDING_MODE="${EMBEDDING_MODE:-local}"
+export RAG_MIN_SCORE="${RAG_MIN_SCORE:-0.55}"
 cd "$ROOT_DIR"
 exec python -m uvicorn backend.server:app --host "$HOST" --port "$PORT"

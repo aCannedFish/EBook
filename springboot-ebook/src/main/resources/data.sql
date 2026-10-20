@@ -25,3 +25,8 @@ INSERT INTO order_items (order_id, book_id, qty, unit_price) VALUES
 (1, 4, 1, 99),
 (2, 1, 1, 59),
 (2, 3, 2, 79);
+
+-- 导购演示书目也属于书城数据库，库存与页面和 Function Calling 工具共用。
+INSERT INTO books (title, author, price, category, publisher, isbn, format, stock_type, stock_text, stock_qty, cover_url, description) VALUES
+('微服务架构设计模式', 'Chris Richardson', 129, '软件架构', '机械工业出版社', '9787111600001', '纸质书', 'ok', '有货', 16, '/assets/microservices-patterns-zh.png', '介绍服务拆分、分布式事务和微服务架构设计模式。'),
+('微服务设计', 'Sam Newman', 79, '软件架构', '人民邮电出版社', '9787115400002', '纸质书', 'ok', '有货', 8, '/assets/microservices-design-2e-zh.jpg', '讲解微服务边界、部署与监控，适合微服务入门。');

@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/yuguanting/Documents/EBook/python-assistant
+configfile: pytest.ini
+testpaths: backend/tests, backend/guide/tests
+plugins: anyio-4.15.1
+collected 242 items
+
+backend/tests/test_agent.py ...............                              [  6%]
+backend/tests/test_config.py ..................                          [ 13%]
+backend/tests/test_llm_client.py ........                                [ 16%]
+backend/tests/test_server.py .............                               [ 22%]
+backend/tests/test_tools.py ...........................                  [ 33%]
+backend/guide/tests/test_agent.py ........................               [ 43%]
+backend/guide/tests/test_corpus_chunking.py .............                [ 48%]
+backend/guide/tests/test_embedding_store.py ..........................   [ 59%]
+backend/guide/tests/test_llm.py ..................................       [ 73%]
+backend/guide/tests/test_rag.py ...............                          [ 79%]
+backend/guide/tests/test_react_format.py ......................          [ 88%]
+backend/guide/tests/test_tools.py ...........................            [100%]
+
+============================= 242 passed in 5.45s ==============================

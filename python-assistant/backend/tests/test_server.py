@@ -9,13 +9,16 @@ from __future__ import annotations
 import pytest
 from fastapi.testclient import TestClient
 
-from backend.server import app
+from backend.server import app, require_inventory
+from backend.catalog import MockInventoryBackend
 
 
 @pytest.fixture
 def client():
+    app.dependency_overrides[require_inventory] = lambda: MockInventoryBackend()
     with TestClient(app) as test_client:
         yield test_client
+    app.dependency_overrides.clear()
 
 
 def test_health_reports_offline_mode(client):
@@ -116,3 +119,9 @@ def test_cors_rejects_unknown_origin(client):
         headers={"Origin": "http://evil.example.com", "Access-Control-Request-Method": "POST"},
     )
     assert response.headers.get("access-control-allow-origin") is None
+
+
+def test_chat_requires_bookstore_identity():
+    with TestClient(app) as client:
+        response = client.post("/api/assistant/chat", json={"message": "查库存"})
+    assert response.status_code == 401
