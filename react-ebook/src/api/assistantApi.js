@@ -10,18 +10,21 @@ const ASSISTANT_BASE_URL =
   import.meta.env.VITE_ASSISTANT_API_BASE_URL ??
   (import.meta.env.DEV ? "/assistant-api" : "http://localhost:8000");
 
-async function request(path, options = {}) {
+async function fetchResponse(path, options = {}) {
   let response;
   try {
     response = await fetch(`${ASSISTANT_BASE_URL}${path}`, {
+      ...options,
       headers: {
         "Content-Type": "application/json",
         ...authHeaders(),
         ...(options.headers || {})
-      },
-      ...options
+      }
     });
-  } catch {
+  } catch (error) {
+    if (options.signal?.aborted) {
+      throw error;
+    }
     throw new Error(
       "无法连接客服助手服务。请在 python-assistant 目录执行 ./run-local.sh 启动助手后端（默认 127.0.0.1:8000）。"
     );
@@ -43,7 +46,11 @@ async function request(path, options = {}) {
     throw new Error(message);
   }
 
-  return response.json();
+  return response;
+}
+
+async function request(path, options = {}) {
+  return (await fetchResponse(path, options)).json();
 }
 
 /** 一次问答。history 传 OpenAI 消息格式，用于多轮上下文。 */
@@ -57,4 +64,68 @@ export function sendAssistantMessage(message, history = []) {
 /** 助手服务状态：用来在界面上标明当前是真实模型还是离线替身模型。 */
 export function fetchAssistantHealth() {
   return request("/api/assistant/health");
+}
+
+/** 历史会话及消息由服务端按当前 JWT 对应的用户保存。 */
+export function fetchAssistantSessions(signal) {
+  return request("/api/assistant/sessions", { signal });
+}
+
+export function createAssistantSession() {
+  return request("/api/assistant/sessions", { method: "POST" });
+}
+
+export function fetchAssistantSession(sessionId, signal) {
+  return request(`/api/assistant/sessions/${encodeURIComponent(sessionId)}`, { signal });
+}
+
+export function sendSessionMessage(sessionId, message) {
+  return request(`/api/assistant/sessions/${encodeURIComponent(sessionId)}/messages`, {
+    method: "POST",
+    body: JSON.stringify({ message })
+  });
+}
+
+/**
+ * 用 Fetch 读取 SSE，允许携带书城 Bearer Token；UTF-8 解码器跨网络分片保留状态。
+ * 帧可能被拆开或合并，只有读到空行才解析事件。游标供断线后继续订阅。
+ */
+export async function watchAssistantSession(sessionId, after, onMessage, signal) {
+  const response = await fetchResponse(
+    `/api/assistant/sessions/${encodeURIComponent(sessionId)}/events?after=${after}`,
+    { signal, headers: { Accept: "text/event-stream" } }
+  );
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      buffer += decoder.decode(value, { stream: !done });
+      buffer = buffer.replace(/\r\n/g, "\n");
+      let boundary;
+      while ((boundary = buffer.indexOf("\n\n")) !== -1) {
+        const frame = buffer.slice(0, boundary);
+        buffer = buffer.slice(boundary + 2);
+        const lines = frame.split("\n");
+        const event = lines.find((line) => line.startsWith("event:"))?.slice(6).trim();
+        const id = Number(lines.find((line) => line.startsWith("id:"))?.slice(3).trim());
+        const data = lines.filter((line) => line.startsWith("data:"))
+          .map((line) => line.slice(5).trimStart()).join("\n");
+        if (event === "done") {
+          return;
+        }
+        if (event === "message" && data && Number.isFinite(id)) {
+          onMessage(JSON.parse(data), id);
+        }
+      }
+      if (done) {
+        throw new Error("进度连接已断开");
+      }
+    }
+  } finally {
+    await reader.cancel().catch(() => {});
+    reader.releaseLock();
+  }
 }

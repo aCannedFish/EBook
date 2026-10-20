@@ -186,10 +186,17 @@ class TfidfEmbedder:
 
 @lru_cache(maxsize=2)
 def load_semantic_model(model_name: str):
-    """共享 CPU 模型实例，避免每次构造 Agent 都重新加载模型权重。"""
+    """共享 CPU 模型实例，避免每次构造 Agent 都重新加载模型权重。
+
+    优先只读本地缓存：模型已经在 HF 缓存里时不再向 Hugging Face 发请求，
+    否则网络抖动会让首次检索卡在模型加载上。只有本地找不到权重时才联网下载。
+    """
     from sentence_transformers import SentenceTransformer
 
-    return SentenceTransformer(model_name, device="cpu")
+    try:
+        return SentenceTransformer(model_name, device="cpu", local_files_only=True)
+    except Exception:
+        return SentenceTransformer(model_name, device="cpu")
 
 
 class LocalSemanticEmbedder:

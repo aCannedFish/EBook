@@ -4,6 +4,9 @@ import {
   ApiOutlined,
   BulbOutlined,
   DatabaseOutlined,
+  HistoryOutlined,
+  PlusOutlined,
+  ReloadOutlined,
   RobotOutlined,
   SendOutlined,
   UserOutlined
@@ -11,9 +14,10 @@ import {
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useLoaderData } from "react-router-dom";
-import { fetchAssistantHealth, sendAssistantMessage } from "../api/assistantApi";
+import { fetchAssistantHealth } from "../api/assistantApi";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 import { handleSetSearchIntent } from "../routes/pageActions";
+import { useAssistantSessions } from "./useAssistantSessions";
 import "./AssistantPage.css";
 
 // 示例问题覆盖合并后的四类工具：库存、比价、荐书、政策。
@@ -161,13 +165,20 @@ function PolicyPassages({ result }) {
     hideThought 用于并行调用：同一轮里多个动作共享一句理由，只显示一次。 */
 function StepCard({ step, hideThought }) {
   const error = step.result?.error;
+  const running = step.status === "running";
+  const interrupted = step.status === "interrupted";
+  const state = running ? "running" : interrupted ? "interrupted" : step.ok ? "ok" : "failed";
 
   return (
-    <div className={`assistant-step ${step.ok ? "assistant-step--ok" : "assistant-step--failed"}`}>
+    <div className={`assistant-step assistant-step--${state}`}>
       <div className="assistant-step__head">
         <span className="assistant-step__index">步骤 {step.index}</span>
-        <Tag color={step.ok ? "green" : "red"}>{step.ok ? "执行成功" : "执行失败"}</Tag>
-        <span className="assistant-step__duration">{step.durationMs} ms</span>
+        <Tag color={running ? "blue" : interrupted ? "orange" : step.ok ? "green" : "red"}>
+          {running ? "正在执行" : interrupted ? "执行中断" : step.ok ? "执行成功" : "执行失败"}
+        </Tag>
+        {running ? <Spin size="small" /> : (
+          <span className="assistant-step__duration">{step.durationMs ?? "—"} ms</span>
+        )}
       </div>
 
       {step.thought && !hideThought ? (
@@ -192,6 +203,8 @@ function StepCard({ step, hideThought }) {
 
       <div className="assistant-step__section">
         <span className="assistant-step__label assistant-step__label--observation">Observation</span>
+        {running ? <Typography.Text type="secondary">正在查询…</Typography.Text> : null}
+        {interrupted ? <Typography.Text type="secondary">本步未完成</Typography.Text> : null}
         {step.ok && step.action === "check_inventory" ? (
           <InventoryResult result={step.result} />
         ) : null}
@@ -215,7 +228,7 @@ function StepCard({ step, hideThought }) {
         ) : null}
       </div>
 
-      <Collapse
+      {step.result ? <Collapse
         ghost
         size="small"
         items={[
@@ -225,7 +238,7 @@ function StepCard({ step, hideThought }) {
             children: <pre className="assistant-step__json">{JSON.stringify(step.result, null, 2)}</pre>
           }
         ]}
-      />
+      /> : null}
     </div>
   );
 }
@@ -265,29 +278,31 @@ function MessageBubble({ message }) {
 }
 
 function AssistantPage({ health, healthError, search }) {
-  const [messages, setMessages] = useState([]);
+  const conversations = useAssistantSessions();
+  const { messages, activeMessage, sending, loading } = conversations;
+  const pending = Boolean(activeMessage);
+  const blocked = pending || sending || loading;
   const [draft, setDraft] = useState("");
-  const [pending, setPending] = useState(false);
   const threadRef = useRef(null);
 
-  // 等待时滚到底部看进度；回答到达后停在最新一条助手消息的开头，
-  // 让执行步骤先进入视野，需要时再往下读答复。
+  useEffect(() => { setDraft(""); }, [conversations.sessionId]);
+
+  // 始终跟随最新步骤与答复；结尾内容可能是异步渲染的 Markdown，
+  // 滚一次之后下一帧再对齐一次，避免停在半截。
   useEffect(() => {
     const thread = threadRef.current;
     if (!thread) {
       return;
     }
-    if (pending) {
+    const scrollToBottom = () => {
       thread.scrollTop = thread.scrollHeight;
-      return;
-    }
-    const replies = thread.querySelectorAll(".assistant-msg--bot");
-    const latest = replies[replies.length - 1];
-    if (!latest) {
-      return;
-    }
-    const offset = latest.getBoundingClientRect().top - thread.getBoundingClientRect().top;
-    thread.scrollTop = Math.max(0, thread.scrollTop + offset - 8);
+    };
+    scrollToBottom();
+    const frame = requestAnimationFrame(() => {
+      scrollToBottom();
+      requestAnimationFrame(scrollToBottom);
+    });
+    return () => cancelAnimationFrame(frame);
   }, [messages, pending]);
 
   const keyword = search.trim().toLowerCase();
@@ -310,56 +325,47 @@ function AssistantPage({ health, healthError, search }) {
 
   async function ask(question) {
     const trimmed = question.trim();
-    if (!trimmed || pending) {
+    if (!trimmed || blocked) {
       return;
     }
 
-    // 只带角色与文本：每次请求的工具轨迹由服务端重新执行，不把旧轨迹塞回上下文。
-    const history = messages
-      .filter((message) => message.content && !message.error)
-      .map((message) => ({ role: message.role, content: message.content }));
-
-    setMessages((previous) => [...previous, { role: "user", content: trimmed }]);
-    setDraft("");
-    setPending(true);
-
-    try {
-      const result = await sendAssistantMessage(trimmed, history);
-      setMessages((previous) => [
-        ...previous,
-        {
-          role: "assistant",
-          content: result.reply,
-          steps: result.steps,
-          modelMode: result.modelMode,
-          stoppedReason: result.stoppedReason
-        }
-      ]);
-    } catch (error) {
-      setMessages((previous) => [
-        ...previous,
-        { role: "assistant", content: error.message, error: true }
-      ]);
-    } finally {
-      setPending(false);
+    if (await conversations.send(trimmed)) {
+      setDraft("");
     }
   }
 
+  const progressText = activeMessage?.phase === "tool" ? "正在执行查询…"
+    : activeMessage?.phase === "preparing" ? "正在准备查询…"
+    : activeMessage?.steps?.length ? "正在根据查询结果继续处理…" : "正在分析问题…";
+
   return (
     <section className="assistant">
+      <Card className="assistant__history" title={<Space><HistoryOutlined />历史会话</Space>}
+        extra={<Button type="text" icon={<ReloadOutlined />} aria-label="刷新会话" onClick={conversations.reload} />}>
+        <Button block type="primary" icon={<PlusOutlined />} disabled={sending || loading}
+          onClick={conversations.create}>新建会话</Button>
+        <div className="assistant__session-list">
+          {conversations.sessions.map((session) => (
+            <button type="button" key={session.id} disabled={sending}
+              className={`assistant__session ${session.id === conversations.sessionId ? "assistant__session--active" : ""}`}
+              aria-current={session.id === conversations.sessionId ? "true" : undefined}
+              onClick={() => conversations.select(session.id)}>
+              <span className="assistant__session-title">{session.title}</span>
+              <time dateTime={session.updatedAt}>
+                {new Date(session.updatedAt).toLocaleString("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })}
+              </time>
+            </button>
+          ))}
+        </div>
+      </Card>
       <Card
         className="assistant__panel"
         title={
           <Space>
             <RobotOutlined />
-            <span>客服助手</span>
+            <span title={conversations.session?.title}>客服助手</span>
             {health ? <Tag color="blue">{health.modelMode}</Tag> : null}
           </Space>
-        }
-        extra={
-          <Button size="small" onClick={() => setMessages([])} disabled={!messages.length}>
-            清空对话
-          </Button>
         }
       >
         {healthError ? (
@@ -371,15 +377,21 @@ function AssistantPage({ health, healthError, search }) {
             className="assistant__alert"
           />
         ) : null}
+        {conversations.error ? <Alert type="error" showIcon message={conversations.error}
+          action={<Button size="small" onClick={conversations.reload}>重新加载</Button>}
+          className="assistant__alert" /> : null}
+        {conversations.connectionError ? <Alert type="warning" showIcon message={conversations.connectionError}
+          className="assistant__alert" /> : null}
 
         <div className="assistant__thread" ref={threadRef}>
-          {visibleMessages.map((message, index) => (
-            <MessageBubble key={index} message={message} />
+          {loading ? <div className="assistant__loading"><Spin /></div> : null}
+          {!loading && visibleMessages.map((message) => (
+            <MessageBubble key={message.id} message={message} />
           ))}
           {pending ? (
             <div className="assistant__pending">
               <Spin size="small" />
-              <span>正在查询…</span>
+              <span role="status">{progressText}</span>
             </div>
           ) : null}
         </div>
@@ -387,7 +399,7 @@ function AssistantPage({ health, healthError, search }) {
         <div className="assistant__examples">
           <Space wrap>
             {EXAMPLE_QUESTIONS.map((question) => (
-              <Button key={question} size="small" disabled={pending} onClick={() => ask(question)}>
+              <Button key={question} size="small" disabled={blocked} onClick={() => ask(question)}>
                 {question.length > 30 ? `${question.slice(0, 30)}…` : question}
               </Button>
             ))}
@@ -397,6 +409,8 @@ function AssistantPage({ health, healthError, search }) {
         <div className="assistant__composer">
           <Input.TextArea
             value={draft}
+            disabled={blocked}
+            maxLength={2000}
             autoSize={{ minRows: 1, maxRows: 4 }}
             placeholder="问库存、比价、找书，或退换货与会员政策"
             onChange={(event) => setDraft(event.target.value)}
@@ -407,7 +421,8 @@ function AssistantPage({ health, healthError, search }) {
               }
             }}
           />
-          <Button type="primary" icon={<SendOutlined />} loading={pending} onClick={() => ask(draft)}>
+          <Button type="primary" icon={<SendOutlined />} loading={pending || sending}
+            disabled={blocked || !draft.trim()} onClick={() => ask(draft)}>
             发送
           </Button>
         </div>

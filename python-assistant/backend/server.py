@@ -14,20 +14,27 @@
 
 from __future__ import annotations
 
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import asynccontextmanager
 import json
 import logging
 import os
+import threading
 import urllib.error
 import uuid
 from functools import lru_cache
+from pathlib import Path
 
-from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from .assistant.agent import AssistantStep, UnifiedAssistant
 from .assistant.offline import LocalUnifiedLLM
 from .assistant.prompt import SYSTEM_PROMPT
+from .assistant.sessions import SessionBusy, SessionNotFound, SessionStore
 from .assistant.tools import TOOL_NAMES, TOOL_SCHEMAS, UnifiedRegistry
 from .catalog import BookstoreOutOfReach, HttpInventoryBackend, InventoryBackend
 from .config import LLM, TOOLS
@@ -50,7 +57,20 @@ def _allowed_origins() -> list[str]:
 
 
 ALLOWED_ORIGINS = _allowed_origins()
-app = FastAPI(title="EBook 书城 AI 服务", version="3.0.0")
+
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    """生成任务属于服务进程，浏览器断开只停止订阅，不取消已经开始的问答。"""
+    executor = ThreadPoolExecutor(max_workers=4, thread_name_prefix="assistant")
+    application.state.assistant_executor = executor
+    try:
+        yield
+    finally:
+        await asyncio.to_thread(executor.shutdown, wait=True)
+
+
+app = FastAPI(title="EBook 书城 AI 服务", version="3.1.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_credentials=False,
                    allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 # 测试可显式注入注册表；正常请求均使用各自身份创建工具，避免跨用户共享可变状态。
@@ -101,12 +121,20 @@ class ChatResponse(BaseModel):
     modelMode: str
 
 
-@lru_cache(maxsize=1)
-def policy_index():
-    """知识库仅构建一次；书目每请求现取，政策索引不随登录身份变化。"""
-    from .guide.rag import RagPipeline
+_policy_index = None
+_policy_lock = threading.Lock()
 
-    return RagPipeline().build()
+
+def policy_index():
+    """知识库只构建一次；并发首请求在锁内复查，避免重复加载 Embedding 模型。"""
+    global _policy_index
+    if _policy_index is None:
+        with _policy_lock:
+            if _policy_index is None:
+                from .guide.rag import RagPipeline
+
+                _policy_index = RagPipeline().build()
+    return _policy_index
 
 
 def live_catalog(inventory: InventoryBackend) -> Catalog:
@@ -140,12 +168,12 @@ def build_registry(inventory: InventoryBackend) -> UnifiedRegistry:
     )
 
 
-def _build_assistant(inventory: InventoryBackend, on_step=None):
+def _build_assistant(inventory: InventoryBackend, on_step=None, on_event=None):
     """每个请求独立创建模型与工具状态；库存始终使用当前顾客的实时数据源。"""
     registry = app.state.registry or build_registry(inventory)
     client = build_client() if LLM.configured else LocalUnifiedLLM()
     mode = f"remote:{LLM.model}" if LLM.configured else "offline:rule-based"
-    return UnifiedAssistant(client=client, registry=registry, on_step=on_step), mode
+    return UnifiedAssistant(client=client, registry=registry, on_step=on_step, on_event=on_event), mode
 
 
 @app.get("/api/assistant/health")
@@ -180,6 +208,145 @@ def chat(payload: ChatRequest, inventory: InventoryBackend = Depends(require_inv
         raise HTTPException(502, error.report) from error
     logger.info("[%s] 最终答复：%s", request_id, result.reply)
     return ChatResponse(requestId=request_id, modelMode=mode, **result.to_dict())
+
+
+@lru_cache(maxsize=1)
+def session_store() -> SessionStore:
+    """会话保存在本机数据目录，独立于源码和提交包；首次打开时恢复重启前的遗留任务。"""
+    default = Path(__file__).resolve().parents[2] / ".local-data/assistant/sessions.sqlite3"
+    return SessionStore(Path(os.environ.get("ASSISTANT_SESSION_DB", str(default))))
+
+
+def require_session_user(inventory=Depends(require_inventory)) -> str:
+    """所有权来自书城对 JWT 的校验结果，忽略客户端传来的用户编号。"""
+    return str(inventory.get_json("/api/v1/users/me")["id"])
+
+
+@app.exception_handler(SessionNotFound)
+async def missing_session(_request: Request, _error: SessionNotFound):
+    return JSONResponse(status_code=404, content={"detail": "会话不存在"})
+
+
+@app.exception_handler(SessionBusy)
+async def busy_session(_request: Request, error: SessionBusy):
+    return JSONResponse(status_code=409, content={"detail": str(error)})
+
+
+class SessionMessageRequest(BaseModel):
+    """历史由服务端读取，本接口只接收当前的新问题。"""
+    message: str = Field(..., min_length=1, max_length=2000)
+
+
+@app.get("/api/assistant/sessions")
+def list_sessions(owner: str = Depends(require_session_user), store: SessionStore = Depends(session_store)):
+    return {"sessions": store.list_sessions(owner)}
+
+
+@app.post("/api/assistant/sessions", status_code=201)
+def create_session(owner: str = Depends(require_session_user), store: SessionStore = Depends(session_store)):
+    return store.create(owner)
+
+
+@app.get("/api/assistant/sessions/{session_id}")
+def get_session(session_id: str, owner: str = Depends(require_session_user),
+                store: SessionStore = Depends(session_store)):
+    return store.get(owner, session_id)
+
+
+def run_saved_turn(store: SessionStore, owner: str, session_id: str, message_id: int,
+                   question: str, history: list[dict], inventory: InventoryBackend) -> None:
+    """后台执行同一个统一 Agent，在模型等待及每个工具前后立即保存并发布进度。"""
+    steps = []
+    request_id = uuid.uuid4().hex[:12]
+
+    def progress(event: str, payload: dict) -> None:
+        if event == "thinking":
+            patch = {"phase": "thinking", "rounds": payload["round"]}
+        else:
+            index = payload["index"] - 1
+            if index == len(steps):
+                steps.append(payload)
+            else:
+                steps[index] = payload
+            patch = {"phase": "tool" if event == "step_started" else "thinking", "steps": list(steps)}
+        store.update_message(session_id, message_id, patch)
+
+    def record(step: AssistantStep) -> None:
+        logger.info("[%s] %s", request_id, step.log_trace())
+
+    try:
+        # 任务开始前先取回本次请求编号；取不到也要进入 try，避免把消息永久留在 running。
+        snapshot = store.get(owner, session_id)
+        request_id = next(
+            (message["requestId"] for message in snapshot["messages"] if message["id"] == message_id),
+            request_id,
+        )
+        logger.info("[%s] 用户提问：%s", request_id, question)
+        assistant, mode = _build_assistant(inventory, on_step=record, on_event=progress)
+        store.update_message(session_id, message_id, {"modelMode": mode})
+        result = assistant.chat(question, history=history)
+        store.update_message(session_id, message_id, {
+            "content": result.reply, "status": "completed", "phase": "finished",
+            "steps": [{**step.to_dict(), "status": "completed"} for step in result.steps],
+            "rounds": result.rounds, "stoppedReason": result.stopped_reason,
+        })
+        logger.info("[%s] 最终答复：%s", request_id, result.reply)
+    except Exception as error:
+        logger.exception("[%s] 保存的会话执行失败", request_id)
+        message = error.report if isinstance(error, ModelAPIError) else "本次查询失败，请稍后继续提问。"
+        store.update_message(session_id, message_id, {
+            "content": message, "status": "failed", "phase": "finished", "error": True,
+            "steps": [dict(step, status="interrupted") if step.get("status") == "running" else step
+                      for step in steps],
+            "stoppedReason": "error",
+        })
+
+
+@app.post("/api/assistant/sessions/{session_id}/messages", status_code=202)
+def send_session_message(session_id: str, payload: SessionMessageRequest,
+                         owner: str = Depends(require_session_user),
+                         inventory=Depends(require_inventory), store: SessionStore = Depends(session_store)):
+    """先持久化问题再启动任务，立即返回快照；离开页面后后台任务仍能完成。"""
+    question = payload.message.strip()
+    if not question:
+        raise HTTPException(422, "问题不能为空")
+    message_id, history = store.start_turn(owner, session_id, question)
+    app.state.assistant_executor.submit(run_saved_turn, store, owner, session_id, message_id,
+                                         question, history, inventory)
+    return store.get(owner, session_id)
+
+
+@app.get("/api/assistant/sessions/{session_id}/events")
+async def session_events(session_id: str, request: Request, after: int = Query(default=0, ge=0),
+                          owner: str = Depends(require_session_user),
+                          store: SessionStore = Depends(session_store)):
+    """按游标发送 SSE 事件。断线后可补齐事件，任务结束时主动关闭连接。"""
+    await asyncio.to_thread(store.get, owner, session_id)
+
+    async def stream():
+        cursor = after
+        last_heartbeat = asyncio.get_running_loop().time()
+        while not await request.is_disconnected():
+            events = await asyncio.to_thread(store.events_after, session_id, cursor)
+            for event in events:
+                cursor = event["id"]
+                data = json.dumps(event["data"], ensure_ascii=False)
+                yield f"id: {cursor}\nevent: message\ndata: {data}\n\n"
+            if not events and not await asyncio.to_thread(store.is_running, session_id):
+                # 任务可能恰好在上一次读取事件后结束；补读最后一次提交，避免漏掉最终回复。
+                if await asyncio.to_thread(store.events_after, session_id, cursor):
+                    continue
+                yield "event: done\ndata: {}\n\n"
+                return
+            now = asyncio.get_running_loop().time()
+            if now - last_heartbeat >= 10:
+                yield ": keep-alive\n\n"
+                last_heartbeat = now
+            await asyncio.sleep(0.1)
+
+    return StreamingResponse(stream(), media_type="text/event-stream", headers={
+        "Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no",
+    })
 
 
 def main() -> None:

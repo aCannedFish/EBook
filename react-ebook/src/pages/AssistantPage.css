@@ -5,11 +5,66 @@
 .assistant {
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .assistant__panel {
   width: 100%;
   max-width: 1040px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* 会话选择独立于消息滚动区，URL 中的会话编号支持刷新和返回旧会话。 */
+.assistant__history {
+  flex: 0 0 240px;
+  min-width: 0;
+}
+
+.assistant__session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  max-height: 66vh;
+  overflow-y: auto;
+}
+
+.assistant__session {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.assistant__session:hover,
+.assistant__session--active {
+  background: #eaf3ff;
+  border-color: #91caff;
+}
+
+.assistant__session:disabled {
+  cursor: wait;
+}
+
+.assistant__session-title {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.assistant__session time {
+  color: #8c8c8c;
+  font-size: 12px;
+}
+
+.assistant__loading {
+  padding: 60px 12px;
+  text-align: center;
 }
 
 .assistant__alert {
@@ -256,6 +311,15 @@
   background: #fffafa;
 }
 
+.assistant-step--running {
+  border-left-color: #1677ff;
+  background: #f0f7ff;
+}
+
+.assistant-step--interrupted {
+  border-left-color: #faad14;
+}
+
 .assistant-step__head {
   display: flex;
   align-items: center;
@@ -494,4 +558,19 @@
   display: flex;
   gap: 10px;
   align-items: flex-end;
+}
+
+@media (max-width: 1000px) {
+  .assistant {
+    flex-direction: column;
+  }
+
+  .assistant__history {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .assistant__session-list {
+    max-height: 180px;
+  }
 }

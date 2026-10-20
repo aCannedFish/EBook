@@ -113,12 +113,14 @@ class UnifiedAssistant:
         settings: AgentSettings | None = None,
         system_prompt: str = SYSTEM_PROMPT,
         on_step: Callable[[AssistantStep], None] | None = None,
+        on_event: Callable[[str, dict], None] | None = None,
     ) -> None:
         self._client = client
         self._registry = registry
         self._settings = settings or AGENT_SETTINGS
         self._system_prompt = system_prompt
         self._on_step = on_step
+        self._on_event = on_event
 
     @property
     def tool_schemas(self) -> list[dict]:
@@ -140,6 +142,7 @@ class UnifiedAssistant:
         consecutive_errors = 0
 
         for round_index in range(1, self._settings.max_tool_rounds + 1):
+            self._emit("thinking", {"round": round_index})
             turn = self._client.complete(messages, self._registry.schemas)
             messages.append(turn.to_message())
 
@@ -156,6 +159,12 @@ class UnifiedAssistant:
             thought = (turn.content or "").strip()
 
             for call in turn.tool_calls:
+                arguments, parse_error = call.parse_arguments()
+                self._emit("step_started", {
+                    "index": len(steps) + 1, "thought": thought,
+                    "action": call.name, "arguments": arguments or {},
+                    "status": "running", "parseError": parse_error,
+                })
                 step = self._run_tool_call(call, thought, len(steps) + 1, executed)
                 steps.append(step)
                 messages.append(self._tool_message(call, step))
@@ -164,6 +173,7 @@ class UnifiedAssistant:
                     self._on_step(step)
                 else:
                     logger.info(step.log_trace())
+                self._emit("step_completed", {**step.to_dict(), "status": "completed"})
 
                 consecutive_errors = 0 if step.ok else consecutive_errors + 1
 
@@ -187,6 +197,11 @@ class UnifiedAssistant:
         )
 
     # -- 单步执行 -----------------------------------------------------------
+
+    def _emit(self, event: str, payload: dict) -> None:
+        """把模型等待、工具开始和真实结果交给实时订阅方，原有同步调用保持兼容。"""
+        if self._on_event is not None:
+            self._on_event(event, payload)
 
     def _run_tool_call(
         self,
