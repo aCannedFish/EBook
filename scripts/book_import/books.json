@@ -4,7 +4,7 @@
     "title": "Structure and Interpretation of Computer Programs",
     "authors": "Harold Abelson / Gerald Jay Sussman",
     "publisher": "MIT Press",
-    "category": "程序设计基础",
+    "category": "计算机",
     "price": 129,
     "stock": 18,
     "summary": "以 Scheme 语言讲解程序设计的核心抽象：过程与递归、数据抽象、模块化、状态与元语言，强调建立计算模型。"
@@ -14,7 +14,7 @@
     "title": "Computer Systems: A Programmer's Perspective",
     "authors": "Randal E. Bryant / David R. O'Hallaron",
     "publisher": "Pearson",
-    "category": "计算机系统",
+    "category": "计算机",
     "price": 199,
     "stock": 22,
     "summary": "从程序员视角自底向上理解计算机系统：数据表示、汇编、处理器、存储层次、链接、异常控制流、虚拟内存与并发。"
@@ -24,7 +24,7 @@
     "title": "The Art of Computer Programming, Volume 2",
     "authors": "Donald E. Knuth",
     "publisher": "Addison-Wesley",
-    "category": "算法与数据结构",
+    "category": "计算机",
     "price": 299,
     "stock": 6,
     "summary": "Knuth 经典巨著的第二卷，讨论随机数与伪随机序列、大整数算术、多项式运算等半数值算法的分析与实现。"
@@ -34,7 +34,7 @@
     "title": "Code Complete",
     "authors": "Steve McConnell",
     "publisher": "Microsoft Press",
-    "category": "软件工程",
+    "category": "计算机",
     "price": 128,
     "stock": 15,
     "summary": "从变量、控制结构、函数到调试与重构，系统整理可落地的编码实践与检查清单。",
@@ -45,7 +45,7 @@
     "title": "Refactoring: Improving the Design of Existing Code",
     "authors": "Martin Fowler",
     "publisher": "Addison-Wesley",
-    "category": "软件工程",
+    "category": "计算机",
     "price": 139,
     "stock": 12,
     "summary": "以实例驱动总结重构手法，讲清如何在保持外部行为不变的前提下改善代码设计。"
@@ -55,7 +55,7 @@
     "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
     "authors": "Erich Gamma / Richard Helm / Ralph Johnson / John Vlissides",
     "publisher": "Addison-Wesley",
-    "category": "软件架构",
+    "category": "计算机",
     "price": 119,
     "stock": 20,
     "summary": "GoF 的 23 个经典设计模式，逐一说明意图、结构、协作方式与适用场景。"
@@ -65,7 +65,7 @@
     "title": "The Mythical Man-Month",
     "authors": "Frederick P. Brooks",
     "publisher": "Addison-Wesley",
-    "category": "软件工程",
+    "category": "计算机",
     "price": 79,
     "stock": 25,
     "summary": "软件工程随笔经典，讨论人月神话、沟通成本、概念完整性与项目组织。"
@@ -75,7 +75,7 @@
     "title": "Compilers: Principles, Techniques, and Tools",
     "authors": "Alfred V. Aho / Monica S. Lam / Ravi Sethi / Jeffrey D. Ullman",
     "publisher": "Addison-Wesley",
-    "category": "编译原理",
+    "category": "计算机",
     "price": 189,
     "stock": 14,
     "summary": "编译原理经典教材（龙书），覆盖词法与语法分析、语义分析、中间表示、代码生成与优化。"
@@ -85,7 +85,7 @@
     "title": "Modern Operating Systems",
     "authors": "Andrew S. Tanenbaum / Herbert Bos",
     "publisher": "Pearson",
-    "category": "操作系统",
+    "category": "计算机",
     "price": 179,
     "stock": 16,
     "summary": "操作系统教材，讲解进程与线程、内存管理、文件系统、死锁与虚拟化。"
@@ -95,7 +95,7 @@
     "title": "Operating System Concepts",
     "authors": "Abraham Silberschatz / Peter B. Galvin / Greg Gagne",
     "publisher": "Wiley",
-    "category": "操作系统",
+    "category": "计算机",
     "price": 169,
     "stock": 10,
     "summary": "操作系统概念（恐龙书），覆盖进程同步、CPU 调度、内存管理与存储系统。"
@@ -105,7 +105,7 @@
     "title": "Computer Networking: A Top-Down Approach",
     "authors": "James F. Kurose / Keith W. Ross",
     "publisher": "Pearson",
-    "category": "计算机网络",
+    "category": "计算机",
     "price": 159,
     "stock": 21,
     "summary": "自顶向下讲解网络：应用层、传输层、网络层、链路层与无线网络。"
@@ -115,7 +115,7 @@
     "title": "TCP/IP Illustrated, Volume 1",
     "authors": "W. Richard Stevens",
     "publisher": "Addison-Wesley",
-    "category": "计算机网络",
+    "category": "计算机",
     "price": 149,
     "stock": 9,
     "summary": "结合协议报文与实现细节讲解 TCP/IP，卷一侧重协议栈与网络层、传输层行为。"
@@ -125,7 +125,7 @@
     "title": "Database System Concepts",
     "authors": "Abraham Silberschatz / Henry F. Korth / S. Sudarshan",
     "publisher": "McGraw-Hill",
-    "category": "数据库",
+    "category": "计算机",
     "price": 169,
     "stock": 13,
     "summary": "数据库系统原理教材：关系模型、SQL、事务、并发控制与故障恢复。"
@@ -135,7 +135,7 @@
     "title": "High Performance MySQL",
     "authors": "Baron Schwartz / Peter Zaitsev / Vadim Tkachenko",
     "publisher": "O'Reilly Media",
-    "category": "数据库",
+    "category": "计算机",
     "price": 119,
     "stock": 17,
     "summary": "MySQL 性能实践：架构与索引、查询优化、复制、备份与高可用方案。"
@@ -145,7 +145,7 @@
     "title": "Redis in Action",
     "authors": "Josiah L. Carlson",
     "publisher": "Manning",
-    "category": "数据库",
+    "category": "计算机",
     "price": 89,
     "stock": 24,
     "summary": "用 Redis 构建应用：数据结构与命令、Lua 脚本、持久化、复制与集群。"
@@ -155,7 +155,7 @@
     "title": "Effective Java",
     "authors": "Joshua Bloch",
     "publisher": "Addison-Wesley",
-    "category": "编程语言",
+    "category": "计算机",
     "price": 109,
     "stock": 19,
     "summary": "Java 编程实践指南，覆盖对象创建、泛型、枚举、并发与序列化等主题。"
@@ -165,7 +165,7 @@
     "title": "Java Concurrency in Practice",
     "authors": "Brian Goetz / Tim Peierls / Joshua Bloch",
     "publisher": "Addison-Wesley",
-    "category": "编程语言",
+    "category": "计算机",
     "price": 99,
     "stock": 11,
     "summary": "系统讲解 Java 并发：线程安全、锁与同步器、并发容器、任务执行与性能。"
@@ -175,7 +175,7 @@
     "title": "Clean Code",
     "authors": "Robert C. Martin",
     "publisher": "Prentice Hall",
-    "category": "软件工程",
+    "category": "计算机",
     "price": 89,
     "stock": 30,
     "summary": "代码整洁之道：命名、函数、注释、错误处理、单元测试与重构纪律。"
@@ -185,7 +185,7 @@
     "title": "The Pragmatic Programmer",
     "authors": "David Thomas / Andrew Hunt",
     "publisher": "Addison-Wesley",
-    "category": "软件工程",
+    "category": "计算机",
     "price": 99,
     "stock": 23,
     "summary": "程序员修炼之道：务实的方法论、工具使用、沟通与职业习惯。"
@@ -195,7 +195,7 @@
     "title": "Domain-Driven Design",
     "authors": "Eric Evans",
     "publisher": "Addison-Wesley",
-    "category": "软件架构",
+    "category": "计算机",
     "price": 139,
     "stock": 8,
     "summary": "领域驱动设计：通用语言、模型驱动设计、限界上下文与战略、战术设计。"
@@ -205,7 +205,7 @@
     "title": "Patterns of Enterprise Application Architecture",
     "authors": "Martin Fowler",
     "publisher": "Addison-Wesley",
-    "category": "软件架构",
+    "category": "计算机",
     "price": 129,
     "stock": 7,
     "summary": "企业应用架构模式目录：分层、领域逻辑、对象关系映射、并发与分布式。"
@@ -215,7 +215,7 @@
     "title": "Site Reliability Engineering",
     "authors": "Betsy Beyer / Chris Jones / Jennifer Petoff / Niall Richard Murphy",
     "publisher": "O'Reilly Media",
-    "category": "运维与可靠性",
+    "category": "计算机",
     "price": 119,
     "stock": 12,
     "summary": "Google 站点可靠性工程实践：SLO 与错误预算、监控、发布、容量与事故响应。"
@@ -225,7 +225,7 @@
     "title": "Designing Data-Intensive Applications",
     "authors": "Martin Kleppmann",
     "publisher": "O'Reilly Media",
-    "category": "软件架构",
+    "category": "计算机",
     "price": 139,
     "stock": 26,
     "summary": "数据密集型应用系统设计：可靠性、可扩展性、存储引擎、复制、分区与流处理。"
@@ -235,7 +235,7 @@
     "title": "Deep Learning",
     "authors": "Ian Goodfellow / Yoshua Bengio / Aaron Courville",
     "publisher": "MIT Press",
-    "category": "机器学习",
+    "category": "计算机",
     "price": 269,
     "stock": 5,
     "summary": "深度学习基础（花书）：线性代数、反向传播、正则化、卷积与循环网络、生成模型。"
@@ -245,7 +245,7 @@
     "title": "Pattern Recognition and Machine Learning",
     "authors": "Christopher M. Bishop",
     "publisher": "Springer",
-    "category": "机器学习",
+    "category": "计算机",
     "price": 259,
     "stock": 4,
     "summary": "模式识别与机器学习：概率分布、回归与分类、核方法、图模型与近似推断。"
@@ -255,7 +255,7 @@
     "title": "Artificial Intelligence: A Modern Approach",
     "authors": "Stuart Russell / Peter Norvig",
     "publisher": "Prentice Hall",
-    "category": "人工智能",
+    "category": "计算机",
     "price": 239,
     "stock": 6,
     "summary": "人工智能经典教材：搜索、博弈、知识表示、概率推理、规划与机器学习。"
@@ -265,7 +265,7 @@
     "title": "Computer Vision: Algorithms and Applications",
     "authors": "Richard Szeliski",
     "publisher": "Springer",
-    "category": "计算机视觉",
+    "category": "计算机",
     "price": 199,
     "stock": 0,
     "summary": "计算机视觉：图像形成、特征检测、配准、分割、三维重建与识别。"
@@ -275,7 +275,7 @@
     "title": "Digital Design and Computer Architecture",
     "authors": "David Money Harris / Sarah L. Harris",
     "publisher": "Morgan Kaufmann",
-    "category": "数字电路",
+    "category": "电子",
     "price": 189,
     "stock": 9,
     "summary": "从逻辑门、组合与时序电路讲到处理器微结构与存储层次。"
@@ -285,7 +285,7 @@
     "title": "Microelectronic Circuits",
     "authors": "Adel S. Sedra / Kenneth C. Smith",
     "publisher": "Oxford University Press",
-    "category": "电子技术",
+    "category": "电子",
     "price": 219,
     "stock": 4,
     "summary": "模拟与数字电子电路基础：器件模型、放大器、反馈、运算电路与频率响应。"
@@ -295,7 +295,7 @@
     "title": "The C Programming Language",
     "authors": "Brian W. Kernighan / Dennis M. Ritchie",
     "publisher": "Prentice Hall",
-    "category": "编程语言",
+    "category": "计算机",
     "price": 79,
     "stock": 28,
     "summary": "C 语言经典教程（K&R），覆盖语法、指针、结构、输入输出与标准库。"
@@ -305,7 +305,7 @@
     "title": "Reinforcement Learning: An Introduction",
     "authors": "Richard S. Sutton / Andrew G. Barto",
     "publisher": "MIT Press",
-    "category": "机器学习",
+    "category": "计算机",
     "price": 199,
     "stock": 6,
     "summary": "强化学习导论：多臂老虎机、动态规划、蒙特卡洛、时序差分与函数逼近。"
@@ -315,7 +315,7 @@
     "title": "The Go Programming Language",
     "authors": "Alan A. A. Donovan / Brian W. Kernighan",
     "publisher": "Addison-Wesley",
-    "category": "编程语言",
+    "category": "计算机",
     "price": 89,
     "stock": 18,
     "summary": "Go 语言实践指南：类型、接口、并发原语、测试与工程组织。"
@@ -325,7 +325,7 @@
     "title": "Computer Architecture: A Quantitative Approach",
     "authors": "John L. Hennessy / David A. Patterson",
     "publisher": "Morgan Kaufmann",
-    "category": "计算机体系结构",
+    "category": "计算机",
     "price": 249,
     "stock": 5,
     "summary": "计算机体系结构：指令集、流水线、存储层次、并行与领域专用架构。"
@@ -335,7 +335,7 @@
     "title": "The Elements of Statistical Learning",
     "authors": "Trevor Hastie / Robert Tibshirani / Jerome Friedman",
     "publisher": "Springer",
-    "category": "机器学习",
+    "category": "计算机",
     "price": 229,
     "stock": 3,
     "summary": "统计学习基础：监督学习、模型评估、正则化、树模型、集成与无监督方法。"
@@ -345,7 +345,7 @@
     "title": "算法导论（原书第3版）",
     "authors": "Thomas H. Cormen / Charles E. Leiserson / Ronald L. Rivest / Clifford Stein",
     "publisher": "机械工业出版社",
-    "category": "算法",
+    "category": "计算机",
     "price": 128,
     "stock": 12,
     "summary": "系统讲解算法设计与分析的基础教材，覆盖排序、数据结构、图算法、动态规划与 NP 完全性。"
@@ -355,7 +355,7 @@
     "title": "Java编程思想（第4版）",
     "authors": "Bruce Eckel",
     "publisher": "机械工业出版社",
-    "category": "编程语言",
+    "category": "计算机",
     "price": 108,
     "stock": 15,
     "summary": "从语言基础到泛型、并发与设计模式，结合大量示例讲解 Java 的编程思想。"
@@ -365,7 +365,7 @@
     "title": "JavaScript高级程序设计（第3版）",
     "authors": "Nicholas C. Zakas",
     "publisher": "人民邮电出版社",
-    "category": "编程语言",
+    "category": "计算机",
     "price": 99,
     "stock": 14,
     "summary": "系统介绍 JavaScript 语言核心、DOM、事件、Ajax 与前端工程实践。"
@@ -375,7 +375,7 @@
     "title": "Redis设计与实现",
     "authors": "黄健宏",
     "publisher": "机械工业出版社",
-    "category": "数据库",
+    "category": "计算机",
     "price": 79,
     "stock": 18,
     "summary": "从源码层面剖析 Redis 的数据结构、持久化、复制、哨兵与集群实现。"
@@ -385,7 +385,7 @@
     "title": "数据库系统概念（原书第6版）",
     "authors": "Abraham Silberschatz / Henry F. Korth / S. Sudarshan",
     "publisher": "机械工业出版社",
-    "category": "数据库",
+    "category": "计算机",
     "price": 99,
     "stock": 10,
     "summary": "数据库领域的经典教材，覆盖关系模型、SQL、事务、并发控制与恢复。"
@@ -395,7 +395,7 @@
     "title": "C程序设计语言（第2版·新版）",
     "authors": "Brian W. Kernighan / Dennis M. Ritchie",
     "publisher": "机械工业出版社",
-    "category": "编程语言",
+    "category": "计算机",
     "price": 45,
     "stock": 20,
     "summary": "C 语言创始人撰写的经典教程，以简洁示例讲解指针、结构体与标准库。"
@@ -405,7 +405,7 @@
     "title": "深入理解计算机系统（原书第3版）",
     "authors": "Randal E. Bryant / David R. O'Hallaron",
     "publisher": "机械工业出版社",
-    "category": "计算机系统",
+    "category": "计算机",
     "price": 139,
     "stock": 9,
     "summary": "从程序员视角讲解数据表示、汇编、处理器、存储层次、链接、虚拟内存与并发。"
@@ -415,7 +415,7 @@
     "title": "计算机组成原理（第2版）",
     "authors": "唐朔飞",
     "publisher": "高等教育出版社",
-    "category": "计算机体系结构",
+    "category": "计算机",
     "price": 45,
     "stock": 16,
     "summary": "高校计算机组成原理教材，讲解运算器、存储器、控制器、总线与输入输出系统。"
@@ -425,7 +425,7 @@
     "title": "数据结构（C语言版）",
     "authors": "严蔚敏 / 吴伟民",
     "publisher": "清华大学出版社",
-    "category": "算法与数据结构",
+    "category": "计算机",
     "price": 39,
     "stock": 22,
     "summary": "以 C 语言描述线性表、树、图、查找与排序等经典数据结构与算法。"
@@ -435,7 +435,7 @@
     "title": "计算机操作系统（第4版）",
     "authors": "汤小丹 / 梁红兵 / 哲凤屏 / 汤子瀛",
     "publisher": "西安电子科技大学出版社",
-    "category": "操作系统",
+    "category": "计算机",
     "price": 45,
     "stock": 17,
     "summary": "操作系统课程教材，覆盖进程管理、内存管理、文件系统与设备管理。"
@@ -445,7 +445,7 @@
     "title": "概率论与数理统计（第4版）",
     "authors": "盛骤 / 谢式千 / 潘承毅",
     "publisher": "高等教育出版社",
-    "category": "数学 / 概率",
+    "category": "数学",
     "price": 39,
     "stock": 19,
     "summary": "理工科概率论与数理统计教材，包含随机变量、参数估计与假设检验。"
@@ -455,9 +455,1349 @@
     "title": "线性代数（第6版）",
     "authors": "同济大学数学系",
     "publisher": "高等教育出版社",
-    "category": "数学 / 概率",
+    "category": "数学",
     "price": 34,
     "stock": 21,
     "summary": "工科线性代数教材，讲解行列式、矩阵、向量组、特征值与二次型。"
+  },
+  {
+    "isbn": "9787040396638",
+    "title": "高等数学（第七版·上册）",
+    "authors": "同济大学数学系",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 45,
+    "stock": 20,
+    "summary": "工科高等数学经典教材，上册覆盖函数与极限、导数与微分、微分中值定理与不定积分。"
+  },
+  {
+    "isbn": "9787115435590",
+    "title": "普林斯顿微积分读本（修订版）",
+    "authors": "阿德里安·班纳",
+    "publisher": "人民邮电出版社",
+    "category": "数学",
+    "price": 99,
+    "stock": 12,
+    "summary": "用直观语言讲解单变量微积分，强调图像、近似与解题思路，适合作为入门与复习读物。"
+  },
+  {
+    "isbn": "9787040506945",
+    "title": "数学分析（第4版·上册）",
+    "authors": "华东师范大学数学科学学院",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 45,
+    "stock": 15,
+    "summary": "数学专业基础教材，上册讲解极限、连续、导数、微分与实数系基本定理。"
+  },
+  {
+    "isbn": "9787111636878",
+    "title": "离散数学及其应用（原书第8版）",
+    "authors": "Kenneth H. Rosen",
+    "publisher": "机械工业出版社",
+    "category": "数学",
+    "price": 129,
+    "stock": 10,
+    "summary": "覆盖逻辑、集合、计数、图论、树与布尔代数，并结合大量计算机应用示例。"
+  },
+  {
+    "isbn": "9787111502678",
+    "title": "模拟电子技术基础",
+    "authors": "Thomas L. Floyd / David M. Buchla",
+    "publisher": "机械工业出版社",
+    "category": "电子",
+    "price": 129,
+    "stock": 8,
+    "summary": "从二极管、三极管到运算放大器，讲解模拟电子电路的分析与设计方法。"
+  },
+  {
+    "isbn": "9787040444933",
+    "title": "数字电子技术基础（第6版）",
+    "authors": "阎石 / 王红 / 清华大学电子学教研组",
+    "publisher": "高等教育出版社",
+    "category": "电子",
+    "price": 49,
+    "stock": 14,
+    "summary": "数字电子技术经典教材，覆盖逻辑代数、门电路、组合逻辑、时序逻辑与脉冲电路。"
+  },
+  {
+    "isbn": "9787040196719",
+    "title": "电路（第5版）",
+    "authors": "邱关源",
+    "publisher": "高等教育出版社",
+    "category": "电子",
+    "price": 45,
+    "stock": 16,
+    "summary": "电路分析基础教材，讲解电阻电路、动态电路、正弦稳态与三相电路的分析方法。"
+  },
+  {
+    "isbn": "9787535732309",
+    "title": "时间简史",
+    "authors": "史蒂芬·霍金",
+    "publisher": "湖南科学技术出版社",
+    "category": "物理",
+    "price": 45,
+    "stock": 18,
+    "summary": "面向大众的宇宙学读物，讨论时间、黑洞、大爆炸与量子引力等基本问题。"
+  },
+  {
+    "isbn": "9787040165630",
+    "title": "大学物理学",
+    "authors": "詹科利 / 滕小瑛",
+    "publisher": "高等教育出版社",
+    "category": "物理",
+    "price": 85,
+    "stock": 9,
+    "summary": "理工科大学物理教材，覆盖力学、热学、电磁学、光学与现代物理基础。"
+  },
+  {
+    "isbn": "9787560013466",
+    "title": "新概念英语（1）",
+    "authors": "亚历山大 / 何其莘",
+    "publisher": "外语教学与研究出版社",
+    "category": "语言",
+    "price": 24,
+    "stock": 20,
+    "summary": "英语入门经典教材，以情景对话和句型训练建立基础听说读写能力。"
+  },
+  {
+    "isbn": "9787560013473",
+    "title": "新概念英语（2）",
+    "authors": "何其莘 / 亚历山大",
+    "publisher": "外语教学与研究出版社",
+    "category": "语言",
+    "price": 39,
+    "stock": 18,
+    "summary": "在基础句型上扩展语法与篇章训练，适合初级向中级过渡的英语学习。"
+  },
+  {
+    "isbn": "9787040469882",
+    "title": "现代汉语（增订六版·上册）",
+    "authors": "黄伯荣 / 廖序东",
+    "publisher": "高等教育出版社",
+    "category": "语言",
+    "price": 32,
+    "stock": 15,
+    "summary": "现代汉语课程教材，上册讲解语音、文字、词汇与语法的基础知识。"
+  },
+  {
+    "isbn": "9787100158602",
+    "title": "牛津高阶英汉双解词典（第9版）",
+    "authors": "霍恩比",
+    "publisher": "商务印书馆",
+    "category": "语言",
+    "price": 169,
+    "stock": 7,
+    "summary": "英汉双解学习型词典，收录常用词条、搭配、例句与用法说明。"
+  },
+  {
+    "isbn": "9787301163108",
+    "title": "语言学纲要（修订版）",
+    "authors": "叶蜚声 / 徐通锵",
+    "publisher": "北京大学出版社",
+    "category": "语言",
+    "price": 23,
+    "stock": 12,
+    "summary": "语言学入门教材，介绍语言的本质、语音、语法、语义、文字与语言演变。"
+  },
+  {
+    "isbn": "9780294666182",
+    "title": "计算机科学概论 第13版",
+    "authors": "[美] J. 格伦",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 38,
+    "stock": 17,
+    "summary": "《计算机科学概论 第13版》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780278529120",
+    "title": "计算机科学中的数学：信息与智能时代的必修课",
+    "authors": "Eric Lehman（埃里克 雷曼）",
+    "publisher": "电子工业出版社",
+    "category": "计算机",
+    "price": 49,
+    "stock": 10,
+    "summary": "《计算机科学中的数学：信息与智能时代的必修课》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780285206571",
+    "title": "计算机科学概论 第13版 英文版",
+    "authors": "[美] J. 格伦·布鲁克希尔（J. Glenn Brookshear）丹尼斯·",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 95,
+    "stock": 16,
+    "summary": "《计算机科学概论 第13版 英文版》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780294350036",
+    "title": "计算机科学技术大辞典",
+    "authors": "盛焕烨 主编",
+    "publisher": "上海辞书出版社",
+    "category": "计算机",
+    "price": 50,
+    "stock": 4,
+    "summary": "《计算机科学技术大辞典》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780297797210",
+    "title": "大话计算机科学：生活中的计算思维",
+    "authors": "商静波 , 赵馨著； 费赛尔绘",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 145,
+    "stock": 5,
+    "summary": "《大话计算机科学：生活中的计算思维》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780297888703",
+    "title": "计算机科学之美",
+    "authors": "李昌龙",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 98,
+    "stock": 7,
+    "summary": "《计算机科学之美》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780300100181",
+    "title": "图解计算机科学数学基础（原书第3版） [英]约翰·文斯 计算机科学 数学基础 视觉化方法",
+    "authors": "[英]约翰·文斯",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 122,
+    "stock": 4,
+    "summary": "《图解计算机科学数学基础（原书第3版） [英]约翰·文斯 计算机科学 数学基础 视觉化方法》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780289641804",
+    "title": "DK图解计算机科学 儿童STEM创新思维培养",
+    "authors": "英国DK公司",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 144,
+    "stock": 21,
+    "summary": "《DK图解计算机科学 儿童STEM创新思维培养》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780241856741",
+    "title": "计算机科学概论（第12版）",
+    "authors": "[美] J.格伦·布鲁克希尔（J.Glenn Brookshear）丹尼斯·布里",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 128,
+    "stock": 20,
+    "summary": "《计算机科学概论（第12版）》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9782035141040",
+    "title": "计算机科学中的数学 信息与智能时代的必修课 信息与智能时代的必修课 统计机器学习数据挖掘数学入门教程 程序员的数学定义证",
+    "authors": "(美)埃里克·雷曼(Eric Lehman),(美)F.汤姆森·莱顿(F.Tho",
+    "publisher": "电子工业出版社",
+    "category": "计算机",
+    "price": 108,
+    "stock": 13,
+    "summary": "《计算机科学中的数学 信息与智能时代的必修课 信息与智能时代的必修课 统计机器学习数据挖掘数学入门教程 程序员的数学定义证》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783549676127",
+    "title": "计算机科学导论 思想与方法 第3版第三版",
+    "authors": "佚名",
+    "publisher": "高等教育出版社",
+    "category": "计算机",
+    "price": 103,
+    "stock": 15,
+    "summary": "《计算机科学导论 思想与方法 第3版第三版》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9780291475800",
+    "title": "计算机科学概论（英文版·原书第7版）",
+    "authors": "[美]内尔·黛尔（Nell Dale） [美]约翰·路易斯（John Lewis）",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 33,
+    "stock": 15,
+    "summary": "《计算机科学概论（英文版·原书第7版）》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783813773385",
+    "title": "计算机科学导论原书第4版 贝赫鲁兹佛罗赞机械工业出版社 高校大学生专科本科参考书 教辅教材 计算机网络理论方法 （正版包",
+    "authors": "贝赫鲁兹·佛罗赞",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 60,
+    "stock": 5,
+    "summary": "《计算机科学导论原书第4版 贝赫鲁兹佛罗赞机械工业出版社 高校大学生专科本科参考书 教辅教材 计算机网络理论方法 （正版包》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783137388142",
+    "title": "计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞 9787111131595 机械工业出版社",
+    "authors": "莫沙拉夫 著；刘艺 译；[美]佛罗赞",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 119,
+    "stock": 18,
+    "summary": "《计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞 9787111131595 机械工业出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9786690428720",
+    "title": "计算机科学导论(原书第二版)【正版书籍】",
+    "authors": "(美)佛罗赞,(美)莫沙拉夫 著,刘艺 等译",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 48,
+    "stock": 13,
+    "summary": "《计算机科学导论(原书第二版)【正版书籍】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785103144615",
+    "title": "计算机科学概论 [美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译 978",
+    "authors": "[美]内尔·黛尔（NellDale）、约翰·路易斯",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 108,
+    "stock": 21,
+    "summary": "《计算机科学概论 [美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译 978》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785662170407",
+    "title": "计算机科学导论【目丰图书专营店】",
+    "authors": "(美)佛罗赞,(美)莫沙拉夫 著,刘艺 等译",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 74,
+    "stock": 18,
+    "summary": "《计算机科学导论【目丰图书专营店】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789551189945",
+    "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 机械工业出版社【可开电子发票】",
+    "authors": "[美]Behrouz Forouzan 著；刘艺 译",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 127,
+    "stock": 19,
+    "summary": "《计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 机械工业出版社【可开电子发票】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9784584899212",
+    "title": "计算机科学导论：以Python为舟 沙行勉 著 清华大学出版社",
+    "authors": "沙行勉 著",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 49,
+    "stock": 28,
+    "summary": "《计算机科学导论：以Python为舟 沙行勉 著 清华大学出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9784417773115",
+    "title": "计算机科学前沿技术 王伟 编 清华大学出版社",
+    "authors": "王伟 编",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 128,
+    "stock": 26,
+    "summary": "《计算机科学前沿技术 王伟 编 清华大学出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789575842826",
+    "title": "计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞【正版】",
+    "authors": "莫沙拉夫 著；刘艺 译；[美]佛罗赞",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 49,
+    "stock": 4,
+    "summary": "《计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞【正版】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789550890644",
+    "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 人民邮电出版社【可开电子发票】",
+    "authors": "[美]J. Glenn Brookshear 著；刘艺 译",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 79,
+    "stock": 25,
+    "summary": "《计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 人民邮电出版社【可开电子发票】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789575573546",
+    "title": "计算机科学概论 [美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译 机械工",
+    "authors": "[美]内尔·黛尔（NellDale）、约翰·路易斯",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 62,
+    "stock": 5,
+    "summary": "《计算机科学概论 [美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译 机械工》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789595772042",
+    "title": "计算机科学概论 [美]戴尔、[美]刘易斯 著；张欣、胡伟 译 机械工业出版社【达额立减】",
+    "authors": "[美]戴尔、[美]刘易斯 著；张欣、胡伟 译",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 66,
+    "stock": 11,
+    "summary": "《计算机科学概论 [美]戴尔、[美]刘易斯 著；张欣、胡伟 译 机械工业出版社【达额立减】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785148960515",
+    "title": "计算机科学导论：以Python为舟 沙行勉 著 9787302377733 清华大学出版社",
+    "authors": "沙行勉 著",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 113,
+    "stock": 20,
+    "summary": "《计算机科学导论：以Python为舟 沙行勉 著 9787302377733 清华大学出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785119525613",
+    "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 9787111511632 机械工业出",
+    "authors": "[美]Behrouz Forouzan 著；刘艺 译",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 54,
+    "stock": 27,
+    "summary": "《计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 9787111511632 机械工业出》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789551360542",
+    "title": "计算机科学概论 [美]Nell、John Lewis 著 机械工业出版社【售后无忧】",
+    "authors": "[美]Nell、John Lewis 著",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 140,
+    "stock": 18,
+    "summary": "《计算机科学概论 [美]Nell、John Lewis 著 机械工业出版社【售后无忧】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785145100716",
+    "title": "计算机科学概论 [美]布鲁克希尔 著 9787115277947 人民邮电出版社",
+    "authors": "[美]布鲁克希尔 著",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 29,
+    "stock": 12,
+    "summary": "《计算机科学概论 [美]布鲁克希尔 著 9787115277947 人民邮电出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785136310575",
+    "title": "计算机科学概论 得克萨斯大学奥斯汀分校（Nell Dale）、维拉诺瓦大学（John Lewis） 著 机械工业出版社",
+    "authors": "得克萨斯大学奥斯汀分校（Nell Dale）、维",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 49,
+    "stock": 23,
+    "summary": "《计算机科学概论 得克萨斯大学奥斯汀分校（Nell Dale）、维拉诺瓦大学（John Lewis） 著 机械工业出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783616113630",
+    "title": "计算机科学概论 [美]布鲁克希尔 著 人民邮电出版社",
+    "authors": "[美]布鲁克希尔 著",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 96,
+    "stock": 3,
+    "summary": "《计算机科学概论 [美]布鲁克希尔 著 人民邮电出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783616014937",
+    "title": "计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞 机械工业出版社",
+    "authors": "莫沙拉夫 著；刘艺 译；[美]佛罗赞",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 134,
+    "stock": 20,
+    "summary": "《计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞 机械工业出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789588689029",
+    "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译【正版】",
+    "authors": "[美]J. Glenn Brookshear 著；刘艺 译",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 123,
+    "stock": 28,
+    "summary": "《计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译【正版】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783541325900",
+    "title": "计算机科学引论 [美]奥地利（OLeary,T.J.）、[美]奥地利（OLeary,T.I.） 著 高等教育出版社",
+    "authors": "[美]奥地利（OLeary,T.J.）、[美]奥地利（O",
+    "publisher": "高等教育出版社",
+    "category": "计算机",
+    "price": 91,
+    "stock": 9,
+    "summary": "《计算机科学引论 [美]奥地利（OLeary,T.J.）、[美]奥地利（OLeary,T.I.） 著 高等教育出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785151027915",
+    "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 9787115261960 人民邮电出版社",
+    "authors": "[美]J. Glenn Brookshear 著；刘艺 译",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 57,
+    "stock": 23,
+    "summary": "《计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 9787115261960 人民邮电出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789581122721",
+    "title": "计算机科学概论 [美]布鲁克希尔 著【速开发票，优质售后，支持7天无理由退换】",
+    "authors": "[美]布鲁克希尔 著",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 40,
+    "stock": 22,
+    "summary": "《计算机科学概论 [美]布鲁克希尔 著【速开发票，优质售后，支持7天无理由退换】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785100657118",
+    "title": "计算机科学概论 得克萨斯大学奥斯汀分校（Nell Dale）、维拉诺瓦大学（John Lewis） 著 97871112",
+    "authors": "得克萨斯大学奥斯汀分校（Nell Dale）、维",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 143,
+    "stock": 7,
+    "summary": "《计算机科学概论 得克萨斯大学奥斯汀分校（Nell Dale）、维拉诺瓦大学（John Lewis） 著 97871112》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783367640140",
+    "title": "计算机科学导论 瞿中；伍建全；熊安萍；夏淑芳 清华大学出版社",
+    "authors": "佚名",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 43,
+    "stock": 24,
+    "summary": "《计算机科学导论 瞿中；伍建全；熊安萍；夏淑芳 清华大学出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789589600740",
+    "title": "计算机科学概论 刘艺、吴英、毛倩倩 译 人民邮电出版社【可开电子发票】",
+    "authors": "刘艺、吴英、毛倩倩 译",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 135,
+    "stock": 13,
+    "summary": "《计算机科学概论 刘艺、吴英、毛倩倩 译 人民邮电出版社【可开电子发票】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785156999415",
+    "title": "计算机科学前沿技术 王伟 编 9787302285557 清华大学出版社",
+    "authors": "王伟 编",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 49,
+    "stock": 7,
+    "summary": "《计算机科学前沿技术 王伟 编 9787302285557 清华大学出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785152294118",
+    "title": "计算机科学概论 [美]Nell、John Lewis 著 9787111448136 机械工业出版社",
+    "authors": "[美]Nell、John Lewis 著",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 109,
+    "stock": 11,
+    "summary": "《计算机科学概论 [美]Nell、John Lewis 著 9787111448136 机械工业出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783385599741",
+    "title": "计算机科学概论[美]布鲁克希尔 著人民邮电出版社9787115277947",
+    "authors": "[美]布鲁克希尔 著",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 52,
+    "stock": 13,
+    "summary": "《计算机科学概论[美]布鲁克希尔 著人民邮电出版社9787115277947》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783616075235",
+    "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 机械工业出版社",
+    "authors": "[美]Behrouz Forouzan 著；刘艺 译",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 49,
+    "stock": 13,
+    "summary": "《计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 机械工业出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783382163648",
+    "title": "计算机科学导论：以Python为舟沙行勉 著清华大学出版社9787302377733",
+    "authors": "沙行勉 著",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 145,
+    "stock": 5,
+    "summary": "《计算机科学导论：以Python为舟沙行勉 著清华大学出版社9787302377733》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783377403247",
+    "title": "计算机科学导论瞿中；伍建全；熊安萍；夏淑芳清华大学出版社9787302494942",
+    "authors": "佚名",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 91,
+    "stock": 3,
+    "summary": "《计算机科学导论瞿中；伍建全；熊安萍；夏淑芳清华大学出版社9787302494942》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785373758512",
+    "title": "计算机科学概论[美]布鲁克希尔（Brookshear J.G.） 著；俞嘉惠、方存正 译清华大学出版社978730210",
+    "authors": "[美]布鲁克希尔（Brookshear J.G.） 著；",
+    "publisher": "清华大学出版社",
+    "category": "计算机",
+    "price": 91,
+    "stock": 27,
+    "summary": "《计算机科学概论[美]布鲁克希尔（Brookshear J.G.） 著；俞嘉惠、方存正 译清华大学出版社978730210》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783243817642",
+    "title": "计算机科学概论第13版英文版格伦·布鲁克希尔；丹尼斯·布里罗人民邮电出版社9787115523648",
+    "authors": "佚名",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 121,
+    "stock": 23,
+    "summary": "《计算机科学概论第13版英文版格伦·布鲁克希尔；丹尼斯·布里罗人民邮电出版社9787115523648》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9784032960815",
+    "title": "计算机科学概论[美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译机械工业",
+    "authors": "[美]内尔·黛尔（NellDale）、约翰·路易斯",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 55,
+    "stock": 7,
+    "summary": "《计算机科学概论[美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译机械工业》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9784032282214",
+    "title": "计算机科学概论[美]J. Glenn Brookshear 著；刘艺 译人民邮电出版社9787115261960",
+    "authors": "[美]J. Glenn Brookshear 著；刘艺 译",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 133,
+    "stock": 29,
+    "summary": "《计算机科学概论[美]J. Glenn Brookshear 著；刘艺 译人民邮电出版社9787115261960》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783180939544",
+    "title": "计算机科学导论莫沙拉夫 著；刘艺 译；[美]佛罗赞机械工业出版社9787111131595",
+    "authors": "佚名",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 88,
+    "stock": 21,
+    "summary": "《计算机科学导论莫沙拉夫 著；刘艺 译；[美]佛罗赞机械工业出版社9787111131595》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789576166723",
+    "title": "计算机科学概论 刘艺、吴英、毛倩倩 译【正版】",
+    "authors": "刘艺、吴英、毛倩倩 译",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 110,
+    "stock": 24,
+    "summary": "《计算机科学概论 刘艺、吴英、毛倩倩 译【正版】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9785150969216",
+    "title": "计算机科学引论 [美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著 9787111585268 机械工",
+    "authors": "[美]蒂莫西、J.、奥利里(Timothy、J.、OLea",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 146,
+    "stock": 7,
+    "summary": "《计算机科学引论 [美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著 9787111585268 机械工》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783232025508",
+    "title": "计算机科学导论罗琼、杨微 编北京邮电大学出版社有限公司9787563548491",
+    "authors": "罗琼、杨微 编",
+    "publisher": "北京邮电大学出版社有限公司",
+    "category": "计算机",
+    "price": 49,
+    "stock": 17,
+    "summary": "《计算机科学导论罗琼、杨微 编北京邮电大学出版社有限公司9787563548491》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783242941942",
+    "title": "计算机科学引论[美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著机械工业出版社978711166378",
+    "authors": "佚名",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 61,
+    "stock": 25,
+    "summary": "《计算机科学引论[美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著机械工业出版社978711166378》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783214790745",
+    "title": "计算机科学引论[美]奥地利（OLeary,T.J.）、[美]奥地利（OLeary,T.I.） 著高等教育出版社97870",
+    "authors": "[美]奥地利（OLeary,T.J.）、[美]奥地利（O",
+    "publisher": "高等教育出版社",
+    "category": "计算机",
+    "price": 45,
+    "stock": 17,
+    "summary": "《计算机科学引论[美]奥地利（OLeary,T.J.）、[美]奥地利（OLeary,T.I.） 著高等教育出版社97870》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789417105737",
+    "title": "计算机科学导论：思想与方法董荣胜 著高等教育出版社9787040224627",
+    "authors": "董荣胜 著",
+    "publisher": "高等教育出版社",
+    "category": "计算机",
+    "price": 57,
+    "stock": 10,
+    "summary": "《计算机科学导论：思想与方法董荣胜 著高等教育出版社9787040224627》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9784025452716",
+    "title": "计算机科学引论[美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著机械工业出版社978711158526",
+    "authors": "[美]蒂莫西、J.、奥利里(Timothy、J.、OLea",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 94,
+    "stock": 12,
+    "summary": "《计算机科学引论[美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著机械工业出版社978711158526》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789577541529",
+    "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译【正版】",
+    "authors": "[美]Behrouz Forouzan 著；刘艺 译",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 52,
+    "stock": 12,
+    "summary": "《计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译【正版】》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783389952061",
+    "title": "计算机科学基础：从数据操纵到计算理论 Behrouz A.Forouzan With Sophia Chung Fega",
+    "authors": "Behrouz A.Forouzan With Sophia Chung Feg",
+    "publisher": "高等教育出版社",
+    "category": "计算机",
+    "price": 90,
+    "stock": 22,
+    "summary": "《计算机科学基础：从数据操纵到计算理论 Behrouz A.Forouzan With Sophia Chung Fega》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9789929872066",
+    "title": "计算机科学导论",
+    "authors": "莫沙拉夫 著；刘艺 译；[美]佛罗赞",
+    "publisher": "机械工业出版社",
+    "category": "计算机",
+    "price": 147,
+    "stock": 26,
+    "summary": "《计算机科学导论》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9783562015439",
+    "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 人民邮电出版社",
+    "authors": "佚名",
+    "publisher": "人民邮电出版社",
+    "category": "计算机",
+    "price": 47,
+    "stock": 16,
+    "summary": "《计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 人民邮电出版社》围绕计算机基础、系统原理与工程实践展开，可作为课程学习或日常查阅资料。"
+  },
+  {
+    "isbn": "9781000178463",
+    "title": "高等数学同济大学第八版教材辅导同步试卷本科考研参考",
+    "authors": "佚名",
+    "publisher": "未知出版社",
+    "category": "数学",
+    "price": 62,
+    "stock": 19,
+    "summary": "《高等数学同济大学第八版教材辅导同步试卷本科考研参考》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780295898346",
+    "title": "高等数学 同济大学第八版 上册 高等教育出版社",
+    "authors": "同济大学数学科学学院",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 76,
+    "stock": 17,
+    "summary": "《高等数学 同济大学第八版 上册 高等教育出版社》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780295874692",
+    "title": "高等数学 同济大学第八版 下册 高等教育出版社 第8版",
+    "authors": "同济大学数学科学学院",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 64,
+    "stock": 27,
+    "summary": "《高等数学 同济大学第八版 下册 高等教育出版社 第8版》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780296000526",
+    "title": "高等数学习题全解指导 上册 同济·第八版",
+    "authors": "同济大学数学科学学院 编",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 79,
+    "stock": 23,
+    "summary": "《高等数学习题全解指导 上册 同济·第八版》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9781000128352",
+    "title": "高等数学上下册 高等数学解题指南 李忠 周建莹",
+    "authors": "佚名",
+    "publisher": "未知出版社",
+    "category": "数学",
+    "price": 46,
+    "stock": 5,
+    "summary": "《高等数学上下册 高等数学解题指南 李忠 周建莹》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780301123141",
+    "title": "高等数学（上册）精选750题",
+    "authors": "宋浩",
+    "publisher": "人民邮电出版社",
+    "category": "数学",
+    "price": 133,
+    "stock": 11,
+    "summary": "《高等数学（上册）精选750题》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780295967639",
+    "title": "高等数学习题全解指导 下册 同济·第八版",
+    "authors": "同济大学数学科学学院 编",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 55,
+    "stock": 9,
+    "summary": "《高等数学习题全解指导 下册 同济·第八版》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780297824053",
+    "title": "高等数学基础计算考研数学基础公式手册",
+    "authors": "佚名",
+    "publisher": "中国政法大学出版社",
+    "category": "数学",
+    "price": 94,
+    "stock": 15,
+    "summary": "《高等数学基础计算考研数学基础公式手册》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780296993934",
+    "title": "高等数学 同济第八版上册 穿透辅导与习题全解",
+    "authors": "主编：张天德，张卫，副主编：孙钦福，尉伟",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 80,
+    "stock": 22,
+    "summary": "《高等数学 同济第八版上册 穿透辅导与习题全解》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780296983355",
+    "title": "高等数学（上册）（慕课版 第2版）",
+    "authors": "张天德 王鹏辉 王玮",
+    "publisher": "人民邮电出版社",
+    "category": "数学",
+    "price": 30,
+    "stock": 19,
+    "summary": "《高等数学（上册）（慕课版 第2版）》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780300910674",
+    "title": "2028高等数学零基础入门（汤家凤）",
+    "authors": "汤家凤",
+    "publisher": "国家开放大学出版社",
+    "category": "数学",
+    "price": 76,
+    "stock": 14,
+    "summary": "《2028高等数学零基础入门（汤家凤）》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780297337799",
+    "title": "高等数学（下册）精选750题",
+    "authors": "宋浩",
+    "publisher": "人民邮电出版社",
+    "category": "数学",
+    "price": 34,
+    "stock": 24,
+    "summary": "《高等数学（下册）精选750题》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9788992353670",
+    "title": "【高等数学同济第八版】教材+习题全解指导+穿透辅导与习题全解 上册下册任选 大一教材课本高数同济大学第8版同步辅导讲义书",
+    "authors": "佚名",
+    "publisher": "未知出版社",
+    "category": "数学",
+    "price": 39,
+    "stock": 7,
+    "summary": "《【高等数学同济第八版】教材+习题全解指导+穿透辅导与习题全解 上册下册任选 大一教材课本高数同济大学第8版同步辅导讲义书》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780296040034",
+    "title": "高等数学（第三版）（上册）普通高等教育“十一五”国家级规划教材",
+    "authors": "李忠、周建莹",
+    "publisher": "北京大学出版社",
+    "category": "数学",
+    "price": 119,
+    "stock": 22,
+    "summary": "《高等数学（第三版）（上册）普通高等教育“十一五”国家级规划教材》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780296203279",
+    "title": "高等数学同步辅导（上册）",
+    "authors": "张天德",
+    "publisher": "山东科学技术出版社",
+    "category": "数学",
+    "price": 63,
+    "stock": 21,
+    "summary": "《高等数学同步辅导（上册）》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780294489972",
+    "title": "高等数学精选精解1600题 上册",
+    "authors": "主编：张天德，孙钦福 副主编：张歆秋",
+    "publisher": "高等教育出版社",
+    "category": "数学",
+    "price": 119,
+    "stock": 14,
+    "summary": "《高等数学精选精解1600题 上册》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780301000268",
+    "title": "高等数学辅导及习题精解 上册（同济第八版）2026",
+    "authors": "张天德，孙钦福",
+    "publisher": "浙江教育出版社",
+    "category": "数学",
+    "price": 134,
+    "stock": 16,
+    "summary": "《高等数学辅导及习题精解 上册（同济第八版）2026》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780301067520",
+    "title": "高等数学作业册（上）（第二版）",
+    "authors": "金永阳,李素兰,马青",
+    "publisher": "浙江大学出版社",
+    "category": "数学",
+    "price": 138,
+    "stock": 24,
+    "summary": "《高等数学作业册（上）（第二版）》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780299085773",
+    "title": "高等数学零基础入门（汤家凤书+课）",
+    "authors": "汤家凤",
+    "publisher": "国家开放大学出版社",
+    "category": "数学",
+    "price": 43,
+    "stock": 8,
+    "summary": "《高等数学零基础入门（汤家凤书+课）》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780301000299",
+    "title": "高等数学辅导及习题精解 下册(同济第八版)2026",
+    "authors": "张天德，孙钦福",
+    "publisher": "浙江教育出版社",
+    "category": "数学",
+    "price": 117,
+    "stock": 26,
+    "summary": "《高等数学辅导及习题精解 下册(同济第八版)2026》讲解数学基本概念、推导方法与典型例题，适合课程学习与复习。"
+  },
+  {
+    "isbn": "9780296575970",
+    "title": "大学物理习题集",
+    "authors": "主编 孙祖尧 阎明",
+    "publisher": "高等教育出版社",
+    "category": "物理",
+    "price": 33,
+    "stock": 7,
+    "summary": "《大学物理习题集》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9783982722092",
+    "title": "大学物理习题集 孙祖尧,阎明 高等教育出版社【正版书】",
+    "authors": "孙祖尧,阎明",
+    "publisher": "高等教育出版社",
+    "category": "物理",
+    "price": 85,
+    "stock": 17,
+    "summary": "《大学物理习题集 孙祖尧,阎明 高等教育出版社【正版书】》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9789500262903",
+    "title": "大学物理习题集 孙祖尧 阎明 高等教育出版社 配套王少杰大学物理学第五5版教材【正版】",
+    "authors": "孙祖尧 阎明",
+    "publisher": "高等教育出版社",
+    "category": "物理",
+    "price": 56,
+    "stock": 29,
+    "summary": "《大学物理习题集 孙祖尧 阎明 高等教育出版社 配套王少杰大学物理学第五5版教材【正版】》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780297679912",
+    "title": "大学物理（下册）",
+    "authors": "侯兆阳",
+    "publisher": "西安电子科技大学出版社",
+    "category": "物理",
+    "price": 82,
+    "stock": 14,
+    "summary": "《大学物理（下册）》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780292050891",
+    "title": "大学物理实验报告手册",
+    "authors": "尤素萍",
+    "publisher": "西安电子科技大学出版社",
+    "category": "物理",
+    "price": 44,
+    "stock": 23,
+    "summary": "《大学物理实验报告手册》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780299409227",
+    "title": "大学物理实验（第三版）",
+    "authors": "主编 方莉俐 夏从新",
+    "publisher": "高等教育出版社",
+    "category": "物理",
+    "price": 127,
+    "stock": 5,
+    "summary": "《大学物理实验（第三版）》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780297021759",
+    "title": "大学物理学（下册）（第三版）",
+    "authors": "朱长军",
+    "publisher": "西安电子科技大学出版社",
+    "category": "物理",
+    "price": 143,
+    "stock": 18,
+    "summary": "《大学物理学（下册）（第三版）》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780297325833",
+    "title": "大学物理学（下册）",
+    "authors": "孔晋芳 居家奇 王凤超",
+    "publisher": "高等教育出版社",
+    "category": "物理",
+    "price": 129,
+    "stock": 23,
+    "summary": "《大学物理学（下册）》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780292815698",
+    "title": "大学物理练习题册",
+    "authors": "刘果红",
+    "publisher": "机械工业出版社",
+    "category": "物理",
+    "price": 104,
+    "stock": 27,
+    "summary": "《大学物理练习题册》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9781000128260",
+    "title": "大学物理通用教程（力学、习题解答-力学、热学、光学 现代光学基础）钟锡华",
+    "authors": "佚名",
+    "publisher": "未知出版社",
+    "category": "物理",
+    "price": 67,
+    "stock": 3,
+    "summary": "《大学物理通用教程（力学、习题解答-力学、热学、光学 现代光学基础）钟锡华》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780299259518",
+    "title": "新编大学物理学习指导（下册）",
+    "authors": "主编 张建锋 王强 代雪峰 副主编 徐丽红 张莲莲 易光宇",
+    "publisher": "高等教育出版社",
+    "category": "物理",
+    "price": 119,
+    "stock": 14,
+    "summary": "《新编大学物理学习指导（下册）》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780293864428",
+    "title": "大学物理实验",
+    "authors": "班丽瑛",
+    "publisher": "西安电子科技大学出版社",
+    "category": "物理",
+    "price": 98,
+    "stock": 12,
+    "summary": "《大学物理实验》介绍物理学的基本概念、规律与实验方法，适合理工科课程学习。"
+  },
+  {
+    "isbn": "9780301071503",
+    "title": "电工电子技术实验",
+    "authors": "刘晓燕、成亮",
+    "publisher": "重庆大学出版社",
+    "category": "电子",
+    "price": 123,
+    "stock": 15,
+    "summary": "《电工电子技术实验》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301155173",
+    "title": "电子技术基础",
+    "authors": "叶懋",
+    "publisher": "电子工业出版社",
+    "category": "电子",
+    "price": 126,
+    "stock": 3,
+    "summary": "《电子技术基础》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301174075",
+    "title": "电工电子技术（第二版）",
+    "authors": "薛太林 主编;王早兰,陈名 副主编",
+    "publisher": "中国电力出版社",
+    "category": "电子",
+    "price": 121,
+    "stock": 3,
+    "summary": "《电工电子技术（第二版）》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9783745752151",
+    "title": "电子技术 付植桐 主编 高等教育出版社",
+    "authors": "佚名",
+    "publisher": "高等教育出版社",
+    "category": "电子",
+    "price": 45,
+    "stock": 6,
+    "summary": "《电子技术 付植桐 主编 高等教育出版社》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301094519",
+    "title": "电路电子技术实验指导教程",
+    "authors": "谭卢敏",
+    "publisher": "电子工业出版社",
+    "category": "电子",
+    "price": 90,
+    "stock": 17,
+    "summary": "《电路电子技术实验指导教程》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301058481",
+    "title": "电子技术基础实验与课程设计（第4版）",
+    "authors": "张亮",
+    "publisher": "电子工业出版社",
+    "category": "电子",
+    "price": 134,
+    "stock": 22,
+    "summary": "《电子技术基础实验与课程设计（第4版）》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301090689",
+    "title": "电子技术基本教程 数字部分",
+    "authors": "侯天为 霍炎 邓涛 侯建军 主编",
+    "publisher": "高等教育出版社",
+    "category": "电子",
+    "price": 49,
+    "stock": 22,
+    "summary": "《电子技术基本教程 数字部分》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780300934731",
+    "title": "电工电子技术",
+    "authors": "赵东波",
+    "publisher": "西安电子科技大学出版社",
+    "category": "电子",
+    "price": 39,
+    "stock": 23,
+    "summary": "《电工电子技术》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301020891",
+    "title": "模拟电子技术实验与课程设计（第2版）――含电路部分",
+    "authors": "程春雨",
+    "publisher": "电子工业出版社",
+    "category": "电子",
+    "price": 125,
+    "stock": 5,
+    "summary": "《模拟电子技术实验与课程设计（第2版）――含电路部分》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301024899",
+    "title": "模拟电子技术基础 第5版",
+    "authors": "黄丽亚 杨恒新 袁丰 李双德 李炳祥",
+    "publisher": "机械工业出版社",
+    "category": "电子",
+    "price": 75,
+    "stock": 16,
+    "summary": "《模拟电子技术基础 第5版》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780301026633",
+    "title": "数字电子技术基础",
+    "authors": "桂银刚 吴永烽",
+    "publisher": "机械工业出版社",
+    "category": "电子",
+    "price": 133,
+    "stock": 6,
+    "summary": "《数字电子技术基础》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780251982133",
+    "title": "数字电子技术基础（第六版）学习辅导与习题解答",
+    "authors": "阎石 王红",
+    "publisher": "高等教育出版社",
+    "category": "电子",
+    "price": 139,
+    "stock": 27,
+    "summary": "《数字电子技术基础（第六版）学习辅导与习题解答》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780251982126",
+    "title": "数字电子技术基础（第六版）",
+    "authors": "阎石 王红",
+    "publisher": "高等教育出版社",
+    "category": "电子",
+    "price": 91,
+    "stock": 17,
+    "summary": "《数字电子技术基础（第六版）》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9780252037955",
+    "title": "模拟电子技术基础（第五版）",
+    "authors": "童诗白 华成英",
+    "publisher": "高等教育出版社",
+    "category": "电子",
+    "price": 143,
+    "stock": 15,
+    "summary": "《模拟电子技术基础（第五版）》讲解电子电路的分析方法与工程应用，适合电子技术相关课程学习。"
+  },
+  {
+    "isbn": "9781000273526",
+    "title": "小学英语语法 大全口诀秒记漫画 思维导图单词速记【网易有道】小学单词轻松记",
+    "authors": "佚名",
+    "publisher": "未知出版社",
+    "category": "语言",
+    "price": 49,
+    "stock": 8,
+    "summary": "《小学英语语法 大全口诀秒记漫画 思维导图单词速记【网易有道】小学单词轻松记》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780297090069",
+    "title": "英语语法、阅读分解大全（全两册）初高中零起点英语语法入门 从零开始学英语语法这本就够零基础自学英语书籍",
+    "authors": "【韩】尹尚远，张浩译 著 易人外语凤凰含章出品",
+    "publisher": "江苏科学技术出版社",
+    "category": "语言",
+    "price": 118,
+    "stock": 22,
+    "summary": "《英语语法、阅读分解大全（全两册）初高中零起点英语语法入门 从零开始学英语语法这本就够零基础自学英语书籍》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780225042887",
+    "title": "张道真实用英语语法(新版)——语法专家张道真之作",
+    "authors": "张道真",
+    "publisher": "外语教学与研究出版社",
+    "category": "语言",
+    "price": 127,
+    "stock": 14,
+    "summary": "《张道真实用英语语法(新版)——语法专家张道真之作》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780298373598",
+    "title": "薄冰英语语法",
+    "authors": "薄冰，何政安编著",
+    "publisher": "开明出版社",
+    "category": "语言",
+    "price": 108,
+    "stock": 6,
+    "summary": "《薄冰英语语法》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780299665845",
+    "title": "口诀秒记小学英语语法汉知简 小学英语语法 大全口诀秒记漫画 小学英语语法一本通配套人教版三四五六年级小学英语语法知识点汇",
+    "authors": "英语教育研究中心",
+    "publisher": "吉林出版集团股份有限公司",
+    "category": "语言",
+    "price": 92,
+    "stock": 25,
+    "summary": "《口诀秒记小学英语语法汉知简 小学英语语法 大全口诀秒记漫画 小学英语语法一本通配套人教版三四五六年级小学英语语法知识点汇》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780253510037",
+    "title": "图解零基础英语语法",
+    "authors": "山田畅彦",
+    "publisher": "外语教学与研究出版社",
+    "category": "语言",
+    "price": 82,
+    "stock": 15,
+    "summary": "《图解零基础英语语法》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9781000219470",
+    "title": "剑桥初级中级英语语法+练习 第四版 第五版 剑桥“英语在用”丛书剑桥初级英语语法练习语法词汇语法练习",
+    "authors": "佚名",
+    "publisher": "未知出版社",
+    "category": "语言",
+    "price": 119,
+    "stock": 27,
+    "summary": "《剑桥初级中级英语语法+练习 第四版 第五版 剑桥“英语在用”丛书剑桥初级英语语法练习语法词汇语法练习》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780294178388",
+    "title": "薄冰英语语法大全(外研增修版)",
+    "authors": "薄冰 主编 何政安 编著",
+    "publisher": "外语教学与研究出版社",
+    "category": "语言",
+    "price": 78,
+    "stock": 8,
+    "summary": "《薄冰英语语法大全(外研增修版)》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780300972368",
+    "title": "初中英语语法专练（语篇综合训练）适配新中考语法命题新趋势 实战训练 精准定位薄弱点查漏补缺知识点",
+    "authors": "姚东",
+    "publisher": "上海交通大学出版社",
+    "category": "语言",
+    "price": 45,
+    "stock": 3,
+    "summary": "《初中英语语法专练（语篇综合训练）适配新中考语法命题新趋势 实战训练 精准定位薄弱点查漏补缺知识点》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780236526031",
+    "title": "薄冰小学英语语法（新修订版）90000多名读者热评！",
+    "authors": "薄冰 主编",
+    "publisher": "开明出版社",
+    "category": "语言",
+    "price": 106,
+    "stock": 17,
+    "summary": "《薄冰小学英语语法（新修订版）90000多名读者热评！》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780205433841",
+    "title": "牛津实用英语语法(第四版)(翻译本)(双色版)(新)",
+    "authors": "Thomson",
+    "publisher": "外语教学与研究出版社",
+    "category": "语言",
+    "price": 84,
+    "stock": 4,
+    "summary": "《牛津实用英语语法(第四版)(翻译本)(双色版)(新)》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780296870877",
+    "title": "新编高级英语语法（第2版）",
+    "authors": "章振邦, 编著",
+    "publisher": "上海外语教育出版社",
+    "category": "语言",
+    "price": 55,
+    "stock": 14,
+    "summary": "《新编高级英语语法（第2版）》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780301090610",
+    "title": "《英语语法新认知》 讲透语法底层逻辑 高考题库例题 初、高中学生",
+    "authors": "马永田",
+    "publisher": "光明日报出版社",
+    "category": "语言",
+    "price": 45,
+    "stock": 27,
+    "summary": "《《英语语法新认知》 讲透语法底层逻辑 高考题库例题 初、高中学生》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
+  },
+  {
+    "isbn": "9780301157863",
+    "title": "英语语法手册 高中英语语法专项训练 词法句法基础知识与易错难点 扫码视频解析 中高贯通通用",
+    "authors": "孙志青 迟娟 杨明忠",
+    "publisher": "上海交通大学出版社",
+    "category": "语言",
+    "price": 57,
+    "stock": 26,
+    "summary": "《英语语法手册 高中英语语法专项训练 词法句法基础知识与易错难点 扫码视频解析 中高贯通通用》围绕语言学习与运用展开，包含知识讲解、用例与练习。"
   }
 ]

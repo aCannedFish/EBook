@@ -805,8 +805,75 @@ button, input, select{ font: inherit; }
 .auth-antd-form{
   width: 100%;
 }
-.book-antd-grid{
+.book-layout{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   padding: 0 16px 16px;
+}
+
+.book-antd-grid{
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+}
+
+/* 右侧 A-Z 索引：固定在视口上方，滚动时仍可切换首字母。 */
+.book-alphabet{
+  position: sticky;
+  top: 84px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 0 0 30px;
+  padding-top: 4px;
+}
+
+.book-alphabet__letter{
+  width: 26px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #1677ff;
+  font-size: 12px;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.book-alphabet__letter:hover:not(:disabled){
+  background: #e6f4ff;
+}
+
+.book-alphabet__letter:disabled{
+  color: #d0d5dd;
+  cursor: default;
+}
+
+.book-alphabet__letter--active{
+  background: #1677ff;
+  color: #fff;
+}
+
+@media (max-width: 1000px){
+  .book-layout{
+    flex-direction: column;
+  }
+
+  .book-alphabet{
+    position: static;
+    flex-direction: row;
+    flex-basis: auto;
+    width: 100%;
+    overflow-x: auto;
+    order: -1;
+    padding: 0;
+  }
+
+  .book-alphabet__letter{
+    flex: 0 0 24px;
+  }
 }
 .book-antd-card .ant-card-cover img{
   height: 312px;

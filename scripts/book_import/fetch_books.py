@@ -138,8 +138,8 @@ def build_sql(books: list[dict]) -> str:
     rows = ",\n".join(book_row(book) for book in books)
     header = (
         f"{BEGIN_MARK}\n"
-        "-- 计算机 / 电子类扩充书目：由 scripts/book_import/fetch_books.py 生成，请勿手改。\n"
-        "-- 元数据经 Open Library 按 ISBN 核对；价格、库存与简介是课程演示数据。\n"
+        "-- 扩充书目（计算机、数学、电子、物理、语言）：由 scripts/book_import/fetch_books.py 生成，请勿手改。\n"
+        "-- 元数据按公开书目来源整理；价格、库存与简介是课程演示数据。\n"
     )
     return f"{header}{columns}\n{rows};\n{END_MARK}\n"
 

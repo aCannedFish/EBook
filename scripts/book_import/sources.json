@@ -1,5 +1,5 @@
 {
-  "source": "Open Library",
+  "source": "Open Library / Douban / Dangdang",
   "api": "https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data",
   "books": [
     {
@@ -706,7 +706,1348 @@
       "coverFile": "ebook-frontend/public/assets/covers/9787040396614.jpg",
       "coverSha256": "6a1666f8953ed5f78a12a5f19300f3b274eb28cdcf14900c3c80018fadfdaf99",
       "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787040396638",
+      "title": "高等数学（第七版·上册）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787040396638/",
+      "coverUrl": "https://img2.doubanio.com/view/subject/l/public/s28340131.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040396638.jpg",
+      "coverSha256": "824b2a1b892d3c300bc2b8115d907dd352315e4748837148e9d8a5332f12dee8"
+    },
+    {
+      "isbn": "9787115435590",
+      "title": "普林斯顿微积分读本（修订版）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787115435590/",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s29114473.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787115435590.jpg",
+      "coverSha256": "17cfc955c1a0e4a175fb5490e774c03ef3cdb9abfb787844bf05568411856dd5"
+    },
+    {
+      "isbn": "9787040506945",
+      "title": "数学分析（第4版·上册）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787040506945/",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s32346106.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040506945.jpg",
+      "coverSha256": "a643ff4370c6159a234afab531ee0dd99ad025cd9b48f7f1f0026e669fc437e2"
+    },
+    {
+      "isbn": "9787111636878",
+      "title": "离散数学及其应用（原书第8版）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787111636878/",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s33532039.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111636878.jpg",
+      "coverSha256": "93e23134cbb12f725b2f4f74788cc9ce8250a063a9c4c17918f06b4f1d04cee1"
+    },
+    {
+      "isbn": "9787111502678",
+      "title": "模拟电子技术基础",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787111502678/",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s28140240.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111502678.jpg",
+      "coverSha256": "6bd09d9303d4100c22718b7667673e9d3c81bcb240110d0bf6570b568f39b199"
+    },
+    {
+      "isbn": "9787040444933",
+      "title": "数字电子技术基础（第6版）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787040444933/",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s29664839.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040444933.jpg",
+      "coverSha256": "cf3256a3282e58d03273a43ab13049483466fe2f500cab0f76fea38026be9adb"
+    },
+    {
+      "isbn": "9787040196719",
+      "title": "电路（第5版）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787040196719/",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s24399427.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040196719.jpg",
+      "coverSha256": "08c38ff5a0f8393966fb5d28d5b42a107cb03e7b7f37d80918ce2466fced8d3d"
+    },
+    {
+      "isbn": "9787535732309",
+      "title": "时间简史",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787535732309/",
+      "coverUrl": "https://img2.doubanio.com/view/subject/l/public/s1914861.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787535732309.jpg",
+      "coverSha256": "1a781df213a90d9203ebb1973a99421ceec5914658eb769dd69ecd428a312ca4"
+    },
+    {
+      "isbn": "9787040165630",
+      "title": "大学物理学",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787040165630/",
+      "coverUrl": "https://img2.doubanio.com/view/subject/l/public/s24444481.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040165630.jpg",
+      "coverSha256": "7862ef55cda28d6a19a0c8ac4862d23fa2a70677d4f9c8ce319afab918f2bb29"
+    },
+    {
+      "isbn": "9787560013466",
+      "title": "新概念英语（1）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787560013466/",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s10401903.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787560013466.jpg",
+      "coverSha256": "f4cf41adafd22d2775dc319c53b665ef1f0aae514839a5a881bc29628be6920d"
+    },
+    {
+      "isbn": "9787560013473",
+      "title": "新概念英语（2）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787560013473/",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s1148774.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787560013473.jpg",
+      "coverSha256": "6b060ac81d39c3275b9ecd568efc434493e2c5b806f1c8b267cc61b71510bf31"
+    },
+    {
+      "isbn": "9787040469882",
+      "title": "现代汉语（增订六版·上册）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787040469882/",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s29500495.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040469882.jpg",
+      "coverSha256": "6ce2ebd55b170ad45379a47bada5ee38dfb39693223031f1fac7c7e2aa758b4c"
+    },
+    {
+      "isbn": "9787100158602",
+      "title": "牛津高阶英汉双解词典（第9版）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787100158602/",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s29808305.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787100158602.jpg",
+      "coverSha256": "42d26d6f5435fae1248e25114e681911027f51429e171e462593c5694a20e58d"
+    },
+    {
+      "isbn": "9787301163108",
+      "title": "语言学纲要（修订版）",
+      "metadataSource": "Douban",
+      "doubanUrl": "https://book.douban.com/isbn/9787301163108/",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s27132104.jpg",
+      "coverSource": "Douban",
+      "coverFile": "ebook-frontend/public/assets/covers/9787301163108.jpg",
+      "coverSha256": "ed65535f53c21ee24b595e3c1afeea2866027b4683af460b6493402972f07b12"
+    },
+    {
+      "isbn": "9780294666182",
+      "title": "计算机科学概论 第13版",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29466618.html",
+      "coverUrl": "https://img3m8.ddimg.cn/60/3/29466618-1_u_1728547556.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780294666182.jpg",
+      "coverSha256": "39cbaa19919369e57b492d8b2289933a7704fade7a11e0da2b2c0b91d3f72662"
+    },
+    {
+      "isbn": "9780278529120",
+      "title": "计算机科学中的数学：信息与智能时代的必修课",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/27852912.html",
+      "coverUrl": "https://img3m2.ddimg.cn/54/15/27852912-1_u_3.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780278529120.jpg",
+      "coverSha256": "cdc1818833c9d82669f3abb3a549f356f91ad16399bba66a1458edef07c78863"
+    },
+    {
+      "isbn": "9780285206571",
+      "title": "计算机科学概论 第13版 英文版",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/28520657.html",
+      "coverUrl": "https://img3m7.ddimg.cn/44/21/28520657-1_u_5.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780285206571.jpg",
+      "coverSha256": "dd1ac4752a6f8f49917a9de6ee105928e0e7266c22fd1db0677b5d8fdef9bb8b"
+    },
+    {
+      "isbn": "9780294350036",
+      "title": "计算机科学技术大辞典",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29435003.html",
+      "coverUrl": "https://img3m3.ddimg.cn/26/23/29435003-1_u_3.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780294350036.jpg",
+      "coverSha256": "53df38c1aa191fbc0a2a334382baaeedf3d2e593a00eb66909ff8a0cf3feeab0"
+    },
+    {
+      "isbn": "9780297797210",
+      "title": "大话计算机科学：生活中的计算思维",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29779721.html",
+      "coverUrl": "https://img3m1.ddimg.cn/26/12/29779721-1_u_1727252943.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297797210.jpg",
+      "coverSha256": "29d2bea32c40f15f9f3e43f13d9e918c5d4411d31f6078bf6e8e026a11028ed4"
+    },
+    {
+      "isbn": "9780297888703",
+      "title": "计算机科学之美",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29788870.html",
+      "coverUrl": "https://img3m0.ddimg.cn/67/22/29788870-1_u_1728724646.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297888703.jpg",
+      "coverSha256": "9a81ca4c158a1ddcb1b0714ab5c3e73a2a54d54d5a7c7c469790c80aa0063341"
+    },
+    {
+      "isbn": "9780300100181",
+      "title": "图解计算机科学数学基础（原书第3版） [英]约翰·文斯 计算机科学 数学基础 视觉化方法",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30010018.html",
+      "coverUrl": "https://img3m8.ddimg.cn/49/21/30010018-1_u_1773976818.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780300100181.jpg",
+      "coverSha256": "ea86ff6658891faf858537d134020839304def822bc3c34839732807132647ac"
+    },
+    {
+      "isbn": "9780289641804",
+      "title": "DK图解计算机科学 儿童STEM创新思维培养",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/28964180.html",
+      "coverUrl": "https://img3m0.ddimg.cn/47/25/28964180-1_u_1784117124.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780289641804.jpg",
+      "coverSha256": "18d0946f3aeb15cd6b000863ff3fbdd8dbc3def86ddfde4a3eff8b875e4e1062"
+    },
+    {
+      "isbn": "9780241856741",
+      "title": "计算机科学概论（第12版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/24185674.html",
+      "coverUrl": "https://img3m4.ddimg.cn/73/32/24185674-1_u_3.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780241856741.jpg",
+      "coverSha256": "ed328754704f515a8eacd26ed426dda15d75da2df646e634034c4034a68f1e52"
+    },
+    {
+      "isbn": "9782035141040",
+      "title": "计算机科学中的数学 信息与智能时代的必修课 信息与智能时代的必修课 统计机器学习数据挖掘数学入门教程 程序员的数学定义证",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/1203514104.html",
+      "coverUrl": "https://img3m4.ddimg.cn/12/8/1203514104-1_u_1784105632.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9782035141040.jpg",
+      "coverSha256": "bf2124864e30db2ffe2c628390b12cd4cea4b1eafd3b13e72074cc3771dc7e33"
+    },
+    {
+      "isbn": "9783549676127",
+      "title": "计算机科学导论 思想与方法 第3版第三版",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12354967612.html",
+      "coverUrl": "https://img3m2.ddimg.cn/64/21/12354967612-1_u_1789996077.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783549676127.jpg",
+      "coverSha256": "3d105216ac0da2a5ec7e0dd61066527103786871c579da480821bce310d529c3"
+    },
+    {
+      "isbn": "9780291475800",
+      "title": "计算机科学概论（英文版·原书第7版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29147580.html",
+      "coverUrl": "https://img3m0.ddimg.cn/0/16/29147580-1_u_1.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780291475800.jpg",
+      "coverSha256": "69bb5754c2ad74769ca2a3f36f1509c9d7a229b38310d6f544902d136cd7b0ab"
+    },
+    {
+      "isbn": "9783813773385",
+      "title": "计算机科学导论原书第4版 贝赫鲁兹佛罗赞机械工业出版社 高校大学生专科本科参考书 教辅教材 计算机网络理论方法 （正版包",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12381377338.html",
+      "coverUrl": "https://img3m8.ddimg.cn/55/35/12381377338-1_u_1789355099.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783813773385.jpg",
+      "coverSha256": "b22b1d8dac917b6cbff11c564d6b1b08416d74ee41cbcf3efb4acc9c90ba59e6"
+    },
+    {
+      "isbn": "9783137388142",
+      "title": "计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞 9787111131595 机械工业出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12313738814.html",
+      "coverUrl": "https://img3m4.ddimg.cn/14/27/12313738814-1_u_1765355575.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783137388142.jpg",
+      "coverSha256": "3a36afb81226988749dc5444d1a9647cbf43bc5c905316d65d2edf61af36c86a"
+    },
+    {
+      "isbn": "9786690428720",
+      "title": "计算机科学导论(原书第二版)【正版书籍】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/669042872.html",
+      "coverUrl": "https://img3m2.ddimg.cn/80/29/669042872-1_u_2.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9786690428720.jpg",
+      "coverSha256": "2753c81f0ab491522011beff0583786fe00620c90a5f7f1b051fc7ca6f911895"
+    },
+    {
+      "isbn": "9785103144615",
+      "title": "计算机科学概论 [美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译 978",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12510314461.html",
+      "coverUrl": "https://img3m1.ddimg.cn/73/2/12510314461-1_u_1778578360.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785103144615.jpg",
+      "coverSha256": "adb2ff31a85227d602c930140b37911b56163fdc0b3e4b091acf5687498f7e06"
+    },
+    {
+      "isbn": "9785662170407",
+      "title": "计算机科学导论【目丰图书专营店】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11566217040.html",
+      "coverUrl": "https://img3m0.ddimg.cn/15/20/11566217040-1_u_1695277845.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785662170407.jpg",
+      "coverSha256": "49d71e9622de51e955ca6821917455a50aeec06e58004e20fe35330bad0023a5"
+    },
+    {
+      "isbn": "9789551189945",
+      "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 机械工业出版社【可开电子发票】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11955118994.html",
+      "coverUrl": "https://img3m4.ddimg.cn/71/6/11955118994-1_u_1746811906.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789551189945.jpg",
+      "coverSha256": "3b6bf07e92c1775f37bd05580b60d7321ff80d7fd145a0d76c2f08a9e3ea9dab"
+    },
+    {
+      "isbn": "9784584899212",
+      "title": "计算机科学导论：以Python为舟 沙行勉 著 清华大学出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12458489921.html",
+      "coverUrl": "https://img3m1.ddimg.cn/53/30/12458489921-1_u_1761300236.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9784584899212.jpg",
+      "coverSha256": "ecde90d5be2e96da8cb11d50f64ff9a8e97c10c1b97d7a9322930e0c6294e6cc"
+    },
+    {
+      "isbn": "9784417773115",
+      "title": "计算机科学前沿技术 王伟 编 清华大学出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12441777311.html",
+      "coverUrl": "https://img3m1.ddimg.cn/29/24/12441777311-1_u_1759516462.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9784417773115.jpg",
+      "coverSha256": "293341018b343578142f49d6f65eb750fe86daf2487934c6b4907fff7038127c"
+    },
+    {
+      "isbn": "9789575842826",
+      "title": "计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞【正版】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11957584282.html",
+      "coverUrl": "https://img3m2.ddimg.cn/61/21/11957584282-1_u_1750763325.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789575842826.jpg",
+      "coverSha256": "84c3c58bdbca9a558555b2e84a7f30ee3f116efdd3fd25b6dfe0f92d77231b88"
+    },
+    {
+      "isbn": "9789550890644",
+      "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 人民邮电出版社【可开电子发票】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11955089064.html",
+      "coverUrl": "https://img3m4.ddimg.cn/39/9/11955089064-1_u_1746809794.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789550890644.jpg",
+      "coverSha256": "ce79c87dbdb85f5c6a92b42c38d66d8dea56966f9c519eaa6e0519467051326c"
+    },
+    {
+      "isbn": "9789575573546",
+      "title": "计算机科学概论 [美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译 机械工",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11957557354.html",
+      "coverUrl": "https://img3m4.ddimg.cn/61/29/11957557354-1_u_1746977264.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789575573546.jpg",
+      "coverSha256": "11112572a8c630aab9a2fa5ee515bfa31c6e622819237d7ecc29132e0e575d66"
+    },
+    {
+      "isbn": "9789595772042",
+      "title": "计算机科学概论 [美]戴尔、[美]刘易斯 著；张欣、胡伟 译 机械工业出版社【达额立减】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11959577204.html",
+      "coverUrl": "https://img3m4.ddimg.cn/14/12/11959577204-1_u_1747145834.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789595772042.jpg",
+      "coverSha256": "9f24d386a0395aead279f64ff474a6b9c69771aaad042ffd4fc8872a6d19ba79"
+    },
+    {
+      "isbn": "9785148960515",
+      "title": "计算机科学导论：以Python为舟 沙行勉 著 9787302377733 清华大学出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12514896051.html",
+      "coverUrl": "https://img3m1.ddimg.cn/42/30/12514896051-1_u_1779038912.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785148960515.jpg",
+      "coverSha256": "087625dac27a669b1c16439b258242b16b329d18b71dd1137b9b6c37718a330b"
+    },
+    {
+      "isbn": "9785119525613",
+      "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 9787111511632 机械工业出",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12511952561.html",
+      "coverUrl": "https://img3m1.ddimg.cn/20/1/12511952561-1_u_1778729803.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785119525613.jpg",
+      "coverSha256": "75123e8adc78dad403a6d971cfc5b8e40f351bc0dd32a8bbf613bd3f73250cbb"
+    },
+    {
+      "isbn": "9789551360542",
+      "title": "计算机科学概论 [美]Nell、John Lewis 著 机械工业出版社【售后无忧】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11955136054.html",
+      "coverUrl": "https://img3m4.ddimg.cn/4/9/11955136054-1_u_1746813011.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789551360542.jpg",
+      "coverSha256": "c65b19b22d939f71f146b9177ce984beb99ead1b3e877f2e9c351ceb9748633f"
+    },
+    {
+      "isbn": "9785145100716",
+      "title": "计算机科学概论 [美]布鲁克希尔 著 9787115277947 人民邮电出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12514510071.html",
+      "coverUrl": "https://img3m1.ddimg.cn/63/34/12514510071-1_u_1779016021.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785145100716.jpg",
+      "coverSha256": "87d468b9fce3bd0b41d23ef91ddc8075b8d6a063e05e406498bc22c9878d2543"
+    },
+    {
+      "isbn": "9785136310575",
+      "title": "计算机科学概论 得克萨斯大学奥斯汀分校（Nell Dale）、维拉诺瓦大学（John Lewis） 著 机械工业出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12513631057.html",
+      "coverUrl": "https://img3m7.ddimg.cn/70/29/12513631057-1_u_1783090466.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785136310575.jpg",
+      "coverSha256": "90599128e807ad59fc41ee2bd252286a454c01ee241b09fc9e73c1d86ec408c5"
+    },
+    {
+      "isbn": "9783616113630",
+      "title": "计算机科学概论 [美]布鲁克希尔 著 人民邮电出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12361611363.html",
+      "coverUrl": "https://img3m3.ddimg.cn/24/15/12361611363-1_u_1782736151.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783616113630.jpg",
+      "coverSha256": "03559ad3f15c9c8d0430c6c676791522fc676bf8b4ee48454e7b4d0d0a032552"
+    },
+    {
+      "isbn": "9783616014937",
+      "title": "计算机科学导论 莫沙拉夫 著；刘艺 译；[美]佛罗赞 机械工业出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12361601493.html",
+      "coverUrl": "https://img3m3.ddimg.cn/54/24/12361601493-1_u_1782736007.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783616014937.jpg",
+      "coverSha256": "63b3c20ea568c91abc8518fc801e4945400d5d02974a97e3a0a7bb53c5833d07"
+    },
+    {
+      "isbn": "9789588689029",
+      "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译【正版】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11958868902.html",
+      "coverUrl": "https://img3m2.ddimg.cn/57/1/11958868902-1_u_1750819034.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789588689029.jpg",
+      "coverSha256": "0a63f844fe0ce0c1cde52852df6ead668762b97816b47607806f3aeee3766a7b"
+    },
+    {
+      "isbn": "9783541325900",
+      "title": "计算机科学引论 [美]奥地利（OLeary,T.J.）、[美]奥地利（OLeary,T.I.） 著 高等教育出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12354132590.html",
+      "coverUrl": "https://img3m0.ddimg.cn/8/15/12354132590-1_u_1774994731.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783541325900.jpg",
+      "coverSha256": "047f98b5c071b38a203671efebeb44ebf354cfcd34ccefe3dbba7a558fdb09a9"
+    },
+    {
+      "isbn": "9785151027915",
+      "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 9787115261960 人民邮电出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12515102791.html",
+      "coverUrl": "https://img3m1.ddimg.cn/70/14/12515102791-1_u_1779052856.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785151027915.jpg",
+      "coverSha256": "1f1723b1d0ae3ed41931770f167f7b10786d93411b622c29dd7366456dbf6c37"
+    },
+    {
+      "isbn": "9789581122721",
+      "title": "计算机科学概论 [美]布鲁克希尔 著【速开发票，优质售后，支持7天无理由退换】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11958112272.html",
+      "coverUrl": "https://img3m2.ddimg.cn/84/21/11958112272-1_u_1750786344.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789581122721.jpg",
+      "coverSha256": "940ec1d6a50215d77de71eee3d3b19b01dcb1c4822f3023ff7ee5cca49ff3324"
+    },
+    {
+      "isbn": "9785100657118",
+      "title": "计算机科学概论 得克萨斯大学奥斯汀分校（Nell Dale）、维拉诺瓦大学（John Lewis） 著 97871112",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12510065711.html",
+      "coverUrl": "https://img3m1.ddimg.cn/11/3/12510065711-1_u_1778544065.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785100657118.jpg",
+      "coverSha256": "bc3bb74330820b53c93491e35ed60f315a740306cd84ef7f232ef368b2446951"
+    },
+    {
+      "isbn": "9783367640140",
+      "title": "计算机科学导论 瞿中；伍建全；熊安萍；夏淑芳 清华大学出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12336764014.html",
+      "coverUrl": "https://img3m4.ddimg.cn/91/16/12336764014-1_u_1761475788.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783367640140.jpg",
+      "coverSha256": "d070323c43536f85a40001ae586be45cbbd5dc3e7f2c56a8425417be30ef87da"
+    },
+    {
+      "isbn": "9789589600740",
+      "title": "计算机科学概论 刘艺、吴英、毛倩倩 译 人民邮电出版社【可开电子发票】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11958960074.html",
+      "coverUrl": "https://img3m4.ddimg.cn/50/5/11958960074-1_u_1747107175.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789589600740.jpg",
+      "coverSha256": "5d8f1d23ef7fcf3ac36f2c15e7f4dcd91bf7c836291122fc4cb545c25cb82217"
+    },
+    {
+      "isbn": "9785156999415",
+      "title": "计算机科学前沿技术 王伟 编 9787302285557 清华大学出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12515699941.html",
+      "coverUrl": "https://img3m1.ddimg.cn/52/21/12515699941-1_u_1779087150.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785156999415.jpg",
+      "coverSha256": "3fe042a49f351ec3bca047e152a70497dd4037aaeca3f5540f5fa049f60a48a4"
+    },
+    {
+      "isbn": "9785152294118",
+      "title": "计算机科学概论 [美]Nell、John Lewis 著 9787111448136 机械工业出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12515229411.html",
+      "coverUrl": "https://img3m1.ddimg.cn/69/20/12515229411-1_u_1779061676.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785152294118.jpg",
+      "coverSha256": "b4b8ab381c244e881bbc4630be9c19f71cc85c71482b420277138fbe3bfdf5b5"
+    },
+    {
+      "isbn": "9783385599741",
+      "title": "计算机科学概论[美]布鲁克希尔 著人民邮电出版社9787115277947",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12338559974.html",
+      "coverUrl": "https://img3m4.ddimg.cn/92/33/12338559974-1_u_1761693890.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783385599741.jpg",
+      "coverSha256": "dfa15e3977252d7890a1bd3ad627c3dcacb3363dc5594ef3f1d7173348dd3e5e"
+    },
+    {
+      "isbn": "9783616075235",
+      "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译 机械工业出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12361607523.html",
+      "coverUrl": "https://img3m3.ddimg.cn/45/23/12361607523-1_u_1782736089.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783616075235.jpg",
+      "coverSha256": "5bb5a125ae4d0976ad60a5497f6394ac2f3e428bf86fd19fcbc4ceaba26d38e1"
+    },
+    {
+      "isbn": "9783382163648",
+      "title": "计算机科学导论：以Python为舟沙行勉 著清华大学出版社9787302377733",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12338216364.html",
+      "coverUrl": "https://img3m4.ddimg.cn/12/5/12338216364-1_u_1761672521.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783382163648.jpg",
+      "coverSha256": "32dbe2816d4c2e6532bcac7451d6abc9e7b529438060ad205571045b206b08c9"
+    },
+    {
+      "isbn": "9783377403247",
+      "title": "计算机科学导论瞿中；伍建全；熊安萍；夏淑芳清华大学出版社9787302494942",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12337740324.html",
+      "coverUrl": "https://img3m4.ddimg.cn/63/7/12337740324-1_u_1761642341.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783377403247.jpg",
+      "coverSha256": "08fff1e99763813be5fad0e856b748e2a6dddbd0dd33eef65be2e13f618c3de4"
+    },
+    {
+      "isbn": "9785373758512",
+      "title": "计算机科学概论[美]布鲁克希尔（Brookshear J.G.） 著；俞嘉惠、方存正 译清华大学出版社978730210",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12537375851.html",
+      "coverUrl": "https://img3m1.ddimg.cn/11/36/12537375851-1_u_1783015633.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785373758512.jpg",
+      "coverSha256": "0abec0d8c51f2e82f3e046af62db2fc5c9bb94e9d26b8be4062f9b04981c7fff"
+    },
+    {
+      "isbn": "9783243817642",
+      "title": "计算机科学概论第13版英文版格伦·布鲁克希尔；丹尼斯·布里罗人民邮电出版社9787115523648",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12324381764.html",
+      "coverUrl": "https://img3m4.ddimg.cn/68/1/12324381764-1_u_1757914970.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783243817642.jpg",
+      "coverSha256": "8bf939696534a80fcafa59db90dfaafd4dfb1d509658e2d8a7b7755ba2a64190"
+    },
+    {
+      "isbn": "9784032960815",
+      "title": "计算机科学概论[美]内尔·黛尔（NellDale）、约翰·路易斯（JohnLewis） 著；吕云翔、刘艺博 译机械工业",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12403296081.html",
+      "coverUrl": "https://img3m1.ddimg.cn/0/15/12403296081-1_u_1755181534.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9784032960815.jpg",
+      "coverSha256": "905a3cc88c7289cdfd3aeff99715ce1232da306bd50ac04b6a2a47542200a1d7"
+    },
+    {
+      "isbn": "9784032282214",
+      "title": "计算机科学概论[美]J. Glenn Brookshear 著；刘艺 译人民邮电出版社9787115261960",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12403228221.html",
+      "coverUrl": "https://img3m1.ddimg.cn/54/13/12403228221-1_u_1755178073.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9784032282214.jpg",
+      "coverSha256": "244ec0d8b9f102ccaf4a0a01e465b5d2c440b268eadd11c6c7d7d116394ab8f4"
+    },
+    {
+      "isbn": "9783180939544",
+      "title": "计算机科学导论莫沙拉夫 著；刘艺 译；[美]佛罗赞机械工业出版社9787111131595",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12318093954.html",
+      "coverUrl": "https://img3m4.ddimg.cn/45/8/12318093954-1_u_1757149674.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783180939544.jpg",
+      "coverSha256": "f4c06a9d60b7f0b808212d3a5e84c2f65a6b4297e0dca04f8ecb26cd56bb6b32"
+    },
+    {
+      "isbn": "9789576166723",
+      "title": "计算机科学概论 刘艺、吴英、毛倩倩 译【正版】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11957616672.html",
+      "coverUrl": "https://img3m2.ddimg.cn/78/36/11957616672-1_u_1750765036.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789576166723.jpg",
+      "coverSha256": "fee7017940da596454966b1676a04a211e005841d33404db07dfc73d24892235"
+    },
+    {
+      "isbn": "9785150969216",
+      "title": "计算机科学引论 [美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著 9787111585268 机械工",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12515096921.html",
+      "coverUrl": "https://img3m1.ddimg.cn/41/27/12515096921-1_u_1779052381.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9785150969216.jpg",
+      "coverSha256": "16dd14126948cf9c3ecb43a93006feffa59eb448653383b5dca9dfcc58f52869"
+    },
+    {
+      "isbn": "9783232025508",
+      "title": "计算机科学导论罗琼、杨微 编北京邮电大学出版社有限公司9787563548491",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12323202550.html",
+      "coverUrl": "https://img3m0.ddimg.cn/43/14/12323202550-1_u_1761810535.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783232025508.jpg",
+      "coverSha256": "975f9ca4db8a2ea3bab5b7e7feb3c077394e83dcc27914a60af45a11fdecbd4e"
+    },
+    {
+      "isbn": "9783242941942",
+      "title": "计算机科学引论[美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著机械工业出版社978711166378",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12324294194.html",
+      "coverUrl": "https://img3m4.ddimg.cn/14/10/12324294194-1_u_1757910027.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783242941942.jpg",
+      "coverSha256": "9d32afc2668c53e662e7c7de1c8f7701b1484c887eb511a91f7177a54541b931"
+    },
+    {
+      "isbn": "9783214790745",
+      "title": "计算机科学引论[美]奥地利（OLeary,T.J.）、[美]奥地利（OLeary,T.I.） 著高等教育出版社97870",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12321479074.html",
+      "coverUrl": "https://img3m4.ddimg.cn/58/35/12321479074-1_u_1757693341.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783214790745.jpg",
+      "coverSha256": "4dd7f43826b7d8281aff616047bb9acc2593a259ec5576f1db8bf27c1f2dde60"
+    },
+    {
+      "isbn": "9789417105737",
+      "title": "计算机科学导论：思想与方法董荣胜 著高等教育出版社9787040224627",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11941710573.html",
+      "coverUrl": "https://img3m3.ddimg.cn/12/15/11941710573-1_u_1747168375.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789417105737.jpg",
+      "coverSha256": "c73a0451e57d0a494628a7c30f61aa84ba7559f5d0cf7eb25f9ec7954f0cd6c8"
+    },
+    {
+      "isbn": "9784025452716",
+      "title": "计算机科学引论[美]蒂莫西、J.、奥利里(Timothy、J.、OLeary) 著机械工业出版社978711158526",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12402545271.html",
+      "coverUrl": "https://img3m1.ddimg.cn/6/9/12402545271-1_u_1755149135.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9784025452716.jpg",
+      "coverSha256": "326d39710383bf6c045e3a61cf8de397c25476c16dec5aa95f0679e8822b3723"
+    },
+    {
+      "isbn": "9789577541529",
+      "title": "计算机科学导论：原书第3版 [美]Behrouz Forouzan 著；刘艺 译【正版】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11957754152.html",
+      "coverUrl": "https://img3m2.ddimg.cn/47/24/11957754152-1_u_1750770814.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789577541529.jpg",
+      "coverSha256": "a40098cfad04d07aeab8e1c5484c1cb8bb4c884596d8e9ad2ce8607178c8ba38"
+    },
+    {
+      "isbn": "9783389952061",
+      "title": "计算机科学基础：从数据操纵到计算理论 Behrouz A.Forouzan With Sophia Chung Fega",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12338995206.html",
+      "coverUrl": "https://img3m6.ddimg.cn/21/34/12338995206-1_u_1769383017.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783389952061.jpg",
+      "coverSha256": "3342aa7d6b0003a52f07792019527970cafced218ec3a012a65a0f179d062533"
+    },
+    {
+      "isbn": "9789929872066",
+      "title": "计算机科学导论",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11992987206.html",
+      "coverUrl": "https://img3m6.ddimg.cn/90/13/11992987206-1_u_1769397906.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789929872066.jpg",
+      "coverSha256": "8c623256f0ec912f75fe4eb4c3ee6d4b6de20fc74bfaa3bf3aa7f6ee1f4ca6c8"
+    },
+    {
+      "isbn": "9783562015439",
+      "title": "计算机科学概论 [美]J. Glenn Brookshear 著；刘艺 译 人民邮电出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12356201543.html",
+      "coverUrl": "https://img3m3.ddimg.cn/59/2/12356201543-1_u_1781422727.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783562015439.jpg",
+      "coverSha256": "9c7f589329c7f28811a79938f8bcd3ab1ff23500bd240c492cf06bd2afddc457"
+    },
+    {
+      "isbn": "9781000178463",
+      "title": "高等数学同济大学第八版教材辅导同步试卷本科考研参考",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12100017846.html",
+      "coverUrl": "https://img3m6.ddimg.cn/48/13/12100017846-1_u_1787623842.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9781000178463.jpg",
+      "coverSha256": "27bfbfe2002b7e5f6e86919b88da75efcbc274db13a4cd46234aa468499c00a6"
+    },
+    {
+      "isbn": "9780295898346",
+      "title": "高等数学 同济大学第八版 上册 高等教育出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29589834.html",
+      "coverUrl": "https://img3m4.ddimg.cn/21/9/29589834-1_u_1701744170.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780295898346.jpg",
+      "coverSha256": "27a0665bf2d3223d4c567f7799e61f75fa99c6471f2588fd1157129eaccd0820"
+    },
+    {
+      "isbn": "9780295874692",
+      "title": "高等数学 同济大学第八版 下册 高等教育出版社 第8版",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29587469.html",
+      "coverUrl": "https://img3m9.ddimg.cn/32/12/29587469-1_u_1701744757.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780295874692.jpg",
+      "coverSha256": "7481855ebb8b4b69670804d7875ac9c17a29cba6ade2bdc3ca7e89ce5f0c5af0"
+    },
+    {
+      "isbn": "9780296000526",
+      "title": "高等数学习题全解指导 上册 同济·第八版",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29600052.html",
+      "coverUrl": "https://img3m2.ddimg.cn/42/15/29600052-1_u_1701744201.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780296000526.jpg",
+      "coverSha256": "2cb06fe701e2c9deb14d71013540469b0e055612ffb01b006afa145e5e12cafd"
+    },
+    {
+      "isbn": "9781000128352",
+      "title": "高等数学上下册 高等数学解题指南 李忠 周建莹",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12100012835.html",
+      "coverUrl": "https://img3m5.ddimg.cn/86/34/12100012835-1_u_1699932058.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9781000128352.jpg",
+      "coverSha256": "0aab481b99494e559a00cf1b3c0edcaa96e4136d739a232f9d271a3a4b75e2e2"
+    },
+    {
+      "isbn": "9780301123141",
+      "title": "高等数学（上册）精选750题",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30112314.html",
+      "coverUrl": "https://img3m4.ddimg.cn/78/12/30112314-1_u_1790126126.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301123141.jpg",
+      "coverSha256": "be4458ae0793337a72daecbf76ee4d53551b8de43b22b40283a05860e238fb76"
+    },
+    {
+      "isbn": "9780295967639",
+      "title": "高等数学习题全解指导 下册 同济·第八版",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29596763.html",
+      "coverUrl": "https://img3m3.ddimg.cn/20/19/29596763-1_u_1701744944.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780295967639.jpg",
+      "coverSha256": "1eac56826f5c7371be2f12e2171f77fd44618d4ae5d3166f408d58587635abb9"
+    },
+    {
+      "isbn": "9780297824053",
+      "title": "高等数学基础计算考研数学基础公式手册",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29782405.html",
+      "coverUrl": "https://img3m5.ddimg.cn/37/32/29782405-1_u_1792136738.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297824053.jpg",
+      "coverSha256": "ac6049cb3c08c043eae48ca40007c3a0432702108b5ba834f014072d798c7523"
+    },
+    {
+      "isbn": "9780296993934",
+      "title": "高等数学 同济第八版上册 穿透辅导与习题全解",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29699393.html",
+      "coverUrl": "https://img3m3.ddimg.cn/86/11/29699393-1_u_1714467970.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780296993934.jpg",
+      "coverSha256": "a027164e7602aba21f2fbd648455b447883ea23d65624002928bccfc3e95c5c9"
+    },
+    {
+      "isbn": "9780296983355",
+      "title": "高等数学（上册）（慕课版 第2版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29698335.html",
+      "coverUrl": "https://img3m5.ddimg.cn/18/26/29698335-1_u_1710384290.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780296983355.jpg",
+      "coverSha256": "320229784e1cc09b178b14cfd8a19557af169a971393912511e842a447b11c3c"
+    },
+    {
+      "isbn": "9780300910674",
+      "title": "2028高等数学零基础入门（汤家凤）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30091067.html",
+      "coverUrl": "https://img3m7.ddimg.cn/17/3/30091067-1_u_1785139601.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780300910674.jpg",
+      "coverSha256": "a5695ee8bac5528abd952ad47be66e15f6b4c35d337eb7ec2fb4c6cd2d777218"
+    },
+    {
+      "isbn": "9780297337799",
+      "title": "高等数学（下册）精选750题",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29733779.html",
+      "coverUrl": "https://img3m9.ddimg.cn/20/24/29733779-1_u_1723770476.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297337799.jpg",
+      "coverSha256": "277521d7f02392885115b84c6f88441350952cf5bdf523d5e542af66ef32db60"
+    },
+    {
+      "isbn": "9788992353670",
+      "title": "【高等数学同济第八版】教材+习题全解指导+穿透辅导与习题全解 上册下册任选 大一教材课本高数同济大学第8版同步辅导讲义书",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11899235367.html",
+      "coverUrl": "https://img3m7.ddimg.cn/63/32/11899235367-1_u_1731377840.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9788992353670.jpg",
+      "coverSha256": "1c675e3154da3365b5774a1d685cc349e98cc0b771620e8bdaed26a3f00315c3"
+    },
+    {
+      "isbn": "9780296040034",
+      "title": "高等数学（第三版）（上册）普通高等教育“十一五”国家级规划教材",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29604003.html",
+      "coverUrl": "https://img3m3.ddimg.cn/33/7/29604003-1_u_1689928355.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780296040034.jpg",
+      "coverSha256": "edab9b0f481dec75c643b737c1583335ea96a7e280413d62dd6d213a411f2916"
+    },
+    {
+      "isbn": "9780296203279",
+      "title": "高等数学同步辅导（上册）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29620327.html",
+      "coverUrl": "https://img3m7.ddimg.cn/22/14/29620327-1_u_1700447791.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780296203279.jpg",
+      "coverSha256": "9475e0f9d1f7104dbe5e9eed253cc4f77d7fe17a69fa59c50ac4efae565ae00e"
+    },
+    {
+      "isbn": "9780294489972",
+      "title": "高等数学精选精解1600题 上册",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29448997.html",
+      "coverUrl": "https://img3m7.ddimg.cn/61/31/29448997-1_u_1701746964.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780294489972.jpg",
+      "coverSha256": "55d236784346f726d93be204db525bcd6c1bf91227b76c2fafe667ddfef6ccf5"
+    },
+    {
+      "isbn": "9780301000268",
+      "title": "高等数学辅导及习题精解 上册（同济第八版）2026",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30100026.html",
+      "coverUrl": "https://img3m6.ddimg.cn/66/8/30100026-1_u_1789091172.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301000268.jpg",
+      "coverSha256": "bf4026b3ccd6eb1dcb13b878e7a7ab68fbbaa9acbc48a15303fa558d0c2be163"
+    },
+    {
+      "isbn": "9780301067520",
+      "title": "高等数学作业册（上）（第二版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30106752.html",
+      "coverUrl": "https://img3m2.ddimg.cn/60/0/30106752-1_u_1788771358.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301067520.jpg",
+      "coverSha256": "b3c2c742a15b735ca6188fc6709a4e1b8324f984e204e78eb4c3e9178b5334b3"
+    },
+    {
+      "isbn": "9780299085773",
+      "title": "高等数学零基础入门（汤家凤书+课）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29908577.html",
+      "coverUrl": "https://img3m7.ddimg.cn/83/34/29908577-1_u_1750411990.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780299085773.jpg",
+      "coverSha256": "837d6ca8c078acf16e86e072019acccb8ea6ae8108a04c280ea7e84c8f4bbc43"
+    },
+    {
+      "isbn": "9780301000299",
+      "title": "高等数学辅导及习题精解 下册(同济第八版)2026",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30100029.html",
+      "coverUrl": "https://img3m9.ddimg.cn/69/11/30100029-1_u_1789091341.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301000299.jpg",
+      "coverSha256": "ea18e10ff4e4e074034a9cf5a621a46fde1f1a97ad5e837f264ba726c7908f6b"
+    },
+    {
+      "isbn": "9780296575970",
+      "title": "大学物理习题集",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29657597.html",
+      "coverUrl": "https://img3m7.ddimg.cn/68/25/29657597-1_u_1701938278.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780296575970.jpg",
+      "coverSha256": "1154776f90c8616999877311d7d94f8d2b57109ab5677cb1375eccaa31ba1c5c"
+    },
+    {
+      "isbn": "9783982722092",
+      "title": "大学物理习题集 孙祖尧,阎明 高等教育出版社【正版书】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12398272209.html",
+      "coverUrl": "https://img3m9.ddimg.cn/81/3/12398272209-1_u_1775253848.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783982722092.jpg",
+      "coverSha256": "faa516c514fdd1fa2600e21b7723eab457fbecfad09e12ca1cc8b1fe56ed7156"
+    },
+    {
+      "isbn": "9789500262903",
+      "title": "大学物理习题集 孙祖尧 阎明 高等教育出版社 配套王少杰大学物理学第五5版教材【正版】",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/11950026290.html",
+      "coverUrl": "https://img3m0.ddimg.cn/26/19/11950026290-1_u_1772786560.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9789500262903.jpg",
+      "coverSha256": "abba22a76c0973b2e5d0a6dcd8d61813b3d113662045d977dcffbe0a23974082"
+    },
+    {
+      "isbn": "9780297679912",
+      "title": "大学物理（下册）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29767991.html",
+      "coverUrl": "https://img3m1.ddimg.cn/77/11/29767991-1_u_1723447123.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297679912.jpg",
+      "coverSha256": "176b9a295cd7c9c6193e2402caa6294157b11967256de479a184a9e3d76d4f16"
+    },
+    {
+      "isbn": "9780292050891",
+      "title": "大学物理实验报告手册",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29205089.html",
+      "coverUrl": "https://img3m9.ddimg.cn/89/27/29205089-1_u_3.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780292050891.jpg",
+      "coverSha256": "37a5ff053f6d777ef236c089a876308c022f4ccb50c59524eaa5bfeb127aae38"
+    },
+    {
+      "isbn": "9780299409227",
+      "title": "大学物理实验（第三版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29940922.html",
+      "coverUrl": "https://img3m2.ddimg.cn/55/4/29940922-1_u_1758166740.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780299409227.jpg",
+      "coverSha256": "65b2d22519e9d2ea1d74941bd142955e2fa7f833bbeb27208bc20bb5aeadc5c6"
+    },
+    {
+      "isbn": "9780297021759",
+      "title": "大学物理学（下册）（第三版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29702175.html",
+      "coverUrl": "https://img3m5.ddimg.cn/96/18/29702175-1_u_1711009617.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297021759.jpg",
+      "coverSha256": "d0de8a58066ef4c7d8cc8253bf2834002df5b9753f35d8459631c4a10bb59057"
+    },
+    {
+      "isbn": "9780297325833",
+      "title": "大学物理学（下册）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29732583.html",
+      "coverUrl": "https://img3m3.ddimg.cn/12/12/29732583-1_u_1717147729.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297325833.jpg",
+      "coverSha256": "9fb29d445f974cd07c5d2c22c4dbde0436f6cdb4cd2476afb46d020da30f7207"
+    },
+    {
+      "isbn": "9780292815698",
+      "title": "大学物理练习题册",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29281569.html",
+      "coverUrl": "https://img3m9.ddimg.cn/42/28/29281569-1_u_1.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780292815698.jpg",
+      "coverSha256": "ebebbc190a1a8e1460a11be5a7ce1f103711ff91827b20d06d81457a555e28d2"
+    },
+    {
+      "isbn": "9781000128260",
+      "title": "大学物理通用教程（力学、习题解答-力学、热学、光学 现代光学基础）钟锡华",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12100012826.html",
+      "coverUrl": "https://img3m6.ddimg.cn/77/25/12100012826-1_u_1701319333.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9781000128260.jpg",
+      "coverSha256": "b16b9dd651ecbf77c7bf2ade67b9f7fbaf2e2dd861ae908f344293426d530107"
+    },
+    {
+      "isbn": "9780299259518",
+      "title": "新编大学物理学习指导（下册）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29925951.html",
+      "coverUrl": "https://img3m1.ddimg.cn/33/18/29925951-1_u_1785135751.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780299259518.jpg",
+      "coverSha256": "611f4291b3eb968a9fb9202d5497c68f3f58cbe553541a2bca4ba648d5c20e8d"
+    },
+    {
+      "isbn": "9780293864428",
+      "title": "大学物理实验",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29386442.html",
+      "coverUrl": "https://img3m2.ddimg.cn/74/6/29386442-1_u_1.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780293864428.jpg",
+      "coverSha256": "ef1c664157c0b0fae71139d55156b8a82aae90b19ffd90db0014a38651c100c5"
+    },
+    {
+      "isbn": "9780301071503",
+      "title": "电工电子技术实验",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30107150.html",
+      "coverUrl": "https://img3m0.ddimg.cn/62/28/30107150-1_u_1789698786.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301071503.jpg",
+      "coverSha256": "27c6f8410a0ffafa8e9a0956cc4bba6bc47e37fdff6fbf4217f80575f40cae90"
+    },
+    {
+      "isbn": "9780301155173",
+      "title": "电子技术基础",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30115517.html",
+      "coverUrl": "https://img3m7.ddimg.cn/14/33/30115517-1_u_1791508532.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301155173.jpg",
+      "coverSha256": "41e583c922d759293eba6f1bdc1a6a3d1a5428cdbe280df9a8ef5b07bfdd082e"
+    },
+    {
+      "isbn": "9780301174075",
+      "title": "电工电子技术（第二版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30117407.html",
+      "coverUrl": "https://img3m7.ddimg.cn/23/36/30117407-1_u_1791856956.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301174075.jpg",
+      "coverSha256": "34edcf3b056ed3e91d12bc5bae510f7f96f4ee627332e7207ea1d9a7836d31ca"
+    },
+    {
+      "isbn": "9783745752151",
+      "title": "电子技术 付植桐 主编 高等教育出版社",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12374575215.html",
+      "coverUrl": "https://img3m5.ddimg.cn/24/29/12374575215-1_u_1764390997.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9783745752151.jpg",
+      "coverSha256": "00fc83c6c9fa17fca515f6771c5d210ea1e8ddb6d17619550124dfc1231f3637"
+    },
+    {
+      "isbn": "9780301094519",
+      "title": "电路电子技术实验指导教程",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30109451.html",
+      "coverUrl": "https://img3m1.ddimg.cn/86/35/30109451-1_u_1789450138.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301094519.jpg",
+      "coverSha256": "acad66e794243d3d819606e1be2a77bf2659cfb1304b97a776f080ed0683247f"
+    },
+    {
+      "isbn": "9780301058481",
+      "title": "电子技术基础实验与课程设计（第4版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30105848.html",
+      "coverUrl": "https://img3m8.ddimg.cn/47/21/30105848-1_u_1788491039.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301058481.jpg",
+      "coverSha256": "e5d157519b28836659f557400e121a4a086b813673cfccf4d54900eb6356d943"
+    },
+    {
+      "isbn": "9780301090689",
+      "title": "电子技术基本教程 数字部分",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30109068.html",
+      "coverUrl": "https://img3m8.ddimg.cn/0/22/30109068-1_u_1790066728.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301090689.jpg",
+      "coverSha256": "aabe6c80de502f2ee9e2d0a9aff0dd725dd6f64140227f5b2a18bbdfeb4e9526"
+    },
+    {
+      "isbn": "9780300934731",
+      "title": "电工电子技术",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30093473.html",
+      "coverUrl": "https://img3m3.ddimg.cn/47/4/30093473-1_u_1786070918.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780300934731.jpg",
+      "coverSha256": "39fa69e9fe56365864737e36377a7d9cbf4db018b6c7b9356a6f874625f939b4"
+    },
+    {
+      "isbn": "9780301020891",
+      "title": "模拟电子技术实验与课程设计（第2版）――含电路部分",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30102089.html",
+      "coverUrl": "https://img3m9.ddimg.cn/50/36/30102089-1_u_1787723899.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301020891.jpg",
+      "coverSha256": "1792cbfef82b8cb24631e2886229b3ff5f39569dd6b41771783cc06d3b96636b"
+    },
+    {
+      "isbn": "9780301024899",
+      "title": "模拟电子技术基础 第5版",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30102489.html",
+      "coverUrl": "https://img3m9.ddimg.cn/54/29/30102489-1_u_1788936118.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301024899.jpg",
+      "coverSha256": "ae3405ff7f87090c49e64b1d1d642b6eba59c4cdb4a98fcd3c4f5085114ae7b8"
+    },
+    {
+      "isbn": "9780301026633",
+      "title": "数字电子技术基础",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30102663.html",
+      "coverUrl": "https://img3m3.ddimg.cn/30/18/30102663-1_u_1787790096.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301026633.jpg",
+      "coverSha256": "a7f79c48cb815698e9e16daca01130fbfad817b105167c1392f887d6563c3809"
+    },
+    {
+      "isbn": "9780251982133",
+      "title": "数字电子技术基础（第六版）学习辅导与习题解答",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/25198213.html",
+      "coverUrl": "https://img3m3.ddimg.cn/40/29/25198213-1_u_1.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780251982133.jpg",
+      "coverSha256": "60b7be510827673e17af76dad90afa720cf114431ab07c6de59fc06373bcf99e"
+    },
+    {
+      "isbn": "9780251982126",
+      "title": "数字电子技术基础（第六版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/25198212.html",
+      "coverUrl": "https://img3m2.ddimg.cn/39/28/25198212-1_u_3.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780251982126.jpg",
+      "coverSha256": "45e0275e285315fbd5430a52d76ddebfbe2edf737f01945a7dcf662378d0676c"
+    },
+    {
+      "isbn": "9780252037955",
+      "title": "模拟电子技术基础（第五版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/25203795.html",
+      "coverUrl": "https://img3m5.ddimg.cn/78/24/25203795-1_u_4.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780252037955.jpg",
+      "coverSha256": "fc3cb8f1b22b4ff869a93276b73540246489e984ad7c9ee6404e47a4cef9cf0c"
+    },
+    {
+      "isbn": "9781000273526",
+      "title": "小学英语语法 大全口诀秒记漫画 思维导图单词速记【网易有道】小学单词轻松记",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12100027352.html",
+      "coverUrl": "https://img3m2.ddimg.cn/50/10/12100027352-1_u_1774504383.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9781000273526.jpg",
+      "coverSha256": "a0c33a2dd95e246db077c82c61a5c3949b43bb824b786a8636656b218d9b780d"
+    },
+    {
+      "isbn": "9780297090069",
+      "title": "英语语法、阅读分解大全（全两册）初高中零起点英语语法入门 从零开始学英语语法这本就够零基础自学英语书籍",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29709006.html",
+      "coverUrl": "https://img3m6.ddimg.cn/96/4/29709006-1_u_1712635130.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780297090069.jpg",
+      "coverSha256": "eaf37688913ba433143fa4d3450ab32bb71f89b453aa0fb949675b530f34c3fe"
+    },
+    {
+      "isbn": "9780225042887",
+      "title": "张道真实用英语语法(新版)——语法专家张道真之作",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/22504288.html",
+      "coverUrl": "https://img3m8.ddimg.cn/4/0/22504288-1_u_1714385772.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780225042887.jpg",
+      "coverSha256": "ac5301766a95aba5cf76319110be2db80192b445318ff12323104b4bdc2a644e"
+    },
+    {
+      "isbn": "9780298373598",
+      "title": "薄冰英语语法",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29837359.html",
+      "coverUrl": "https://img3m9.ddimg.cn/46/4/29837359-1_u_1737597322.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780298373598.jpg",
+      "coverSha256": "996855071149f3d91ec05953427f0af127996b914197b8dc226412c03a748623"
+    },
+    {
+      "isbn": "9780299665845",
+      "title": "口诀秒记小学英语语法汉知简 小学英语语法 大全口诀秒记漫画 小学英语语法一本通配套人教版三四五六年级小学英语语法知识点汇",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29966584.html",
+      "coverUrl": "https://img3m4.ddimg.cn/76/25/29966584-1_u_1774407516.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780299665845.jpg",
+      "coverSha256": "cb575c03448cc6f2017681505e7b4663f9eda5cffcf03901606c15e009d79e0e"
+    },
+    {
+      "isbn": "9780253510037",
+      "title": "图解零基础英语语法",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/25351003.html",
+      "coverUrl": "https://img3m3.ddimg.cn/73/9/25351003-1_u_1714385778.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780253510037.jpg",
+      "coverSha256": "f1ee85a8b397b4f68901c763f9a73fc1600bef91933f7425f15834536eeb7ef5"
+    },
+    {
+      "isbn": "9781000219470",
+      "title": "剑桥初级中级英语语法+练习 第四版 第五版 剑桥“英语在用”丛书剑桥初级英语语法练习语法词汇语法练习",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/12100021947.html",
+      "coverUrl": "https://img3m7.ddimg.cn/90/7/12100021947-1_u_1786344543.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9781000219470.jpg",
+      "coverSha256": "7a4e476eecdc3b8f56e741667ce72691ad6668cc5fa2b85006934f0b9ae42f53"
+    },
+    {
+      "isbn": "9780294178388",
+      "title": "薄冰英语语法大全(外研增修版)",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29417838.html",
+      "coverUrl": "https://img3m8.ddimg.cn/87/26/29417838-1_u_1690786580.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780294178388.jpg",
+      "coverSha256": "52ab794f4461ab66aa2ada8d554006700acd79db7d43e66f80373f2800f93b61"
+    },
+    {
+      "isbn": "9780300972368",
+      "title": "初中英语语法专练（语篇综合训练）适配新中考语法命题新趋势 实战训练 精准定位薄弱点查漏补缺知识点",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30097236.html",
+      "coverUrl": "https://img3m6.ddimg.cn/48/30/30097236-1_u_1789119645.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780300972368.jpg",
+      "coverSha256": "bfc0d045d9766b161dd34aeb68914f600c84d1f072583b031af5036a0c064c60"
+    },
+    {
+      "isbn": "9780236526031",
+      "title": "薄冰小学英语语法（新修订版）90000多名读者热评！",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/23652603.html",
+      "coverUrl": "https://img3m3.ddimg.cn/18/20/23652603-1_u_7.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780236526031.jpg",
+      "coverSha256": "673d0b2a001b606eedee272a8989e5458d8c140713c520c3eafd86a769e62279"
+    },
+    {
+      "isbn": "9780205433841",
+      "title": "牛津实用英语语法(第四版)(翻译本)(双色版)(新)",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/20543384.html",
+      "coverUrl": "https://img3m4.ddimg.cn/92/22/20543384-1_u_5.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780205433841.jpg",
+      "coverSha256": "411fb1c840ed8a209687caf231cc5180ff2d47643234a6596612cf3febe2e74c"
+    },
+    {
+      "isbn": "9780296870877",
+      "title": "新编高级英语语法（第2版）",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/29687087.html",
+      "coverUrl": "https://img3m7.ddimg.cn/56/26/29687087-1_u_1708327755.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780296870877.jpg",
+      "coverSha256": "2940065f25f0f0620b99ab67fb6d99a0b44bb34f2f52ae91002864054096932f"
+    },
+    {
+      "isbn": "9780301090610",
+      "title": "《英语语法新认知》 讲透语法底层逻辑 高考题库例题 初、高中学生",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30109061.html",
+      "coverUrl": "https://img3m1.ddimg.cn/92/15/30109061-1_u_1789135884.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301090610.jpg",
+      "coverSha256": "b77896616d3cc7bb0aca434573f130d40c703d7cb226c946d2f092e7980643c4"
+    },
+    {
+      "isbn": "9780301157863",
+      "title": "英语语法手册 高中英语语法专项训练 词法句法基础知识与易错难点 扫码视频解析 中高贯通通用",
+      "metadataSource": "Dangdang",
+      "productUrl": "http://product.dangdang.com/30115786.html",
+      "coverUrl": "https://img3m6.ddimg.cn/85/6/30115786-1_u_1792117379.jpg",
+      "coverSource": "Dangdang",
+      "coverFile": "ebook-frontend/public/assets/covers/9780301157863.jpg",
+      "coverSha256": "e18e1198dba1176ae673888de7956b2e3e23381ab76311a730b41a1cc9b8fb2e"
     }
   ],
-  "failures": []
+  "failures": [],
+  "note": "每条记录的 metadataSource、coverSource 标明该书的元数据与封面来源。"
 }

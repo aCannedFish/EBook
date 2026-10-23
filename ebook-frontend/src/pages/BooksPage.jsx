@@ -1,11 +1,11 @@
 import { Col, Row, Space, Tag, Typography, Alert } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BookCard from "../components/BookCard";
 import { redirect, useActionData, useLoaderData } from "react-router-dom";
 import { addToCart, ensureBooksLoaded, setPageSearch } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 import { getApiErrorMessage } from "../utils/apiError";
-import { buildBookSearchText, normalize } from "../utils/bookSearch";
+import { buildBookEntry, normalize } from "../utils/bookSearch";
 
 export async function booksLoader() {
   const snapshot = requireAuthSnapshot();
@@ -46,7 +46,9 @@ export async function booksAction({ request }) {
   return null;
 }
 
-// 书城主页：先做本地关键词过滤，再把结果交给卡片网格展示。
+const ALPHABET = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ", "#"];
+
+// 书城主页：关键词、分类和拼音首字母三种筛选可以叠加。
 function BooksPage({
   books,
   search,
@@ -60,21 +62,45 @@ function BooksPage({
     return [...seen].sort((left, right) => left.localeCompare(right, "zh-Hans-CN"));
   }, [books]);
 
-  // 预先算好每本书的可搜索文本，避免每次输入都重新做拼音转换。
-  const searchable = useMemo(
-    () => books.map((book) => ({ book, text: buildBookSearchText(book) })),
+  // 预先算好拼音全文、首字母和排序键，避免每次输入都重复转换。
+  const entries = useMemo(
+    () => books.map((book) => ({ book, ...buildBookEntry(book) })),
     [books]
   );
 
   const keyword = normalize(search);
-  const filteredBooks = searchable
-    .filter(({ book, text }) => {
+  const filteredByText = useMemo(
+    () => entries.filter(({ book, text }) => {
       if (category && book.category !== category) {
         return false;
       }
       return !keyword || text.includes(keyword);
-    })
-    .map(({ book }) => book);
+    }),
+    [entries, category, keyword]
+  );
+
+  // 右侧字母表只统计当前分类与搜索条件下有书的字母，空字母置灰。
+  const letterCounts = useMemo(
+    () => filteredByText.reduce((counts, entry) => {
+      counts[entry.initial] = (counts[entry.initial] || 0) + 1;
+      return counts;
+    }, {}),
+    [filteredByText]
+  );
+
+  const [letter, setLetter] = useState("");
+
+  // 切换分类后原来选中的字母可能已经没有书，自动回到全部。
+  useEffect(() => {
+    if (letter && !letterCounts[letter]) {
+      setLetter("");
+    }
+  }, [letter, letterCounts]);
+
+  const filteredBooks = filteredByText
+    .filter((entry) => !letter || entry.initial === letter)
+    .sort((left, right) => left.sortKey.localeCompare(right.sortKey))
+    .map((entry) => entry.book);
 
   // 共享壳层（DashboardLayout）已经上移到受保护父路由，
   // 当前页面只保留内容主体。
@@ -113,14 +139,35 @@ function BooksPage({
         </Space>
       </div>
 
-      {/* 使用 Ant Design Row/Col 统一响应式栅格，保持原卡片网格布局。 */}
-      <Row gutter={[16, 16]} aria-label="书籍卡片列表" className="book-antd-grid">
-        {filteredBooks.map((book) => (
-          <Col key={book.id} xs={24} sm={12} lg={8} xl={6} className="book-antd-col">
-            <BookCard book={book} />
-          </Col>
-        ))}
-      </Row>
+      <div className="book-layout">
+        {/* 使用 Ant Design Row/Col 统一响应式栅格，保持原卡片网格布局。 */}
+        <Row gutter={[16, 16]} aria-label="书籍卡片列表" className="book-antd-grid">
+          {filteredBooks.map((book) => (
+            <Col key={book.id} xs={24} sm={12} lg={8} xl={6} className="book-antd-col">
+              <BookCard book={book} />
+            </Col>
+          ))}
+        </Row>
+        <nav className="book-alphabet" aria-label="按拼音首字母筛选">
+          {ALPHABET.map((item) => {
+            const count = letterCounts[item] || 0;
+            const active = letter === item;
+            return (
+              <button
+                key={item}
+                type="button"
+                className={`book-alphabet__letter${active ? " book-alphabet__letter--active" : ""}`}
+                disabled={count === 0}
+                aria-pressed={active}
+                aria-label={active ? `取消 ${item} 筛选` : `筛选以 ${item} 开头的书`}
+                onClick={() => setLetter(active ? "" : item)}
+              >
+                {item}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
     </section>
   );
 }
