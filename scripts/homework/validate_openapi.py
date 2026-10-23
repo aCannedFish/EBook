@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "python-assistant"))
+sys.path.insert(0, str(ROOT / "ebook-agent"))
 from backend.api_design import validate_contract
 
 

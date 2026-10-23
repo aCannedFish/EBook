@@ -67,14 +67,14 @@ __pycache__/
 # 本地 JDK 与联调产物不进入版本库或提交包。
 .tools/
 .local-data/
-/python-assistant/.index/
+/ebook-agent/.index/
 !requirements-docs.txt
 !/docs/assignments/**/*.md
 !/docs/assignments/**/*.txt
 !/scripts/homework/templates/*.docx
 
 # 保留课程提交所需的依赖声明、政策、报告与实际运行日志。
-!python-assistant/requirements.txt
-!python-assistant/data/policy.txt
+!ebook-agent/requirements.txt
+!ebook-agent/data/policy.txt
 !/docs/assignments/**/logs/*.log
 /deliverables/

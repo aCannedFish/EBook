@@ -9,8 +9,8 @@
 脚本对每本书做三件事：
 1. 用 ISBN 查 Open Library，确认这本书存在，把出版社、出版年、作者等原始信息
    记进 ``sources.json``，便于核对信息不是编的；
-2. 下载封面到 ``react-ebook/public/assets/covers/<isbn>.jpg``，校验确实是 JPEG；
-3. 把书目拼成 INSERT 语句，写进 ``springboot-ebook/src/main/resources/data.sql``
+2. 下载封面到 ``ebook-frontend/public/assets/covers/<isbn>.jpg``，校验确实是 JPEG；
+3. 把书目拼成 INSERT 语句，写进 ``ebook-backend/src/main/resources/data.sql``
    的标记块里（重复执行会整块替换，不会叠加），同时把同一段 SQL 打到标准输出，
    方便直接灌进正在运行的数据库。
 
@@ -44,8 +44,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 BOOKS_JSON = ROOT / "scripts" / "book_import" / "books.json"
 SOURCES_JSON = ROOT / "scripts" / "book_import" / "sources.json"
-DATA_SQL = ROOT / "springboot-ebook" / "src" / "main" / "resources" / "data.sql"
-COVER_DIR = ROOT / "react-ebook" / "public" / "assets" / "covers"
+DATA_SQL = ROOT / "ebook-backend" / "src" / "main" / "resources" / "data.sql"
+COVER_DIR = ROOT / "ebook-frontend" / "public" / "assets" / "covers"
 
 BEGIN_MARK = "-- BEGIN EXTRA BOOKS"
 END_MARK = "-- END EXTRA BOOKS"

@@ -47,10 +47,10 @@
 
 | 作业 | 实现位置 | 运行入口 |
 |---|---|---|
-| 1 | `python-assistant/backend/api_design.py`、`ApiDesignPage.jsx`、原书城 `BookController` | 管理员登录后打开 `/contract` |
-| 2 | `python-assistant/backend/assistant/`、`backend/tools.py`、`backend/catalog.py` | `/assistant` |
-| 3 | `python-assistant/backend/assistant/`、`backend/guide/`、`data/policy.txt` | `/assistant` |
-| 4 | `springboot-ebook` 中 JWT 过滤器、安全配置和虚拟线程配置 | 书城业务接口及 Swagger UI |
+| 1 | `ebook-agent/backend/api_design.py`、`ApiDesignPage.jsx`、原书城 `BookController` | 管理员登录后打开 `/contract` |
+| 2 | `ebook-agent/backend/assistant/`、`backend/tools.py`、`backend/catalog.py` | `/assistant` |
+| 3 | `ebook-agent/backend/assistant/`、`backend/guide/`、`data/policy.txt` | `/assistant` |
+| 4 | `ebook-backend` 中 JWT 过滤器、安全配置和虚拟线程配置 | 书城业务接口及 Swagger UI |
 
 助手页面为 `/assistant`，左侧可以新建会话或打开历史会话。会话按登录用户保存在服务端，切页、刷新和重新登录后都可以继续；不同用户不能读取彼此的会话。页面通过 `/api/assistant/sessions` 管理会话，通过 `/{id}/messages` 提交问题，通过 `/{id}/events` 接收实时进度。`/api/assistant/chat` 保留为一次性同步问答接口。
 
@@ -62,16 +62,16 @@
 
 ## 模型配置
 
-将 `python-assistant/.env.example` 复制为 `.env`，填写 OpenAI 兼容模型接口的 `LLM_BASE_URL`、`LLM_API_KEY` 和 `LLM_MODEL`，重启 Agent 即可。密钥仅用于模型网关鉴权，不会出现在报告、截图或提交包中。未配置密钥时，统一客服助手可明确切换为离线演示；接口契约生成要求真实模型。
+将 `ebook-agent/.env.example` 复制为 `.env`，填写 OpenAI 兼容模型接口的 `LLM_BASE_URL`、`LLM_API_KEY` 和 `LLM_MODEL`，重启 Agent 即可。密钥仅用于模型网关鉴权，不会出现在报告、截图或提交包中。未配置密钥时，统一客服助手可明确切换为离线演示；接口契约生成要求真实模型。
 
 Agent 将书目字段、工具结果和检索到的课程模拟政策发送给模型。顾客 JWT 仅转发给本机书城以校验身份、读取书目，不进入模型提示词。订单、购物车、用户资料和密码不作为模型工具数据。
 
 ## 代码结构
 
 ```text
-react-ebook/          原 React 书城及统一客服助手页面
-springboot-ebook/     原 Spring Boot 书城、JWT、Java 21 虚拟线程
-python-assistant/    统一 Agent，包含 Function Calling 与 RAG/ReAct
+ebook-frontend/      原 React 书城及统一客服助手页面
+ebook-backend/       原 Spring Boot 书城、JWT、Java 21 虚拟线程
+ebook-agent/         统一 Agent，包含 Function Calling 与 RAG/ReAct
 scripts/services.py  端口清理、进程组管理、就绪检查
 scripts/homework/    真实联调、截图、OpenAPI 校验与报告生成脚本
 scripts/book_import/ 新增课程书目的来源记录、封面下载和种子数据导入
@@ -85,13 +85,13 @@ deliverables/        模板填写的四份报告和提交压缩包
 
 ```bash
 # 先启动本项目开发数据库；测试使用单独的 ebook_integration_test 库。
-cd springboot-ebook
+cd ebook-backend
 mvn test
 
-cd ../python-assistant
+cd ../ebook-agent
 .venv/bin/python -m pytest
 
-cd ../react-ebook
+cd ../ebook-frontend
 npm run build
 ```
 

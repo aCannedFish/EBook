@@ -89,12 +89,12 @@ def main() -> None:
                 process.terminate()
     backend = (ROOT / ".logs/backend.json").read_text()
     agent = (ROOT / ".logs/agent.json").read_text()
-    command("./react-ebook/run-local.sh")
+    command("./ebook-frontend/run-local.sh")
     check_running()
     assert (ROOT / ".logs/backend.json").read_text() == backend
     assert (ROOT / ".logs/agent.json").read_text() == agent
     CHECKS.append({"case": "组件入口单独重启前端，后端和Agent继续运行", "passed": True})
-    command("./react-ebook/stop-local.sh")
+    command("./ebook-frontend/stop-local.sh")
     assert not listening(5173) and listening(8080) and listening(8000)
     CHECKS.append({"case": "组件停止入口仅释放前端端口", "passed": True})
     command("./stop-all.sh")

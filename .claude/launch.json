@@ -2,17 +2,17 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "react-ebook",
+      "name": "ebook-frontend",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5173
     },
     {
-      "name": "python-assistant",
+      "name": "ebook-agent",
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-c",
-        "cd python-assistant && exec python3 -m uvicorn backend.server:app --host 127.0.0.1 --port 8000"
+        "cd ebook-agent && exec python3 -m uvicorn backend.server:app --host 127.0.0.1 --port 8000"
       ],
       "port": 8000
     },

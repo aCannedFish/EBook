@@ -15,7 +15,7 @@
       "publisher": "MIT Press Ltd",
       "publishDate": "July 25th 1996",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780262510875-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780262510875.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780262510875.jpg",
       "coverSha256": "0571112fde218914f7ff05523ea3c3c4ebd68c94a3311d6a7d93702cf6b166b4"
     },
     {
@@ -30,7 +30,7 @@
       "publisher": "Pearson",
       "publishDate": "Mar 12, 2015",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134092669-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780134092669.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780134092669.jpg",
       "coverSha256": "e1b25a7ec0b6ac88a522aef0c6bba3eeb543362bee48821c23a71f84bc4f472b"
     },
     {
@@ -44,7 +44,7 @@
       "publisher": "Addison-Wesley",
       "publishDate": "1997",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780201896831-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780201896831.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780201896831.jpg",
       "coverSha256": "d1e853e21bc3ece56e0a82970ef20741273672a009241c99e1661544adfc241d"
     },
     {
@@ -58,7 +58,7 @@
       "publisher": "Microsoft Press",
       "publishDate": "2004",
       "coverUrl": "https://covers.openlibrary.org/b/id/13270592-L.jpg",
-      "coverFile": "react-ebook/public/assets/covers/9780735619678.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780735619678.jpg",
       "coverSha256": "e106fb57eca4f8f22712d3930b71f206b3656aaf93a2b40ba2ead88d21835aa6"
     },
     {
@@ -72,7 +72,7 @@
       "publisher": "Addision-Wesley",
       "publishDate": "2018",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134757599-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780134757599.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780134757599.jpg",
       "coverSha256": "e93712c1978faf85219b909f05e92ec2f52aaf702415f8acf2a8dc7b9f1143f9"
     },
     {
@@ -90,7 +90,7 @@
       "publisher": "Addison-Wesley Professional",
       "publishDate": "January 15, 1995",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780201633610-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780201633610.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780201633610.jpg",
       "coverSha256": "c4be0ac94321a78424815740f6e98073793975bab528c2e5f50882cbff192dc6"
     },
     {
@@ -104,7 +104,7 @@
       "publisher": "Addison-Wesley Professional",
       "publishDate": "1995",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780201835953-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780201835953.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780201835953.jpg",
       "coverSha256": "f69ef92cce9e0ba56f14311a6fad691ee26f7ca2373cd8fe9049efc8accbb9c4"
     },
     {
@@ -121,7 +121,7 @@
       "publisher": "Addison Wesley",
       "publishDate": "August 31, 2006",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321486813-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780321486813.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780321486813.jpg",
       "coverSha256": "7fbe27632a7843a8150024011115e92dad96aff764188411279cb5f6df7c94ff"
     },
     {
@@ -136,7 +136,7 @@
       "publisher": "Pearson",
       "publishDate": "2015",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780133591620-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780133591620.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780133591620.jpg",
       "coverSha256": "65f677e558fdb83620a3bb14db3473867005bda08260a9bd0ce027ba9ef59566"
     },
     {
@@ -150,7 +150,7 @@
       "publisher": "Wiley",
       "publishDate": "2013",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9781118063330-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9781118063330.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9781118063330.jpg",
       "coverSha256": "530b3259d13e16fc60435f74b9e76a32dec6af1a1182bc0b56f3c128c5cc6d0a"
     },
     {
@@ -165,7 +165,7 @@
       "publisher": "Pearson",
       "publishDate": "2012",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780132856201-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780132856201.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780132856201.jpg",
       "coverSha256": "c964d64ed8942268e3211244ca9625cb5d556bee6eaeb5fb1c909e9425e73213"
     },
     {
@@ -181,7 +181,7 @@
       "publisher": "Addison-Wesley",
       "publishDate": "2012",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321336316-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780321336316.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780321336316.jpg",
       "coverSha256": "c1ed8360afa97d3fa49b2fab4e9cb380fa673771335c0e2f1de376384b3e8f6c"
     },
     {
@@ -195,7 +195,7 @@
       "publisher": "McGraw-Hill Companies",
       "publishDate": "2011",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780073523323-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780073523323.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780073523323.jpg",
       "coverSha256": "4c34efa16376884020267da54455ed593f988d7c7b659caead23c19b32c1a6d0"
     },
     {
@@ -213,7 +213,7 @@
       "publisher": "O'Reilly Media",
       "publishDate": "2012",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9781449314286-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9781449314286.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9781449314286.jpg",
       "coverSha256": "7f63b4675499dbc140064f8a4652eef83658d4191f6c011e5ac63eabf9ed963e"
     },
     {
@@ -227,7 +227,7 @@
       "publisher": "Manning",
       "publishDate": "2013",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9781617290855-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9781617290855.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9781617290855.jpg",
       "coverSha256": "05f7877ad6ea6f536ce3382207e2f6582c6bcaabd655a989c2d173740c6a3aa2"
     },
     {
@@ -241,7 +241,7 @@
       "publisher": "Addison-Wesley Professional",
       "publishDate": "December 27, 2017",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134685991-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780134685991.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780134685991.jpg",
       "coverSha256": "37cc2fc25f1096224fca4af120d2c0a411c7f57d00139ae3d31c86595ec889e5"
     },
     {
@@ -260,7 +260,7 @@
       "publisher": "Addison-Wesley Professional",
       "publishDate": "May 9, 2006",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321349606-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780321349606.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780321349606.jpg",
       "coverSha256": "5609344d69fc8067eae5dc3193fe6a85066f2f10eadf91f094fa33c09885e15d"
     },
     {
@@ -274,7 +274,7 @@
       "publisher": "Prentice Hall",
       "publishDate": "July 2008",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780132350884.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780132350884.jpg",
       "coverSha256": "5332e44da7e72d37f983693bf5fddd77d2f217c1425b58383931a0c000f136c5"
     },
     {
@@ -289,7 +289,7 @@
       "publisher": "Pragmatic Programmer",
       "publishDate": "09/15/2019",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780135957059-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780135957059.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780135957059.jpg",
       "coverSha256": "2871395e3bf55a13c5fb824749120a499299854deee40e99bc3b092e96669edb"
     },
     {
@@ -303,7 +303,7 @@
       "publisher": "Addison-Wesley",
       "publishDate": "2008-10-?",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321125217-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780321125217.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780321125217.jpg",
       "coverSha256": "281093d4400eb737b4fbb9cf569813d2cfe5e697b8e14fb2359d73ab0500457a"
     },
     {
@@ -317,7 +317,7 @@
       "publisher": "Addison-Wesley",
       "publishDate": "2007-10-?",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780321127426-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780321127426.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780321127426.jpg",
       "coverSha256": "4cf03a64265109201e2ee0743418af72b0b6bc1a6611f7e71cb4fa1be4166968"
     },
     {
@@ -334,7 +334,7 @@
       "publisher": "O'Reilly Media, Inc.",
       "publishDate": "2016",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9781491929124-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9781491929124.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9781491929124.jpg",
       "coverSha256": "e99c314f58c982f1b42f9d0067d3cb69ace529ea9f6996aa8e7f75f02ff9a9b1"
     },
     {
@@ -348,7 +348,7 @@
       "publisher": "O'Reilly Media",
       "publishDate": "Apr 02, 2017",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9781449373320-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9781449373320.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9781449373320.jpg",
       "coverSha256": "40fc727d213fd55d49d97972a247ccea0e81d9d013cfe4540ffc4b27b7a1b713"
     },
     {
@@ -365,7 +365,7 @@
       "publisher": "MIT Press",
       "publishDate": "3 January 2017",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780262035613-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780262035613.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780262035613.jpg",
       "coverSha256": "91f303ddce116856938c63ccd8cd13f13d8bb78abfe11d9aeeb2abce7e24d783"
     },
     {
@@ -379,7 +379,7 @@
       "publisher": "Springer",
       "publishDate": "January 5, 2008",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780387310732-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780387310732.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780387310732.jpg",
       "coverSha256": "f9782f4605d9406404775e0931429566dc8a6fcf0060442a245169c3f26cf601"
     },
     {
@@ -394,7 +394,7 @@
       "publisher": "Prentice Hall",
       "publishDate": "2009",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780136042594-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780136042594.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780136042594.jpg",
       "coverSha256": "5963cd7d54ab16d469ea14ed66e98a047f5a629daf7a836ff24d3ac04c659640"
     },
     {
@@ -408,7 +408,7 @@
       "publisher": "Springer",
       "publishDate": "2010",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9781848829343-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9781848829343.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9781848829343.jpg",
       "coverSha256": "db819911edf8fa60a447a34be5125af3951ebca65d14e0e1aa8d70dd83824932"
     },
     {
@@ -422,7 +422,7 @@
       "publisher": "Morgan Kaufmann",
       "publishDate": "2013",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780123944245-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780123944245.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780123944245.jpg",
       "coverSha256": "174217b2e6bbf775ccab28c076e436cbca7d7fc2b3557ede46e47ed063943a61"
     },
     {
@@ -437,7 +437,7 @@
       "publisher": "Oxford University Press\t",
       "publishDate": "2014\t",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780199339136-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780199339136.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780199339136.jpg",
       "coverSha256": "92139693491a86f943fff5e48d2fed142b591ac2a10485bf6ff98f257bf98f5d"
     },
     {
@@ -452,7 +452,7 @@
       "publisher": "Prentice Hall",
       "publishDate": "1988",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780131103627-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780131103627.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780131103627.jpg",
       "coverSha256": "dc39cf3a8bbb978b16e50a1e6c3e7daf5600eba7c94ffb734e2fec9588b7c72d"
     },
     {
@@ -466,7 +466,7 @@
       "publisher": "A Bradford Book",
       "publishDate": "Nov 13, 2018",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780262039246-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780262039246.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780262039246.jpg",
       "coverSha256": "993350795951f4e4577e37253b8c68c91174ff2158abc78115ea2bc730d87d6d"
     },
     {
@@ -481,7 +481,7 @@
       "publisher": "Addison-Wesley",
       "publishDate": "2016",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780134190440-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780134190440.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780134190440.jpg",
       "coverSha256": "dddcbd2c0fba5fec22c2551b1aab3d5ef419ed1123644b4357a1926eda2dd772"
     },
     {
@@ -496,7 +496,7 @@
       "publisher": "Morgan Kaufmann",
       "publishDate": "2019",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780128119051-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780128119051.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780128119051.jpg",
       "coverSha256": "ea941f1dea66b960d4b5765c46e4d9448ad87ea8d681ae9616bd4d5a57aee2b3"
     },
     {
@@ -512,7 +512,7 @@
       "publisher": "Springer-Verlag New York",
       "publishDate": "2009",
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780387848570-L.jpg?default=false",
-      "coverFile": "react-ebook/public/assets/covers/9780387848570.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9780387848570.jpg",
       "coverSha256": "81ed1c76a47c6cb694f8e29e22af3c4de1801499e149d128667551fcd56608ea"
     }
   ],

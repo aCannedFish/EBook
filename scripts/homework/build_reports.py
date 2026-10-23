@@ -7,7 +7,7 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "python-assistant"))
+sys.path.insert(0, str(ROOT / "ebook-agent"))
 from report_document import build_report
 from backend.tools import TOOL_SCHEMAS
 
@@ -53,7 +53,7 @@ def report_one() -> str:
         "最终文件为 openapi.json。模型生成的库存请求 Schema 如下：", "",
         block("json", json.dumps(spec["components"]["schemas"]["StockInput"], ensure_ascii=False, indent=2)),
         "## 三、接口设计", "",
-        "接口直接对应 springboot-ebook 的 BookController，不再另建作业专用服务。", "",
+        "接口直接对应 ebook-backend 的 BookController，不再另建作业专用服务。", "",
         "| 方法 | 资源路径 | 功能 | 成功响应 |",
         "|---|---|---|---|",
         "| GET | /api/v1/books | 分页与分类过滤 | 200 BookPage |",
@@ -145,7 +145,7 @@ def report_three() -> str:
         previous_thought = step["thought"]
     return "\n".join([
         "## 一、政策向量化", "",
-        "书城的退换货与会员政策存放在 python-assistant/data/policy.txt，包含5章25条课程模拟政策。"
+        "书城的退换货与会员政策存放在 ebook-agent/data/policy.txt，包含5章25条课程模拟政策。"
         "加载时清除排版分隔线，保留版本、章节和条款信息；按条款分块，超长内容按句子拆分，"
         "窗口420字符、重叠60字符，每块保留标题和编号。", "",
         f"本次清洗后共{stats['document']['chars']}字符，产生{stats['count']}个分块。"
@@ -184,7 +184,7 @@ def report_four() -> str:
     """围绕原书城的接口、Java21、JWT与真实401/200证据写作。"""
     return "\n".join([
         "## 一、接口设计", "",
-        "高并发与鉴权改造直接加入原 springboot-ebook，不另建作业后端。原有 MySQL、JPA、图书管理、"
+        "高并发与鉴权改造直接加入原 ebook-backend，不另建作业后端。原有 MySQL、JPA、图书管理、"
         "购物车、订单和统计功能继续使用。GET /api/v1/books 提供分页列表，GET /api/v1/books/{id} "
         "返回图书 JSON，POST 新增返回201与Location，PATCH /api/v1/books/{id}/stock 更新库存，资源不存在返回404。", "",
         "## 二、虚拟线程", "",

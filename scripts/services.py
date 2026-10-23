@@ -22,9 +22,9 @@ from urllib.request import urlopen
 ROOT = Path(__file__).resolve().parent.parent
 LOGS = ROOT / ".logs"
 SERVICES = {
-    "backend": ("书城后端", 8080, "/api/v1/runtime", "springboot-ebook/run-local.sh", "bookstore"),
-    "agent": ("Agent 服务", 8000, "/api/assistant/health", "python-assistant/run-local.sh", "ai"),
-    "frontend": ("React 前端", 5173, "/", "react-ebook/run-local.sh", "frontend"),
+    "backend": ("书城后端", 8080, "/api/v1/runtime", "ebook-backend/run-local.sh", "bookstore"),
+    "agent": ("Agent 服务", 8000, "/api/assistant/health", "ebook-agent/run-local.sh", "ai"),
+    "frontend": ("React 前端", 5173, "/", "ebook-frontend/run-local.sh", "frontend"),
 }
 
 

@@ -1,14 +1,14 @@
 {
   "name": "ebook",
   "private": true,
-  "description": "EBook 电子书城 — 根目录便捷脚本，实际前端工程在 react-ebook/",
+  "description": "EBook 电子书城 — 根目录便捷脚本，实际前端工程在 ebook-frontend/",
   "scripts": {
-    "dev": "npm run dev --prefix react-ebook",
-    "dev:assistant": "./python-assistant/run-local.sh",
-    "dev:backend": "./springboot-ebook/run-local.sh",
-    "build": "npm run build --prefix react-ebook",
-    "preview": "npm run preview --prefix react-ebook",
-    "install:frontend": "npm install --prefix react-ebook",
-    "test:assistant": "python3 -m pytest python-assistant/backend/tests -q"
+    "dev": "npm run dev --prefix ebook-frontend",
+    "dev:assistant": "./ebook-agent/run-local.sh",
+    "dev:backend": "./ebook-backend/run-local.sh",
+    "build": "npm run build --prefix ebook-frontend",
+    "preview": "npm run preview --prefix ebook-frontend",
+    "install:frontend": "npm install --prefix ebook-frontend",
+    "test:assistant": "python3 -m pytest ebook-agent/backend/tests -q"
   }
 }

@@ -59,7 +59,7 @@ def main() -> None:
     course_isbns = SEED_ISBNS | {book["isbn"].replace("-", "") for book in imported}
     current_isbns = {book["isbn"].replace("-", "") for book in books}
     assert SEED_ISBNS <= current_isbns <= course_isbns
-    assert "虚构" in (ROOT / "python-assistant/data/policy.txt").read_text()
+    assert "虚构" in (ROOT / "ebook-agent/data/policy.txt").read_text()
     auth = [request("GET", store, "/api/v1/books/1"),
             request("GET", store, "/api/v1/books/1", token="bad-token"),
             request("GET", store, "/api/v1/books/1", token=reader),

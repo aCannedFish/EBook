@@ -15,12 +15,12 @@ OUTPUT = ROOT / "deliverables"
 STUDENT = "524031910113"
 EXCLUDED = {"__pycache__", ".pytest_cache", ".index", ".DS_Store", "node_modules", "target", ".venv", ".git", ".tools"}
 COMMON = ["run-all.sh", "stop-all.sh", "status-all.sh", "scripts/services.py"]
-JAVA = ["springboot-ebook/src", "springboot-ebook/pom.xml", "springboot-ebook/run-local.sh", "springboot-ebook/stop-local.sh"]
-PYTHON = ["python-assistant/backend", "python-assistant/data/policy.txt", "python-assistant/requirements.txt",
-          "python-assistant/pytest.ini", "python-assistant/.env.example", "python-assistant/README.md",
-          "python-assistant/run-local.sh", "python-assistant/stop-local.sh"]
-FRONTEND = ["react-ebook/src", "react-ebook/public", "react-ebook/index.html", "react-ebook/package.json",
-            "react-ebook/package-lock.json", "react-ebook/vite.config.js", "react-ebook/run-local.sh", "react-ebook/stop-local.sh"]
+JAVA = ["ebook-backend/src", "ebook-backend/pom.xml", "ebook-backend/run-local.sh", "ebook-backend/stop-local.sh"]
+PYTHON = ["ebook-agent/backend", "ebook-agent/data/policy.txt", "ebook-agent/requirements.txt",
+          "ebook-agent/pytest.ini", "ebook-agent/.env.example", "ebook-agent/README.md",
+          "ebook-agent/run-local.sh", "ebook-agent/stop-local.sh"]
+FRONTEND = ["ebook-frontend/src", "ebook-frontend/public", "ebook-frontend/index.html", "ebook-frontend/package.json",
+            "ebook-frontend/package-lock.json", "ebook-frontend/vite.config.js", "ebook-frontend/run-local.sh", "ebook-frontend/stop-local.sh"]
 
 
 def collect(inputs: list[str]) -> dict[str, Path]:
@@ -83,16 +83,16 @@ def main() -> None:
     shared_name = f"{STUDENT}-书城集成源码.zip"
     write_archive(OUTPUT / shared_name, {"bookstore/" + name: source for name, source in shared.items()})
     selected = {
-        1: ["python-assistant/backend/api_design.py", "react-ebook/src/pages/ApiDesignPage.jsx",
-            "springboot-ebook/src/main/java/com/ebook/backend/controller/BookController.java",
+        1: ["ebook-agent/backend/api_design.py", "ebook-frontend/src/pages/ApiDesignPage.jsx",
+            "ebook-backend/src/main/java/com/ebook/backend/controller/BookController.java",
             "scripts/homework/generate_contract.py", "scripts/homework/validate_openapi.py"],
-        2: [*PYTHON, "react-ebook/src/pages/AssistantPage.jsx", "react-ebook/src/pages/AssistantPage.css",
-            "react-ebook/src/pages/useAssistantSessions.js", "react-ebook/src/api/assistantApi.js",
+        2: [*PYTHON, "ebook-frontend/src/pages/AssistantPage.jsx", "ebook-frontend/src/pages/AssistantPage.css",
+            "ebook-frontend/src/pages/useAssistantSessions.js", "ebook-frontend/src/api/assistantApi.js",
             "scripts/homework/collect_evidence.py"],
-        3: [*PYTHON, "react-ebook/src/pages/AssistantPage.jsx", "react-ebook/src/pages/AssistantPage.css",
-            "react-ebook/src/pages/useAssistantSessions.js", "react-ebook/src/api/assistantApi.js",
+        3: [*PYTHON, "ebook-frontend/src/pages/AssistantPage.jsx", "ebook-frontend/src/pages/AssistantPage.css",
+            "ebook-frontend/src/pages/useAssistantSessions.js", "ebook-frontend/src/api/assistantApi.js",
             "scripts/homework/collect_evidence.py"],
-        4: [*JAVA, "react-ebook/src/api/auth.js", "react-ebook/src/api/backendApi.js",
+        4: [*JAVA, "ebook-frontend/src/api/auth.js", "ebook-frontend/src/api/backendApi.js",
             "scripts/homework/collect_evidence.py"],
     }
     package_names = []
@@ -129,7 +129,7 @@ def main() -> None:
               "解压集成源码，进入 bookstore/ 后执行 `./run-all.sh`；停止使用 `./stop-all.sh`，状态使用 `./status-all.sh`。"
               "需要单独管理时使用 `--frontend`、`--backend` 或 `--agent`。默认端口 5173、8080、8000；启动前清理选定端口，停止后保留数据库数据。\n\n"
               "需要 JDK21、Maven、Node18+、Python3.10+、Docker Desktop 和 lsof。首次使用会下载依赖和本地向量模型。"
-              "真实模型通过 python-assistant/.env 配置；密钥文件不包含在交付包中。演示管理员 admin/admin123，普通用户 DefaultUser/123456。\n")
+              "真实模型通过 ebook-agent/.env 配置；密钥文件不包含在交付包中。演示管理员 admin/admin123，普通用户 DefaultUser/123456。\n")
     (OUTPUT / "README.md").write_text(readme)
     bundle = {name: OUTPUT / name for name in [*package_names, shared_name]}
     write_archive(OUTPUT / f"{STUDENT}-四次作业.zip", bundle, {"README.md": readme})
