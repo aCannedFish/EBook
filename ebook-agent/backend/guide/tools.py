@@ -296,8 +296,9 @@ TOOL_SCHEMAS: list[dict] = [
         "function": {
             "name": "search_book_catalog",
             "description": (
-                "在本店书目中按主题关键词检索图书，返回书名、作者、价格、库存与简介。"
+                "在本店书目中按主题关键词检索图书，返回书名、作者、价格、库存、简介与 detailUrl。"
                 "当用户想买书、要求推荐、询问某类主题有没有货时调用。"
+                "detailUrl 是详情页相对地址，推荐时原样用作 Markdown 链接目标。"
                 "query 用主题词而不是整句话，例如「微服务」「Kubernetes」「算法」。"
                 "用户提到预算就传 max_price，只想要能立刻下单的书就传 in_stock_only=true。"
             ),

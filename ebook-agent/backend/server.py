@@ -153,6 +153,7 @@ def live_catalog(inventory: InventoryBackend) -> Catalog:
             stock_qty=book["stockQty"],
             rating=0.0,
             sales=0,
+            book_id=int(book["id"]) if book.get("id") is not None else None,
         )
         for book in inventory.fetch_books()
     ]

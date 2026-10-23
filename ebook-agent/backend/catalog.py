@@ -47,13 +47,14 @@ class BookStock:
     category: str
     stock_qty: int
     stock_text: str
+    book_id: int | None = None
 
     @property
     def in_stock(self) -> bool:
         return self.stock_qty > 0
 
     def to_payload(self) -> dict:
-        return {
+        payload = {
             "isbn": self.isbn,
             "title": self.title,
             "author": self.author,
@@ -63,6 +64,9 @@ class BookStock:
             "stockText": self.stock_text,
             "inStock": self.in_stock,
         }
+        if self.book_id is not None:
+            payload["detailUrl"] = f"/books/{self.book_id}"
+        return payload
 
 
 # 与 ebook-backend/src/main/resources/data.sql 保持一致。
@@ -213,6 +217,7 @@ class HttpInventoryBackend:
                     category=str(book.get("category", "")),
                     stock_qty=int(book.get("stockQty") or 0),
                     stock_text=str(book.get("stockText") or ""),
+                    book_id=int(book["id"]) if book.get("id") is not None else None,
                 )
         return None
 

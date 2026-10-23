@@ -49,6 +49,8 @@ class Book:
     stock_qty: int
     rating: float
     sales: int
+    #: 电子书城 books.id；本地演示目录没有真实 id 时为 None。
+    book_id: int | None = None
 
     @property
     def in_stock(self) -> bool:
@@ -65,7 +67,7 @@ class Book:
         }
 
     def to_payload(self, score: float = 0.0, matched: Sequence[str] = ()) -> dict:
-        return {
+        payload = {
             "isbn": self.isbn,
             "title": self.title,
             "author": self.author,
@@ -82,6 +84,10 @@ class Book:
             "score": score,
             "matchedTerms": list(matched),
         }
+        if self.book_id is not None:
+            # 相对路径由前端路由接管；模型只能原样使用，不能自己拼 URL。
+            payload["detailUrl"] = f"/books/{self.book_id}"
+        return payload
 
 
 DEMO_CATALOG: tuple[Book, ...] = (

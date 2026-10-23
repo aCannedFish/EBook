@@ -411,6 +411,13 @@ class LocalReActLLM:
             )
         return attempts
 
+    @staticmethod
+    def _book_link(book: dict) -> str:
+        """有详情页地址时输出 Markdown 链接；本地演示目录没有地址时退回书名。"""
+        title = f"《{book.get('title', '')}》"
+        detail_url = book.get("detailUrl")
+        return f"[{title}]({detail_url})" if detail_url else title
+
     def _describe_books(self, item: PlanItem, attempts: dict) -> str:
         history = attempts.get("search_book_catalog", [])
         success = next((payload for _, ok, payload in reversed(history) if ok and payload), None)
@@ -444,7 +451,7 @@ class LocalReActLLM:
         for index, book in enumerate(success.get("results") or [], start=1):
             stock = "有货，库存 {} 本".format(book["stockQty"]) if book["inStock"] else "暂时缺货"
             lines.append(
-                f"{index}. 《{book['title']}》{book['author']} 著，{book['publisher']} "
+                f"{index}. {self._book_link(book)}{book['author']} 著，{book['publisher']} "
                 f"售价 {book['price']} 元，{stock}。{book['summary']}"
             )
         out_of_stock = success.get("outOfStockMatches") or []

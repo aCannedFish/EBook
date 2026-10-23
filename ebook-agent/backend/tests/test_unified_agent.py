@@ -367,3 +367,46 @@ def test_result_is_json_serializable():
     payload = make_assistant(LocalUnifiedLLM()).chat("ISBN为978-3-00-000000-4 的库存").to_dict()
     assert json.loads(json.dumps(payload, ensure_ascii=False)) == payload
     assert set(payload) == {"question", "reply", "rounds", "stoppedReason", "steps"}
+
+
+def test_tool_payloads_carry_book_detail_urls():
+    """工具结果要带详情页地址，模型和前端都不需要自己拼 URL。"""
+    from backend.assistant.agent import AssistantStep
+    from backend.catalog import BookStock
+    from backend.guide.catalog import Book
+
+    book = Book(
+        isbn="9787111407010", title="算法导论", author="Cormen", publisher="机械工业出版社",
+        year=2013, price=128, category="计算机", tags=(), summary="", stock_qty=12,
+        rating=0.0, sales=0, book_id=47,
+    )
+    assert book.to_payload()["detailUrl"] == "/books/47"
+
+    stock = BookStock(
+        isbn="9787111407010", title="算法导论", author="Cormen", price=128,
+        category="计算机", stock_qty=12, stock_text="有货", book_id=47,
+    )
+    assert stock.to_payload()["detailUrl"] == "/books/47"
+
+    step = AssistantStep(
+        index=1, thought="", action="search_book_catalog", arguments={}, ok=True,
+        payload={"ok": True, "results": [{"title": "算法导论", "detailUrl": "/books/47"}]},
+        observation="",
+    )
+    reply = UnifiedAssistant._link_reply(
+        "推荐 [《算法导论》](https://example.com/books/1)，也可以看《算法导论》。",
+        [step],
+    )
+    assert "example.com" not in reply
+    assert reply.count("(/books/47)") == 2
+
+
+def test_plain_book_title_without_tool_url_is_not_linked():
+    """没有工具给出的地址时保持纯文本，避免拼出不可信的链接。"""
+    from backend.assistant.agent import AssistantStep
+
+    step = AssistantStep(
+        index=1, thought="", action="search_book_catalog", arguments={}, ok=True,
+        payload={"ok": True, "results": [{"title": "算法导论"}]}, observation="",
+    )
+    assert UnifiedAssistant._link_reply("推荐《算法导论》。", [step]) == "推荐《算法导论》。"

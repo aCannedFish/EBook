@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import time
 from dataclasses import dataclass, field
 from typing import Callable, Iterable
@@ -147,9 +148,10 @@ class UnifiedAssistant:
             messages.append(turn.to_message())
 
             if not turn.wants_tools:
+                reply = (turn.content or "").strip() or self._empty_reply()
                 return AssistantResult(
                     question=question,
-                    reply=(turn.content or "").strip() or self._empty_reply(),
+                    reply=self._link_reply(reply, steps),
                     steps=steps,
                     rounds=round_index,
                     stopped_reason="completed",
@@ -280,6 +282,55 @@ class UnifiedAssistant:
             "name": step.action,
             "content": content,
         }
+
+    # -- 回复中的图书链接 ---------------------------------------------------
+
+    @staticmethod
+    def _link_reply(reply: str, steps: list[AssistantStep]) -> str:
+        """把回复里的书名换成工具给出的详情页链接。
+
+        模型偶尔会自己编造域名（例如 ``example.com``）或只写书名，所以在服务端
+        按工具结果做一次兜底：已有 Markdown 链接的改成正确地址，裸书名补上链接。
+        只使用工具返回的 ``/books/<id>``，不从前端或用户输入拼 URL。
+        """
+        links: dict[str, str] = {}
+        for step in steps:
+            payload = step.payload or {}
+            if step.action == "search_book_catalog":
+                candidates = payload.get("results") or []
+            elif step.action == "check_inventory":
+                candidates = [payload]
+            else:
+                candidates = []
+            for book in candidates:
+                title = book.get("title")
+                url = book.get("detailUrl")
+                if isinstance(title, str) and title.strip() and isinstance(url, str) \
+                        and url.startswith("/books/"):
+                    links[title.strip()] = url
+
+        if not links:
+            return reply
+
+        def replace_link(match: re.Match) -> str:
+            label, target = match.group(1), match.group(2)
+            for title, url in links.items():
+                if title in label:
+                    return f"[{label}]({url})"
+            return match.group(0)
+
+        text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", replace_link, reply)
+        # 跳过已经成形的 Markdown 链接，只给剩下的裸书名补链接。
+        parts = re.split(r"(\[[^\]]+\]\([^)]+\))", text)
+        for index, part in enumerate(parts):
+            if re.fullmatch(r"\[[^\]]+\]\([^)]+\)", part):
+                continue
+            for title, url in sorted(links.items(), key=lambda item: len(item[0]), reverse=True):
+                token = f"《{title}》"
+                if token in part:
+                    part = part.replace(token, f"[{token}]({url})")
+            parts[index] = part
+        return "".join(parts)
 
     # -- 兜底 ---------------------------------------------------------------
 

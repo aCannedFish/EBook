@@ -13,7 +13,7 @@ import {
 } from "@ant-design/icons";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { fetchAssistantHealth } from "../api/assistantApi";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 import { handleSetSearchIntent } from "../routes/pageActions";
@@ -53,8 +53,32 @@ export async function assistantAction({ request }) {
 
 // 模型输出的 Markdown 由 react-markdown 渲染，remark-gfm 补上表格、删除线这些扩展语法。
 // 默认不解析原始 HTML，外部链接统一加 target=_blank 与 noopener。
+// 只把站内图书详情链接交给 React Router，在同一个页面栈里跳转；
+// 外部链接仍按新窗口打开，避免把用户带离书城。
+function bookDetailPath(href) {
+  try {
+    const url = new URL(href, window.location.origin);
+    if (url.origin !== window.location.origin) {
+      return null;
+    }
+    return /^\/books\/\d+\/?$/.test(url.pathname) ? url.pathname : null;
+  } catch {
+    return null;
+  }
+}
+
 const MARKDOWN_COMPONENTS = {
-  a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />
+  a: ({ node, href, children, ...props }) => {
+    const internalPath = bookDetailPath(href);
+    if (internalPath) {
+      return <Link to={internalPath} {...props}>{children}</Link>;
+    }
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+        {children}
+      </a>
+    );
+  }
 };
 
 function MessageText({ content, markdown, isError }) {

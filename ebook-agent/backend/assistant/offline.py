@@ -317,7 +317,7 @@ class LocalUnifiedLLM(LocalReActLLM):
             return f"关于库存：本店库存没查到（{message}），先不给你不确定的数字。"
 
         lines = [
-            f"《{success['title']}》（{success['author']}，ISBN {success['isbn']}）"
+            f"{self._book_link(success)}（{success['author']}，ISBN {success['isbn']}）"
             f"本店当前库存 {success['stockQty']} 本，状态「{success['stockText']}」，"
             f"售价 {success['price']} 元。"
         ]
