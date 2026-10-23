@@ -1,9 +1,11 @@
-import { Col, Row, Tag, Typography, Alert } from "antd";
+import { Col, Row, Space, Tag, Typography, Alert } from "antd";
+import { useMemo, useState } from "react";
 import BookCard from "../components/BookCard";
 import { redirect, useActionData, useLoaderData } from "react-router-dom";
 import { addToCart, ensureBooksLoaded, setPageSearch } from "../data/appStore";
 import { requireAuthSnapshot } from "../routes/authRouteHandlers";
 import { getApiErrorMessage } from "../utils/apiError";
+import { buildBookSearchText, normalize } from "../utils/bookSearch";
 
 export async function booksLoader() {
   const snapshot = requireAuthSnapshot();
@@ -50,21 +52,29 @@ function BooksPage({
   search,
   actionError
 }) {
-  // 将搜索词统一转成小写并去掉空格，便于做大小写不敏感的模糊匹配。
-  const keyword = search.trim().toLowerCase();
-  // filter 会遍历全部图书，逐本判断是否命中关键词。
-  const filteredBooks = books.filter((book) => {
-    // 空搜索词时直接返回全部数据。
-    if (!keyword) {
-      return true;
-    }
+  const [category, setCategory] = useState("");
 
-    // 把标题、作者、分类拼成一个字符串，再统一转小写后做 includes 搜索。
-    return [book.title, book.author, book.category]
-      .join(" ")
-      .toLowerCase()
-      .includes(keyword);
-  });
+  // 分类集合完全由当前书目生成：管理员新增一个分类后，这里会自动多一个标签。
+  const categories = useMemo(() => {
+    const seen = new Set(books.map((book) => book.category).filter(Boolean));
+    return [...seen].sort((left, right) => left.localeCompare(right, "zh-Hans-CN"));
+  }, [books]);
+
+  // 预先算好每本书的可搜索文本，避免每次输入都重新做拼音转换。
+  const searchable = useMemo(
+    () => books.map((book) => ({ book, text: buildBookSearchText(book) })),
+    [books]
+  );
+
+  const keyword = normalize(search);
+  const filteredBooks = searchable
+    .filter(({ book, text }) => {
+      if (category && book.category !== category) {
+        return false;
+      }
+      return !keyword || text.includes(keyword);
+    })
+    .map(({ book }) => book);
 
   // 共享壳层（DashboardLayout）已经上移到受保护父路由，
   // 当前页面只保留内容主体。
@@ -84,6 +94,24 @@ function BooksPage({
           <Alert type="error" showIcon message={actionError} />
         </div>
       ) : null}
+
+      <div className="page__toolbar book-filter">
+        <span className="book-filter__label">分类</span>
+        <Space size={[8, 8]} wrap>
+          <Tag.CheckableTag checked={!category} onChange={() => setCategory("")}>
+            全部
+          </Tag.CheckableTag>
+          {categories.map((item) => (
+            <Tag.CheckableTag
+              key={item}
+              checked={category === item}
+              onChange={() => setCategory(category === item ? "" : item)}
+            >
+              {item}
+            </Tag.CheckableTag>
+          ))}
+        </Space>
+      </div>
 
       {/* 使用 Ant Design Row/Col 统一响应式栅格，保持原卡片网格布局。 */}
       <Row gutter={[16, 16]} aria-label="书籍卡片列表" className="book-antd-grid">

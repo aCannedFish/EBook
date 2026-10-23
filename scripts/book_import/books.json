@@ -339,5 +339,125 @@
     "price": 229,
     "stock": 3,
     "summary": "统计学习基础：监督学习、模型评估、正则化、树模型、集成与无监督方法。"
+  },
+  {
+    "isbn": "9787111407010",
+    "title": "算法导论（原书第3版）",
+    "authors": "Thomas H. Cormen / Charles E. Leiserson / Ronald L. Rivest / Clifford Stein",
+    "publisher": "机械工业出版社",
+    "category": "算法",
+    "price": 128,
+    "stock": 12,
+    "summary": "系统讲解算法设计与分析的基础教材，覆盖排序、数据结构、图算法、动态规划与 NP 完全性。"
+  },
+  {
+    "isbn": "9787111213826",
+    "title": "Java编程思想（第4版）",
+    "authors": "Bruce Eckel",
+    "publisher": "机械工业出版社",
+    "category": "编程语言",
+    "price": 108,
+    "stock": 15,
+    "summary": "从语言基础到泛型、并发与设计模式，结合大量示例讲解 Java 的编程思想。"
+  },
+  {
+    "isbn": "9787115275790",
+    "title": "JavaScript高级程序设计（第3版）",
+    "authors": "Nicholas C. Zakas",
+    "publisher": "人民邮电出版社",
+    "category": "编程语言",
+    "price": 99,
+    "stock": 14,
+    "summary": "系统介绍 JavaScript 语言核心、DOM、事件、Ajax 与前端工程实践。"
+  },
+  {
+    "isbn": "9787111464747",
+    "title": "Redis设计与实现",
+    "authors": "黄健宏",
+    "publisher": "机械工业出版社",
+    "category": "数据库",
+    "price": 79,
+    "stock": 18,
+    "summary": "从源码层面剖析 Redis 的数据结构、持久化、复制、哨兵与集群实现。"
+  },
+  {
+    "isbn": "9787111375296",
+    "title": "数据库系统概念（原书第6版）",
+    "authors": "Abraham Silberschatz / Henry F. Korth / S. Sudarshan",
+    "publisher": "机械工业出版社",
+    "category": "数据库",
+    "price": 99,
+    "stock": 10,
+    "summary": "数据库领域的经典教材，覆盖关系模型、SQL、事务、并发控制与恢复。"
+  },
+  {
+    "isbn": "9787111128069",
+    "title": "C程序设计语言（第2版·新版）",
+    "authors": "Brian W. Kernighan / Dennis M. Ritchie",
+    "publisher": "机械工业出版社",
+    "category": "编程语言",
+    "price": 45,
+    "stock": 20,
+    "summary": "C 语言创始人撰写的经典教程，以简洁示例讲解指针、结构体与标准库。"
+  },
+  {
+    "isbn": "9787111544937",
+    "title": "深入理解计算机系统（原书第3版）",
+    "authors": "Randal E. Bryant / David R. O'Hallaron",
+    "publisher": "机械工业出版社",
+    "category": "计算机系统",
+    "price": 139,
+    "stock": 9,
+    "summary": "从程序员视角讲解数据表示、汇编、处理器、存储层次、链接、虚拟内存与并发。"
+  },
+  {
+    "isbn": "9787040223903",
+    "title": "计算机组成原理（第2版）",
+    "authors": "唐朔飞",
+    "publisher": "高等教育出版社",
+    "category": "计算机体系结构",
+    "price": 45,
+    "stock": 16,
+    "summary": "高校计算机组成原理教材，讲解运算器、存储器、控制器、总线与输入输出系统。"
+  },
+  {
+    "isbn": "9787302147510",
+    "title": "数据结构（C语言版）",
+    "authors": "严蔚敏 / 吴伟民",
+    "publisher": "清华大学出版社",
+    "category": "算法与数据结构",
+    "price": 39,
+    "stock": 22,
+    "summary": "以 C 语言描述线性表、树、图、查找与排序等经典数据结构与算法。"
+  },
+  {
+    "isbn": "9787560633503",
+    "title": "计算机操作系统（第4版）",
+    "authors": "汤小丹 / 梁红兵 / 哲凤屏 / 汤子瀛",
+    "publisher": "西安电子科技大学出版社",
+    "category": "操作系统",
+    "price": 45,
+    "stock": 17,
+    "summary": "操作系统课程教材，覆盖进程管理、内存管理、文件系统与设备管理。"
+  },
+  {
+    "isbn": "9787040238969",
+    "title": "概率论与数理统计（第4版）",
+    "authors": "盛骤 / 谢式千 / 潘承毅",
+    "publisher": "高等教育出版社",
+    "category": "数学 / 概率",
+    "price": 39,
+    "stock": 19,
+    "summary": "理工科概率论与数理统计教材，包含随机变量、参数估计与假设检验。"
+  },
+  {
+    "isbn": "9787040396614",
+    "title": "线性代数（第6版）",
+    "authors": "同济大学数学系",
+    "publisher": "高等教育出版社",
+    "category": "数学 / 概率",
+    "price": 34,
+    "stock": 21,
+    "summary": "工科线性代数教材，讲解行列式、矩阵、向量组、特征值与二次型。"
   }
 ]

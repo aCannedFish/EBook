@@ -33,7 +33,7 @@ INSERT INTO books (title, author, price, category, publisher, isbn, format, stoc
 
 -- BEGIN EXTRA BOOKS
 -- 计算机 / 电子类扩充书目：由 scripts/book_import/fetch_books.py 生成，请勿手改。
--- 元数据经 Open Library 按 ISBN 核对；价格、库存与中文简介是课程演示数据。
+-- 元数据经 Open Library 按 ISBN 核对；价格、库存与简介是课程演示数据。
 INSERT IGNORE INTO books (title, author, price, category, publisher, isbn, format, stock_type, stock_text, stock_qty, cover_url, description) VALUES
 ('Structure and Interpretation of Computer Programs', 'Harold Abelson / Gerald Jay Sussman', 129, '程序设计基础', 'MIT Press', '9780262510875', '纸质书', 'ok', '有货', 18, '/assets/covers/9780262510875.jpg', '以 Scheme 语言讲解程序设计的核心抽象：过程与递归、数据抽象、模块化、状态与元语言，强调建立计算模型。'),
 ('Computer Systems: A Programmer''s Perspective', 'Randal E. Bryant / David R. O''Hallaron', 199, '计算机系统', 'Pearson', '9780134092669', '纸质书', 'ok', '有货', 22, '/assets/covers/9780134092669.jpg', '从程序员视角自底向上理解计算机系统：数据表示、汇编、处理器、存储层次、链接、异常控制流、虚拟内存与并发。'),
@@ -68,5 +68,17 @@ INSERT IGNORE INTO books (title, author, price, category, publisher, isbn, forma
 ('Reinforcement Learning: An Introduction', 'Richard S. Sutton / Andrew G. Barto', 199, '机器学习', 'MIT Press', '9780262039246', '纸质书', 'ok', '有货', 6, '/assets/covers/9780262039246.jpg', '强化学习导论：多臂老虎机、动态规划、蒙特卡洛、时序差分与函数逼近。'),
 ('The Go Programming Language', 'Alan A. A. Donovan / Brian W. Kernighan', 89, '编程语言', 'Addison-Wesley', '9780134190440', '纸质书', 'ok', '有货', 18, '/assets/covers/9780134190440.jpg', 'Go 语言实践指南：类型、接口、并发原语、测试与工程组织。'),
 ('Computer Architecture: A Quantitative Approach', 'John L. Hennessy / David A. Patterson', 249, '计算机体系结构', 'Morgan Kaufmann', '9780128119051', '纸质书', 'warn', '库存紧张', 5, '/assets/covers/9780128119051.jpg', '计算机体系结构：指令集、流水线、存储层次、并行与领域专用架构。'),
-('The Elements of Statistical Learning', 'Trevor Hastie / Robert Tibshirani / Jerome Friedman', 229, '机器学习', 'Springer', '9780387848570', '纸质书', 'warn', '库存紧张', 3, '/assets/covers/9780387848570.jpg', '统计学习基础：监督学习、模型评估、正则化、树模型、集成与无监督方法。');
+('The Elements of Statistical Learning', 'Trevor Hastie / Robert Tibshirani / Jerome Friedman', 229, '机器学习', 'Springer', '9780387848570', '纸质书', 'warn', '库存紧张', 3, '/assets/covers/9780387848570.jpg', '统计学习基础：监督学习、模型评估、正则化、树模型、集成与无监督方法。'),
+('算法导论（原书第3版）', 'Thomas H. Cormen / Charles E. Leiserson / Ronald L. Rivest / Clifford Stein', 128, '算法', '机械工业出版社', '9787111407010', '纸质书', 'ok', '有货', 12, '/assets/covers/9787111407010.jpg', '系统讲解算法设计与分析的基础教材，覆盖排序、数据结构、图算法、动态规划与 NP 完全性。'),
+('Java编程思想（第4版）', 'Bruce Eckel', 108, '编程语言', '机械工业出版社', '9787111213826', '纸质书', 'ok', '有货', 15, '/assets/covers/9787111213826.jpg', '从语言基础到泛型、并发与设计模式，结合大量示例讲解 Java 的编程思想。'),
+('JavaScript高级程序设计（第3版）', 'Nicholas C. Zakas', 99, '编程语言', '人民邮电出版社', '9787115275790', '纸质书', 'ok', '有货', 14, '/assets/covers/9787115275790.jpg', '系统介绍 JavaScript 语言核心、DOM、事件、Ajax 与前端工程实践。'),
+('Redis设计与实现', '黄健宏', 79, '数据库', '机械工业出版社', '9787111464747', '纸质书', 'ok', '有货', 18, '/assets/covers/9787111464747.jpg', '从源码层面剖析 Redis 的数据结构、持久化、复制、哨兵与集群实现。'),
+('数据库系统概念（原书第6版）', 'Abraham Silberschatz / Henry F. Korth / S. Sudarshan', 99, '数据库', '机械工业出版社', '9787111375296', '纸质书', 'ok', '有货', 10, '/assets/covers/9787111375296.jpg', '数据库领域的经典教材，覆盖关系模型、SQL、事务、并发控制与恢复。'),
+('C程序设计语言（第2版·新版）', 'Brian W. Kernighan / Dennis M. Ritchie', 45, '编程语言', '机械工业出版社', '9787111128069', '纸质书', 'ok', '有货', 20, '/assets/covers/9787111128069.jpg', 'C 语言创始人撰写的经典教程，以简洁示例讲解指针、结构体与标准库。'),
+('深入理解计算机系统（原书第3版）', 'Randal E. Bryant / David R. O''Hallaron', 139, '计算机系统', '机械工业出版社', '9787111544937', '纸质书', 'ok', '有货', 9, '/assets/covers/9787111544937.jpg', '从程序员视角讲解数据表示、汇编、处理器、存储层次、链接、虚拟内存与并发。'),
+('计算机组成原理（第2版）', '唐朔飞', 45, '计算机体系结构', '高等教育出版社', '9787040223903', '纸质书', 'ok', '有货', 16, '/assets/covers/9787040223903.jpg', '高校计算机组成原理教材，讲解运算器、存储器、控制器、总线与输入输出系统。'),
+('数据结构（C语言版）', '严蔚敏 / 吴伟民', 39, '算法与数据结构', '清华大学出版社', '9787302147510', '纸质书', 'ok', '有货', 22, '/assets/covers/9787302147510.jpg', '以 C 语言描述线性表、树、图、查找与排序等经典数据结构与算法。'),
+('计算机操作系统（第4版）', '汤小丹 / 梁红兵 / 哲凤屏 / 汤子瀛', 45, '操作系统', '西安电子科技大学出版社', '9787560633503', '纸质书', 'ok', '有货', 17, '/assets/covers/9787560633503.jpg', '操作系统课程教材，覆盖进程管理、内存管理、文件系统与设备管理。'),
+('概率论与数理统计（第4版）', '盛骤 / 谢式千 / 潘承毅', 39, '数学 / 概率', '高等教育出版社', '9787040238969', '纸质书', 'ok', '有货', 19, '/assets/covers/9787040238969.jpg', '理工科概率论与数理统计教材，包含随机变量、参数估计与假设检验。'),
+('线性代数（第6版）', '同济大学数学系', 34, '数学 / 概率', '高等教育出版社', '9787040396614', '纸质书', 'ok', '有货', 21, '/assets/covers/9787040396614.jpg', '工科线性代数教材，讲解行列式、矩阵、向量组、特征值与二次型。');
 -- END EXTRA BOOKS

@@ -1,5 +1,5 @@
-import { Button, Form, Input, InputNumber, Modal, Space, Tag, Typography } from "antd";
-import { useState } from "react";
+import { AutoComplete, Button, Form, Input, InputNumber, Modal, Space, Tag, Typography } from "antd";
+import { useMemo, useState } from "react";
 import { useLoaderData, useSubmit } from "react-router-dom";
 import ResourceTable from "../components/ResourceTable";
 import RowActions from "../components/RowActions";
@@ -72,6 +72,13 @@ function AdminBooksPage({ books, search, onSave, onDelete }) {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form] = Form.useForm();
+  // 分类候选项来自现有书目，新增分类时仍可直接输入新的名称。
+  const categoryOptions = useMemo(() => {
+    const seen = new Set(books.map((book) => book.category).filter(Boolean));
+    return [...seen]
+      .sort((left, right) => left.localeCompare(right, "zh-Hans-CN"))
+      .map((value) => ({ value }));
+  }, [books]);
   const keyword = search.trim().toLowerCase();
   const rows = books.filter((book) => !keyword || book.title.toLowerCase().includes(keyword));
 
@@ -159,7 +166,11 @@ function AdminBooksPage({ books, search, onSave, onDelete }) {
             <Input placeholder="/assets/..." />
           </Form.Item>
           <Form.Item name="category" label="分类" rules={[{ required: true }]}>
-            <Input />
+            <AutoComplete
+              options={categoryOptions}
+              placeholder="选择已有分类或输入新分类"
+              filterOption={(input, option) => String(option?.value || "").includes(input)}
+            />
           </Form.Item>
           <Form.Item name="publisher" label="出版社" rules={[{ required: true }]}>
             <Input />

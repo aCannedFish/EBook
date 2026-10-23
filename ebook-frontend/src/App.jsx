@@ -48,7 +48,7 @@ const router = createBrowserRouter([
             path: "books",
             loader: booksLoader,
             action: booksAction,
-            handle: { searchPlaceholder: "搜索书名 / 作者 / 分类" },
+            handle: { searchPlaceholder: "搜索书名 / 作者 / 拼音 / 分类" },
             element: <BooksRoute />
           },
           {

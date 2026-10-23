@@ -57,7 +57,7 @@
       ],
       "publisher": "Microsoft Press",
       "publishDate": "2004",
-      "coverUrl": "https://covers.openlibrary.org/b/id/13270592-L.jpg",
+      "coverUrl": "https://covers.openlibrary.org/b/isbn/9780735619678-L.jpg?default=false",
       "coverFile": "ebook-frontend/public/assets/covers/9780735619678.jpg",
       "coverSha256": "e106fb57eca4f8f22712d3930b71f206b3656aaf93a2b40ba2ead88d21835aa6"
     },
@@ -514,6 +514,198 @@
       "coverUrl": "https://covers.openlibrary.org/b/isbn/9780387848570-L.jpg?default=false",
       "coverFile": "ebook-frontend/public/assets/covers/9780387848570.jpg",
       "coverSha256": "81ed1c76a47c6cb694f8e29e22af3c4de1801499e149d128667551fcd56608ea"
+    },
+    {
+      "isbn": "9787111407010",
+      "title": "算法导论（原书第3版）",
+      "openLibraryTitle": "Suan fa dao lun",
+      "openLibraryUrl": "http://openlibrary.org/books/OL28303257M/Suan_fa_dao_lun",
+      "openLibraryAuthors": [
+        "Man Ke"
+      ],
+      "publisher": "Ji xie gong ye chu ban she",
+      "publishDate": "2013",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s25648004.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111407010.jpg",
+      "coverSha256": "a29a75eb8c528b6b964e01ec5a221f01bcc14a5f9b892e738efaf9cdaea1b096",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787111213826",
+      "title": "Java编程思想（第4版）",
+      "openLibraryTitle": "Java bian cheng si xiang",
+      "openLibraryUrl": "http://openlibrary.org/books/OL28048626M/Java_bian_cheng_si_xiang",
+      "openLibraryAuthors": [
+        "Ai ke er",
+        "Chen hao peng"
+      ],
+      "publisher": "Ji xie gong ye chu ban she",
+      "publishDate": "2007",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s27243455.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111213826.jpg",
+      "coverSha256": "eeb429195d4f84855d5240f78a731f7e5b0a148dd5c0cc0ed3a4c15d496a0398",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787115275790",
+      "title": "JavaScript高级程序设计（第3版）",
+      "openLibraryTitle": "JavaScript gao ji cheng xu she ji",
+      "openLibraryUrl": "http://openlibrary.org/books/OL35343623M/JavaScript_gao_ji_cheng_xu_she_ji",
+      "openLibraryAuthors": [
+        "Ze ka si",
+        "Cao li"
+      ],
+      "publisher": "Ren min you dian chu ban she",
+      "publishDate": "2012",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s8958650.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787115275790.jpg",
+      "coverSha256": "f0878fd771cc25c1b883f1acc649fc984761e231cfb283b8b54eb81c526fd33c",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787111464747",
+      "title": "Redis设计与实现",
+      "openLibraryTitle": "Redis she ji yu shi xian",
+      "openLibraryUrl": "http://openlibrary.org/books/OL35720239M/Redis_she_ji_yu_shi_xian",
+      "openLibraryAuthors": [
+        "Huang jian hong"
+      ],
+      "publisher": "Ji xie gong ye chu ban she",
+      "publishDate": "2014",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s27297117.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111464747.jpg",
+      "coverSha256": "d5d84d380b59c6ff30289b91d30f8f625dfda0aa9f5e4a6ab43fa8ea7a0fe658",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787111375296",
+      "title": "数据库系统概念（原书第6版）",
+      "openLibraryTitle": "Shu ju ku xi tong gai nian",
+      "openLibraryUrl": "http://openlibrary.org/books/OL39207771M/Shu_ju_ku_xi_tong_gai_nian",
+      "openLibraryAuthors": [
+        "Erboshaci Xi",
+        "Lberschatz Si",
+        "Rth Ko",
+        "Darshan Su",
+        "Dongyu Yang",
+        "Xiumei Ma",
+        "Shiwei Tang"
+      ],
+      "publisher": "Ji xie gong ye chu ban she",
+      "publishDate": "2012",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s8958042.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111375296.jpg",
+      "coverSha256": "8a6be605c5b76742f408fb9b2a3eaea878bdac11e7eac9a85085230236fd1e33",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787111128069",
+      "title": "C程序设计语言（第2版·新版）",
+      "openLibraryTitle": "C cheng xu she ji yu yan",
+      "openLibraryUrl": "http://openlibrary.org/books/OL32873408M/C_cheng_xu_she_ji_yu_yan",
+      "openLibraryAuthors": [
+        "Brian W. Kernighan",
+        "Dennis MacAlistair Ritchie"
+      ],
+      "publisher": "Ji xie gong ye chu ban she",
+      "publishDate": "2004",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s1106934.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111128069.jpg",
+      "coverSha256": "cb79b0c5495749f9a9f75c277f032fb3962f42cbe87f0ca572090eeb8bc79f2c",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787111544937",
+      "title": "深入理解计算机系统（原书第3版）",
+      "openLibraryTitle": "Shen ru li jie ji suan ji xi tong",
+      "openLibraryUrl": "http://openlibrary.org/books/OL39207839M/Shen_ru_li_jie_ji_suan_ji_xi_tong",
+      "openLibraryAuthors": [
+        "Randal E. Bryant"
+      ],
+      "publisher": "Ji xie gong ye chu ban she",
+      "publishDate": "2016",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s29195878.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787111544937.jpg",
+      "coverSha256": "b2b480e57726efd465e49d953fca4e1c75bee360f0c8e14113629fae7e150c86",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787040223903",
+      "title": "计算机组成原理（第2版）",
+      "openLibraryTitle": "Ji suan ji zu cheng yuan li",
+      "openLibraryUrl": "http://openlibrary.org/books/OL35330383M/Ji_suan_ji_zu_cheng_yuan_li",
+      "openLibraryAuthors": [
+        "Tang su fei"
+      ],
+      "publisher": "Gao deng jiao yu chu ban she",
+      "publishDate": "2008",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s4411273.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040223903.jpg",
+      "coverSha256": "e10bddcff4f78a4c154b7fc2c6e14f5a07a9afbcceca17c6caa22f9470a4ce5c",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787302147510",
+      "title": "数据结构（C语言版）",
+      "openLibraryTitle": "Shu ju jie gou (C yu yan ban)",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27891329M/Shu_ju_jie_gou_(C_yu_yan_ban)",
+      "openLibraryAuthors": [
+        "Weimin Yan",
+        "Weimin Wu"
+      ],
+      "publisher": "Qing hua da xue chu ban she",
+      "publishDate": "2007",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s28375914.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787302147510.jpg",
+      "coverSha256": "327b993d4c467121ed67b2738402885efb535193052822094bcf68f67fa45f38",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787560633503",
+      "title": "计算机操作系统（第4版）",
+      "openLibraryTitle": "Ji suan ji cao zuo xi tong",
+      "openLibraryUrl": "http://openlibrary.org/books/OL26885308M/Ji_suan_ji_cao_zuo_xi_tong",
+      "openLibraryAuthors": [
+        "Tang xiao dan"
+      ],
+      "publisher": "Xi an dian zi ke ji ta xue chu ban she",
+      "publishDate": "2014",
+      "coverUrl": "https://img9.doubanio.com/view/subject/l/public/s27658896.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787560633503.jpg",
+      "coverSha256": "16bbb47355d7303be504b656a3d7863a5a74e27322f601b96e494f95f31350f9",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787040238969",
+      "title": "概率论与数理统计（第4版）",
+      "openLibraryTitle": "Gai lü lun yu shu li tong ji",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27729700M/Gai_lü_lun_yu_shu_li_tong_ji",
+      "openLibraryAuthors": [
+        "Zhou Sheng",
+        "Shiqian Xie",
+        "Chengyi Pan"
+      ],
+      "publisher": "Gao deng jiao yu chu ban she",
+      "publishDate": "2008",
+      "coverUrl": "https://img3.doubanio.com/view/subject/l/public/s25000822.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040238969.jpg",
+      "coverSha256": "ff98e81768ddcf258384dc5297b7404087ecbac812ba950211486d587e0f8aa2",
+      "coverSource": "Douban"
+    },
+    {
+      "isbn": "9787040396614",
+      "title": "线性代数（第6版）",
+      "openLibraryTitle": "Gong cheng shu xue",
+      "openLibraryUrl": "http://openlibrary.org/books/OL27935071M/Gong_cheng_shu_xue",
+      "openLibraryAuthors": [
+        "Tong ji da xue. Shu xue xi"
+      ],
+      "publisher": "Gao deng jiao yu chu ban she",
+      "publishDate": "2015",
+      "coverUrl": "https://img2.doubanio.com/view/subject/l/public/s28321401.jpg",
+      "coverFile": "ebook-frontend/public/assets/covers/9787040396614.jpg",
+      "coverSha256": "6a1666f8953ed5f78a12a5f19300f3b274eb28cdcf14900c3c80018fadfdaf99",
+      "coverSource": "Douban"
     }
   ],
   "failures": []

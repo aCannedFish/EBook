@@ -121,8 +121,9 @@ class BookstoreIntegrationTest {
         assertThat(page.getBody().get("items").size()).isEqualTo(2);
         assertThat(page.getBody().get("totalElements").asInt()).isGreaterThanOrEqualTo(10);
         var category = call(HttpMethod.GET, "/api/v1/books?category=算法", jwt, null).getBody();
-        assertThat(category.get("items").size()).isEqualTo(1);
-        assertThat(category.get("items").get(0).get("category").asText()).isEqualTo("算法");
+        assertThat(category.get("items").size()).isEqualTo(2);
+        assertThat(category.get("items")).allSatisfy(item ->
+                assertThat(item.get("category").asText()).isEqualTo("算法"));
         var isbn = call(HttpMethod.GET, "/api/v1/books?isbn=9783000000004", jwt, null).getBody();
         assertThat(isbn.get("items").get(0).get("id").asInt()).isEqualTo(4);
         assertThat(call(HttpMethod.GET, "/api/v1/books?page=-1", jwt, null).getStatusCode().value()).isEqualTo(400);

@@ -14,7 +14,7 @@
    的标记块里（重复执行会整块替换，不会叠加），同时把同一段 SQL 打到标准输出，
    方便直接灌进正在运行的数据库。
 
-店内的价格、库存与中文简介是本项目自己的演示数据，不来自 Open Library；
+店内的价格、库存与简介是本项目自己的演示数据，不来自 Open Library；
 ``books.json`` 里的分类与简介由人工整理，脚本只负责核对与落库。
 
 用法：
@@ -139,7 +139,7 @@ def build_sql(books: list[dict]) -> str:
     header = (
         f"{BEGIN_MARK}\n"
         "-- 计算机 / 电子类扩充书目：由 scripts/book_import/fetch_books.py 生成，请勿手改。\n"
-        "-- 元数据经 Open Library 按 ISBN 核对；价格、库存与中文简介是课程演示数据。\n"
+        "-- 元数据经 Open Library 按 ISBN 核对；价格、库存与简介是课程演示数据。\n"
     )
     return f"{header}{columns}\n{rows};\n{END_MARK}\n"
 

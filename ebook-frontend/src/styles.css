@@ -908,3 +908,24 @@ button, input, select{ font: inherit; }
   .grid--books{ grid-template-columns: 1fr; }
   .page__header{ flex-direction: column; align-items: flex-start; }
 }
+
+/* 书城筛选：分类标签由书目动态生成，与顶部搜索框组合使用。 */
+.book-filter{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding-top: 0;
+}
+
+.book-filter__label{
+  flex: 0 0 auto;
+  color: #8c8c8c;
+  font-size: 13px;
+  line-height: 24px;
+}
+
+.book-filter .ant-tag-checkable{
+  margin: 0;
+  padding: 1px 10px;
+  border-radius: 999px;
+}
