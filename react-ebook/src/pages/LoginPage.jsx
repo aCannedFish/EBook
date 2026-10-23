@@ -30,26 +30,27 @@ export async function loginAction({ request }) {
     try {
       const user = await loginUser({ username, password });
       setAuthenticatedUser(user, remember);
-      throw redirect("/books");
     } catch (error) {
       return {
         status: "error",
         message: error?.message || "登录失败，请检查账号和密码。"
       };
     }
+    // 路由重定向使用 Response 表达，放在业务异常处理之外，避免被当作登录失败。
+    return redirect("/books");
   }
 
   if (intent === "guest") {
     try {
       const user = await loginUser({ username: "DefaultUser", password: "123456" });
       setAuthenticatedUser(user, false);
-      throw redirect("/books");
     } catch (error) {
       return {
         status: "error",
         message: error?.message || "体验账号不可用，请使用注册登录。"
       };
     }
+    return redirect("/books");
   }
 
   if (intent === "register") {

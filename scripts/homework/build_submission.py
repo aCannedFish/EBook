@@ -87,9 +87,11 @@ def main() -> None:
             "springboot-ebook/src/main/java/com/ebook/backend/controller/BookController.java",
             "scripts/homework/generate_contract.py", "scripts/homework/validate_openapi.py"],
         2: [*PYTHON, "react-ebook/src/pages/AssistantPage.jsx", "react-ebook/src/pages/AssistantPage.css",
-            "react-ebook/src/api/assistantApi.js", "scripts/homework/collect_evidence.py"],
+            "react-ebook/src/pages/useAssistantSessions.js", "react-ebook/src/api/assistantApi.js",
+            "scripts/homework/collect_evidence.py"],
         3: [*PYTHON, "react-ebook/src/pages/AssistantPage.jsx", "react-ebook/src/pages/AssistantPage.css",
-            "react-ebook/src/api/assistantApi.js", "scripts/homework/collect_evidence.py"],
+            "react-ebook/src/pages/useAssistantSessions.js", "react-ebook/src/api/assistantApi.js",
+            "scripts/homework/collect_evidence.py"],
         4: [*JAVA, "react-ebook/src/api/auth.js", "react-ebook/src/api/backendApi.js",
             "scripts/homework/collect_evidence.py"],
     }

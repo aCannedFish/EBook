@@ -95,7 +95,7 @@ def _require_isbn(isbn: Any) -> str:
     if isbn is None or (isinstance(isbn, str) and not isbn.strip()):
         raise InvalidArgumentError(
             "缺少必填参数 isbn",
-            hint="必须传入 isbn 参数，值取自用户的提问或前一次 check_inventory 的结果。",
+            hint="必须传入 isbn 参数，值取自用户的提问或已经成功的书目、库存查询结果。",
         )
     if not isinstance(isbn, str):
         raise InvalidArgumentError(
@@ -233,8 +233,8 @@ TOOL_SCHEMAS: list[dict] = [
             "description": (
                 "查询电子书城本店的实时库存与售价。当用户询问某本书还有多少本、"
                 "是否有货、能不能买到、本店卖多少钱，或需要判断库存是否足够时调用。"
-                "必须先从用户的话里拿到 ISBN 再调用；如果用户只给了书名，"
-                "不要猜测 ISBN，先向用户索要。"
+                "ISBN 应来自用户输入或本轮、历史工具已确认的书目信息，不得猜测。"
+                "如果只有书名且尚无可靠 ISBN，应先确认图书身份。"
             ),
             "parameters": {
                 "type": "object",

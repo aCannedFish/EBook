@@ -52,7 +52,11 @@
 | 3 | `python-assistant/backend/assistant/`、`backend/guide/`、`data/policy.txt` | `/assistant` |
 | 4 | `springboot-ebook` 中 JWT 过滤器、安全配置和虚拟线程配置 | 书城业务接口及 Swagger UI |
 
-助手页面与接口分别为 `/assistant` 和 `/api/assistant/chat`。每次模型请求都注册四个 Function Schema；Function Calling 解析动作、执行工具并回填结果，ReAct 循环记录 Thought、Action 和 Observation，直到模型给出最终答复。`check_inventory` 查询实际 MySQL 库存，竞品报价按作业要求模拟；`search_book_catalog` 查询同一份书目，`query_store_policy` 对政策文档进行分块、512 维 Embedding 和余弦 Top-K 检索。书目中没有的年份、评分和销量不会补造。
+助手页面为 `/assistant`，左侧可以新建会话或打开历史会话。会话按登录用户保存在服务端，切页、刷新和重新登录后都可以继续；不同用户不能读取彼此的会话。页面通过 `/api/assistant/sessions` 管理会话，通过 `/{id}/messages` 提交问题，通过 `/{id}/events` 接收实时进度。`/api/assistant/chat` 保留为一次性同步问答接口。
+
+每次模型请求都注册四个 Function Schema；Function Calling 解析动作、执行工具并回填结果，ReAct 循环记录 Thought、Action 和 Observation，直到模型给出最终答复。页面在工具开始和完成时立即更新步骤，生成任务在切页后继续，返回时会恢复已有结果。`check_inventory` 查询实际 MySQL 库存，竞品报价按作业要求模拟；`search_book_catalog` 查询同一份书目，`query_store_policy` 对政策文档进行分块、512 维 Embedding 和余弦 Top-K 检索。书目中没有的年份、评分和销量不会补造。
+
+客服会话数据库默认为 `.local-data/assistant/sessions.sqlite3`，重启服务会保留。可通过 `ASSISTANT_SESSION_DB` 设置其他持久化路径。数据库不进入 Git 或课程源码包；服务重启前未完成的回复会标记中断，已保存的消息与步骤仍可查看。
 
 书目接口使用 `/api/v1/books`：GET 支持 `page=0`、`size=20`、`category`、`keyword`、`isbn`；GET `/{id}` 查询详情；管理员 POST 创建返回 201 和 Location，PATCH `/{id}/stock` 更新库存。原购物车、下单、订单与统计继续使用现有业务层和数据库。
 

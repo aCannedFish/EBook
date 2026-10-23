@@ -107,9 +107,32 @@ def test_saved_conversation_continues_using_server_history(saved_client):
     snapshot = wait_for_snapshot(client, session_id, lambda value: value["messages"][-1]["status"] == "completed")
     assert len(snapshot["messages"]) == 4
     second_request = model.calls[2]
-    assert [message["content"] for message in second_request[1:]] == [
-        "查询算法书库存", "这本书目前有30本库存。", "继续查这本书",
-    ]
+    assert second_request[1]["content"] == "查询算法书库存"
+    assert second_request[2]["content"].startswith("这本书目前有30本库存。")
+    assert "9783000000004" in second_request[2]["content"]
+    assert second_request[-1]["content"] == "继续查这本书"
+
+
+def test_followup_keeps_catalog_identifiers_when_reply_omits_isbn(tmp_path):
+    """旧回复只有书名时，续聊仍能使用真实查书结果中的 ISBN 查询最新库存。"""
+    store = SessionStore(tmp_path / "sessions.sqlite3")
+    session_id = store.create("alice")["id"]
+    message_id, _history = store.start_turn("alice", session_id, "推荐两本微服务图书")
+    store.update_message(session_id, message_id, {
+        "status": "completed",
+        "content": "推荐《微服务架构设计模式》和《微服务设计》。",
+        "steps": [
+            {"action": "search_book_catalog", "ok": True, "result": {"results": [
+                {"title": "微服务架构设计模式", "isbn": "9787111600001", "stockQty": 16},
+                {"title": "微服务设计", "isbn": "9787115400002", "stockQty": 8},
+            ]}},
+            {"action": "check_inventory", "ok": False, "result": {"title": "失败书目", "isbn": "12345"}},
+        ],
+    })
+    _message_id, history = store.start_turn("alice", session_id, "刚才这两本分别多少钱？")
+    content = history[-1]["content"]
+    assert "9787111600001" in content and "9787115400002" in content
+    assert "12345" not in content and "stockQty" not in content
 
 
 def test_other_user_cannot_list_read_write_or_subscribe(saved_client):

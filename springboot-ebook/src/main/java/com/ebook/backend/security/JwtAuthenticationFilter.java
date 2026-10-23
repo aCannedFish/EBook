@@ -32,6 +32,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.mapper = mapper;
     }
 
+    /** 登录和注册通过请求体建立身份，不能被浏览器残留的旧 Token 拦住。 */
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        if (!"POST".equals(request.getMethod())) {
+            return false;
+        }
+        String path = request.getServletPath();
+        return "/api/v1/users/login".equals(path) || "/api/v1/users/register".equals(path);
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {

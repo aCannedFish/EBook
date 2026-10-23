@@ -20,6 +20,7 @@
 |---|---|
 | `backend/assistant/agent.py` | 在 ReAct 循环中解析 Function Calling；把模型理由记为 Thought、函数调用记为 Action、工具结果记为 Observation |
 | `backend/assistant/tools.py` | 合并四种 Function Schema 与统一工具注册、派发 |
+| `backend/assistant/sessions.py` | 按用户保存会话、消息和可重放事件，同一会话串行处理问题 |
 | `backend/assistant/prompt.py`、`offline.py` | 统一模型提示词与离线替身 |
 | `backend/tools.py` | `check_inventory`、模拟 `get_competitor_price`，统一异常及重试提示 |
 | `backend/catalog.py` | 转发当前用户 JWT，从原书城读取书目和实时库存 |
@@ -37,11 +38,20 @@
 |---|---|
 | GET `/api/assistant/health` | 模型状态与四个可用工具 |
 | GET `/api/assistant/tools` | 四个 Function Schema |
-| POST `/api/assistant/chat` | 统一对话，返回自然语言答复及 Thought、Action、Action Input、Observation 步骤 |
+| POST `/api/assistant/chat` | 一次性同步问答，返回答复和完整步骤 |
+| GET `/api/assistant/sessions` | 当前用户的历史会话列表 |
+| POST `/api/assistant/sessions` | 新建会话，返回201 |
+| GET `/api/assistant/sessions/{id}` | 读取消息、步骤及事件游标 |
+| POST `/api/assistant/sessions/{id}/messages` | 保存问题并启动后台问答，立即返回202与当前快照 |
+| GET `/api/assistant/sessions/{id}/events?after={cursor}` | SSE 逐步推送模型等待、工具开始、工具结果及最终答复，支持按游标补齐 |
 | GET `/api/design/conversation` | 管理员读取已保存的真实接口设计对话 |
 | POST `/api/design/chat` | 管理员调用真实模型生成契约 |
 
 客服对话和接口设计操作需要 `Authorization: Bearer <JWT>`；JWT 来自原书城 `/api/v1/users/login`。凭证只用于本机书城鉴权，不进入模型消息。对话上下文只接受用户和助手消息，库存、书目和政策工具由服务端执行。助手每次将四个工具 Schema 一起交给模型；用户同时问库存、荐书和政策时，Agent 根据模型工具调用逐步处理，并把每次工具结果回填上下文。
+
+React 客服页面使用会话接口。用户身份从书城校验结果中取得，服务端读取最近六轮已完成的问答作为上下文；客户端不能指定其他用户或伪造会话历史。同一会话生成期间再次发送问题返回409，其他用户访问返回404。关闭页面只断开订阅，后台任务继续；重新打开会话时先读取快照，再从游标订阅后续事件。
+
+会话默认存放在项目根目录 `.local-data/assistant/sessions.sqlite3`，可通过 `ASSISTANT_SESSION_DB` 改变路径。SQLite 的消息更新与事件记录使用同一个事务，JWT、密码和模型密钥不会存入会话库。重启保留历史，未完成的回复会标记中断；该数据库不随源码打包。
 
 ## 测试
 

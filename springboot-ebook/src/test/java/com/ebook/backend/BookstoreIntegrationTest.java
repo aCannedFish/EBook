@@ -60,6 +60,43 @@ class BookstoreIntegrationTest {
         return rest.exchange(url(path), method, new HttpEntity<>(body, headers), JsonNode.class);
     }
 
+    /** 用真实签名构造已过期 Token，覆盖上一次登录过期后重新登录的边界。 */
+    private String expiredToken() {
+        byte[] keyBytes = java.util.Base64.getDecoder().decode(jwtSecret);
+        return io.jsonwebtoken.Jwts.builder()
+                .subject("2").issuer("ebook-bookstore")
+                .expiration(java.util.Date.from(java.time.Instant.now().minusSeconds(60)))
+                .signWith(io.jsonwebtoken.security.Keys.hmacShaKeyFor(keyBytes))
+                .compact();
+    }
+
+    @Test
+    void loginIgnoresOldTokensButStillRequiresCorrectPassword() {
+        for (String stale : java.util.List.of("invalid-token", expiredToken())) {
+            var login = call(HttpMethod.POST, "/api/v1/users/login", stale,
+                    Map.of("username", "DefaultUser", "password", "123456"));
+            assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
+            String fresh = login.getBody().get("accessToken").asText();
+            assertThat(call(HttpMethod.GET, "/api/v1/users/me", fresh, null)
+                    .getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(call(HttpMethod.GET, "/api/v1/users/me", stale, null)
+                    .getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        }
+        var wrongPassword = call(HttpMethod.POST, "/api/v1/users/login", "invalid-token",
+                Map.of("username", "DefaultUser", "password", "wrong-password"));
+        assertThat(wrongPassword.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(wrongPassword.getBody().get("message").asText()).isEqualTo("invalid username or password");
+    }
+
+    @Test
+    void registrationWithOldTokenReachesAccountValidation() {
+        // 使用现有用户名触发业务校验，不在测试或实际数据库中留下新增账号。
+        var response = call(HttpMethod.POST, "/api/v1/users/register", expiredToken(),
+                Map.of("username", "DefaultUser", "password", "123456", "email", "login-regression@example.com"));
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody().get("message").asText()).isEqualTo("username already exists");
+    }
+
     @Test
     void missingAndTamperedTokensAreRejectedWithoutCreatingSession() {
         assertThat(call(HttpMethod.GET, "/api/v1/books/1", null, null).getStatusCode().value()).isEqualTo(401);
@@ -73,13 +110,7 @@ class BookstoreIntegrationTest {
 
     @Test
     void expiredJwtCannotAccessBooks() {
-        byte[] keyBytes = java.util.Base64.getDecoder().decode(jwtSecret);
-        String expired = io.jsonwebtoken.Jwts.builder()
-                .subject("2").issuer("ebook-bookstore")
-                .expiration(java.util.Date.from(java.time.Instant.now().minusSeconds(60)))
-                .signWith(io.jsonwebtoken.security.Keys.hmacShaKeyFor(keyBytes))
-                .compact();
-        assertThat(call(HttpMethod.GET, "/api/v1/books/1", expired, null)
+        assertThat(call(HttpMethod.GET, "/api/v1/books/1", expiredToken(), null)
                 .getStatusCode().value()).isEqualTo(401);
     }
 

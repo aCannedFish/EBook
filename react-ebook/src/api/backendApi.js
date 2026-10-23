@@ -5,14 +5,16 @@ const API_BASE_URL =
   (import.meta.env.DEV ? "" : "http://localhost:8080");
 
 async function request(path, options = {}) {
+  // 登录与注册使用账号凭证，不附带上一次会话的 Token。
+  const { authenticated = true, ...fetchOptions } = options;
   let response;
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
-      ...options,
+      ...fetchOptions,
       headers: {
         "Content-Type": "application/json",
-        ...authHeaders(),
-        ...(options.headers || {})
+        ...(authenticated ? authHeaders() : {}),
+        ...(fetchOptions.headers || {})
       }
     });
   } catch {
@@ -98,6 +100,7 @@ export function deleteBook(id) {
 
 export function registerUser(payload) {
   return request("/api/v1/users/register", {
+    authenticated: false,
     method: "POST",
     body: JSON.stringify(payload)
   });
@@ -105,6 +108,7 @@ export function registerUser(payload) {
 
 export async function loginUser(payload) {
   const result = await request("/api/v1/users/login", {
+    authenticated: false,
     method: "POST",
     body: JSON.stringify(payload)
   });

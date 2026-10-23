@@ -137,6 +137,34 @@ class SessionStore:
         }
 
     @staticmethod
+    def _history_content(message: dict) -> str:
+        """把工具确认过的书名和 ISBN 带入续聊，避免最终回复省略 ISBN 后失去指代。
+
+        只补充图书身份信息；价格和库存仍由当前轮次的工具重新查询，避免把历史
+        库存误当作实时数据。失败步骤及其他工具的任意字段都不会加入该记录。
+        """
+        books = {}
+        for step in message.get("steps", []):
+            if not step.get("ok"):
+                continue
+            result = step.get("result") or {}
+            if step.get("action") == "search_book_catalog":
+                candidates = result.get("results", [])
+            elif step.get("action") == "check_inventory":
+                candidates = [result]
+            else:
+                continue
+            for book in candidates:
+                isbn, title = book.get("isbn"), book.get("title")
+                if isinstance(isbn, str) and isinstance(title, str):
+                    books[isbn] = {"title": title, "isbn": isbn}
+        content = message["content"]
+        if books:
+            content += "\n\n本轮工具已确认的书目信息（供后续问题确定图书，实时价格和库存需重新查询）：\n"
+            content += json.dumps(list(books.values()), ensure_ascii=False)
+        return content
+
+    @staticmethod
     def _history(messages: list[dict]) -> list[dict]:
         """仅把已完成的问答对带给模型，失败或中断的半轮仍保留在页面中。"""
         history = []
@@ -147,7 +175,7 @@ class SessionStore:
             elif question and message["status"] == "completed":
                 history.extend([
                     {"role": "user", "content": question["content"]},
-                    {"role": "assistant", "content": message["content"]},
+                    {"role": "assistant", "content": SessionStore._history_content(message)},
                 ])
                 question = None
         return history[-12:]
